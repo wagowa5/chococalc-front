@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { CharacterStatus } from '../interface/Status';
 import './CharacterArea.css';
 
+import theme from '../muiSetting/theme';
 import { TextField } from "@mui/material";
 
 const CharacterArea = () => {
@@ -41,14 +42,8 @@ const CharacterArea = () => {
             <div className="status-row">
                 <label htmlFor="pow">POW:</label>
                 <TextField 
-                    label="Size"
-                    id="outlined-size-small"
-                    defaultValue="Small"
-                    size="small"
-                    type="number"
                     name="pow"
                     placeholder='157'
-                    onChange={handleInputChange}
                 />
             </div>
             <div className="status-row">
