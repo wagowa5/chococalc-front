@@ -3,7 +3,7 @@ import { CharacterStatus } from '../interface/Status';
 import './CharacterArea.css';
 
 import theme from '../muiSetting/theme';
-import { TextField } from "@mui/material";
+import { TextField, Box } from "@mui/material";
 
 const CharacterArea = () => {
     // Status型のオブジェクトを初期化
@@ -37,7 +37,7 @@ const CharacterArea = () => {
     };
 
     return (
-        <>
+        <Box component="section" sx={{ p: 2, border: '1px dashed grey' }}>
             <div className="character-container">
             <div className="status-row">
                 <label htmlFor="pow">POW:</label>
@@ -82,7 +82,7 @@ const CharacterArea = () => {
                 </div>
             </div>
         </div>
-        </>
+        </Box>
     );
 };
 

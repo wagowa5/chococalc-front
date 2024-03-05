@@ -24,13 +24,18 @@ function App() {
 
   return (
     <div className="app">
-      <CharacterArea />
+      <header className="App-header">
+        <h1>チョコラン計算機(非公式)</h1>
+      </header>
 
-      
-      <Button variant='outlined' onClick={handleSubmit} className="all-reset">
-        すべてリセット
-      </Button>
-      {/* 他のボタンも同様に */}
+      <div>
+        <CharacterArea />
+
+        <Button variant='outlined' onClick={handleSubmit} className="all-reset">
+          すべてリセット
+        </Button>
+        {/* 他のボタンも同様に */}
+      </div>
     </div>
   );
 }
