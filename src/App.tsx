@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './App.css';
-import StatusInput from './StatusInput';
+import CharacterArea from './characterArea/CharacterArea';
+
+import { Button } from "@mui/material";
 
 function App() {
   const [stats, setStats] = useState({
@@ -22,22 +24,12 @@ function App() {
 
   return (
     <div className="app">
-      <StatusInput></StatusInput>
+      <CharacterArea />
 
-
-      <div className="pow">
-        <input
-          type="number"
-          name="inputPow"
-          value={stats.pow}
-          onChange={handleInputChange}
-          className="input-pow"
-        />
-        {/* 他の入力フィールドも同様に */}
-      </div>
-      <button onClick={handleSubmit} className="all-reset">
+      
+      <Button variant='outlined' onClick={handleSubmit} className="all-reset">
         すべてリセット
-      </button>
+      </Button>
       {/* 他のボタンも同様に */}
     </div>
   );
