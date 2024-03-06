@@ -2,86 +2,190 @@ import React, { useState } from 'react';
 import { CharacterStatus } from '../interface/Status';
 import './CharacterArea.css';
 
-import theme from '../muiSetting/theme';
-import { TextField, Box } from "@mui/material";
+import { TextField, Box, Grid } from '@mui/material';
 
 const CharacterArea = () => {
-    // Status型のオブジェクトを初期化
-    const initialStatus = {
-        pow: 0,
-        int: 0,
-        spd: 0,
-        vit: 0,
-        luk: 0,
-        atk: 0,
-        def: 0,
-        mat: 0,
-        mdf: 0,
-    };
-
-    // CharacterStatusのインスタンスをuseStateで初期化
-    const [inputCharacterStatus, setInputCharacterStatus] = useState<CharacterStatus>(new CharacterStatus(initialStatus));
-
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { value, name } = event.target;
-        // statusプロパティを更新する
-        setInputCharacterStatus(prevStatus => new CharacterStatus({ ...prevStatus.status, [name]: Number(value) }));
-    }
-
-    // このコードをCSSファイルに移動することもできます
-    const gridStyle = {
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr', // 2つのカラムを定義
-        gap: '10px', // グリッドアイテム間のスペース
-        marginBottom: '20px', // グリッドコンテナの下のスペース
-    };
 
     return (
-        <Box component="section" sx={{ p: 2, border: '1px dashed grey' }}>
-            <div className="character-container">
-            <div className="status-row">
-                <label htmlFor="pow">POW:</label>
-                <TextField 
-                    name="pow"
-                    placeholder='157'
-                />
-            </div>
-            <div className="status-row">
-                <label htmlFor="int">INT:</label>
-                <TextField type="number" name="int" onChange={handleInputChange} placeholder='1' />
-            </div>
-            <div className="status-row">
-                <label htmlFor="spd">SPD:</label>
-                <TextField type="number" name="spd" onChange={handleInputChange} placeholder='1' />
-            </div>
-            <div className="status-row">
-                <label htmlFor="vit">VIT:</label>
-                <TextField type="number" name="vit" onChange={handleInputChange} placeholder='1' />
-            </div>
-            <div className="status-row">
-                <label htmlFor="luk">LUK:</label>
-                <TextField type="number" name="luk" onChange={handleInputChange} placeholder='1' />
-            </div>
+        <Box
+            component='section'
+            aria-label='ステータス入力'
+            height={400}
+            width={550}
+            my={4}
+            display='flex'
+            alignItems='center'
+            gap={4}
+            p={2}
+            sx={{ border: '1px dashed grey' }}
+        >
+        <Grid container spacing={3}>
 
-            <div className="status-grid">
-                <div className="status-cell">
-                    <label htmlFor="atk">ATK:</label>
-                    <TextField type="number" name="atk" onChange={handleInputChange} placeholder='1' />
+        {/* レベル, HP, SP */}
+        <Grid item xs={11} >
+        <Grid container spacing={4} >
+            <Grid item xs={1}></Grid>
+            <Grid item xs={2}>
+                <TextField 
+                    name='level'
+                    label='Lv:'
+                    placeholder='99'
+                />
+            </Grid>
+            <Grid item xs={4}>
+                <TextField 
+                    name='HP'
+                    label='HP:'
+                    placeholder='10000'
+                />
+            </Grid>
+            <Grid item xs={4}>
+                <TextField 
+                    name='SP'
+                    label='SP:'
+                    placeholder='10000'
+                />
+            </Grid>
+        </Grid>
+        </Grid>
+
+        {/* ステ振り, カード, 合計 */}
+        <Grid item xs={12}>
+            <Grid container spacing={3} className='character-status'>
+                <Grid item xs={2}>
+                <div className='base-status'>
+                    <div>ステ振り</div>
+                    <TextField 
+                        name='pow'
+                        label='POW:'
+                        placeholder='157'
+                    />
+                    <TextField 
+                        name='int'
+                        label='INT:'
+                        placeholder='157'
+                    />
+                    <TextField 
+                        name='spd'
+                        label='SPD:'
+                        placeholder='157'
+                    />
+                    <TextField 
+                        name='vit'
+                        label='VIT:'
+                        placeholder='157'
+                    />
+                    <TextField 
+                        name='luk'
+                        label='LUK:'
+                        placeholder='157'
+                    />
                 </div>
-                <div className="status-cell">
-                    <label htmlFor="def">DEF:</label>
-                    <TextField type="number" name="def" onChange={handleInputChange} placeholder='1' />
+                </Grid>
+
+                <Grid item xs={2}>
+                <div className='card-status'>
+                <div>カード</div>
+                    <TextField 
+                        name='pow'
+                        label='POW:'
+                        placeholder='157'
+                    />
+                    <TextField 
+                        name='int'
+                        label='INT:'
+                        placeholder='157'
+                    />
+                    <TextField 
+                        name='spd'
+                        label='SPD:'
+                        placeholder='157'
+                    />
+                    <TextField 
+                        name='vit'
+                        label='VIT:'
+                        placeholder='157'
+                    />
+                    <TextField 
+                        name='luk'
+                        label='LUK:'
+                        placeholder='157'
+                    />
                 </div>
-                <div className="status-cell">
-                    <label htmlFor="mat">MAT:</label>
-                    <TextField type="number" name="mat" onChange={handleInputChange} placeholder='1' />
+                </Grid>
+
+                <Grid item xs={8}>
+                <div className='sum-status'>
+                    <div>合計(ヌシステあり、ビタ等なしの数値を入力)</div>
+                    <TextField 
+                        name='pow'
+                        label='合計POW:'
+                        placeholder='入力例: 162+342'
+                    />
+                    <TextField 
+                        name='int'
+                        label='INT:'
+                        placeholder='157'
+                    />
+                    <TextField 
+                        name='spd'
+                        label='SPD:'
+                        placeholder='157'
+                    />
+                    <TextField 
+                        name='vit'
+                        label='VIT:'
+                        placeholder='157'
+                    />
+                    <TextField 
+                        name='luk'
+                        label='LUK:'
+                        placeholder='157'
+                    />
                 </div>
-                <div className="status-cell">
-                    <label htmlFor="mdf">MDF:</label>
-                    <TextField variant='outlined' type="number" name="mdf" onChange={handleInputChange} placeholder='1' />
-                </div>
-            </div>
-        </div>
+                </Grid>
+            </Grid>
+        </Grid>
+
+        {/* ATK, DEF, MAT, MDF */}
+        <Grid item xs={12}>
+            <Grid container spacing={2} className='detail-status'>
+                <Grid item xs={5}>
+                <TextField 
+                    type='string'
+                    label='ATK:'
+                    name='atk'
+                    placeholder='1'
+                />
+                </Grid>
+                <Grid item xs={5}>
+                <TextField 
+                    type='string'
+                    label='DEF:'
+                    name='def'
+                    placeholder='1'
+                />
+                </Grid>
+                <Grid item xs={5}>
+                <TextField 
+                    type='string'
+                    label='MAT:'
+                    name='mat'
+                    placeholder='1'
+                />
+                </Grid>
+                <Grid item xs={5}>
+                <TextField 
+                    type='string'
+                    label='MDF:'
+                    name='mdf'
+                    placeholder='1'
+                />
+                </Grid>
+            </Grid>
+        </Grid>
+
+        </Grid>
         </Box>
     );
 };

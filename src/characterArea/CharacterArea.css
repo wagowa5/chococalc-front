@@ -1,21 +1,28 @@
 /* CharacterArea.css */
-.detailStatusGrid {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* 2 columns defined */
-    gap: 10px; /* Space between grid items */
-    margin-bottom: 20px; /* Space below the grid container */
-}
+/*.detailStatusGrid { */
+    /* display: grid; */
 
-.character-container {
+    /* 2 columns defined */
+    /* grid-template-columns: 1fr 1fr; */
+
+    /* Space between grid items */
+    /* gap: 10px;  */
+
+    /* Space below the grid container */
+    /* margin-bottom: 20px; */
+/* } */
+
+/* .base-status {
     display: flex;
     flex-direction: column;
     margin-top: 10px;
-}
+} */
 
 .status-row {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+    margin-left: 3px;
     height: auto;
 }
 
@@ -24,11 +31,12 @@
     white-space: nowrap;
 }
 
-.status-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 columns of equal width */
+/* .status-grid {
+    display: grid; */
+    /* 2 columns of equal width */
+    /* grid-template-columns: repeat(2, 1fr);
     gap: 10px;
-}
+} */
 
 .status-cell {
     display: flex;
@@ -38,9 +46,4 @@
 .status-cell label {
     margin-right: 5px;
     white-space: nowrap;
-}
-
-/* General styles for TextField that can be adjusted as needed */
-.MuiTextField-root {
-    /* width: 100%; */ /* Adjust width as needed */
 }
