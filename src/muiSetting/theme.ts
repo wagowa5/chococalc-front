@@ -62,7 +62,7 @@ const theme = createTheme({
             defaultProps: {
                 variant: 'outlined',
                 size: 'small',
-                type: 'number',
+                type: 'string',
             },
         },
     },
