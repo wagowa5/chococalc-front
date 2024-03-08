@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+import { evaluate } from 'maths.ts';
+
 import { CharacterStatus } from '../interface/Status';
+import { MESSAGES } from '../constants/text';
 import './CharacterArea.css';
 
 import { TextField, Box, Grid } from '@mui/material';
@@ -14,13 +17,75 @@ interface CharacterAreaProps {
     updateInputTotalStatus: (newStatus: CharacterStatus) => void;
 }
 
+// 入力用パラメータ
+interface InputParam {
+    inputLevel: string;
+    inputHp: string;
+    inputSp: string;
+    inputCharaPow: string;
+    inputCharaInt: string;
+    inputCharaVit: string;
+    inputCharaSpd: string;
+    inputCharaLuk: string;
+    inputCardPow: string;
+    inputCardInt: string;
+    inputCardVit: string;
+    inputCardSpd: string;
+    inputCardLuk: string;
+    inputTotalPow: string;
+    inputTotalInt: string;
+    inputTotalVit: string;
+    inputTotalSpd: string;
+    inputTotalLuk: string;
+    inputAtk: string;
+    inputDef: string;
+    inputMat: string;
+    inputMdf: string;
+}
+
 const CharacterArea = (
     {
-        characterStatus, updateCharacterStatus,
-        cardStatus, updateCardStatus,
-        inputTotalStatus, updateInputTotalStatus,
-    }: CharacterAreaProps
+        inputLevel,
+        inputHp,
+        inputSp,
+        inputCharaPow,
+        inputCharaInt,
+        inputCharaVit,
+        inputCharaSpd,
+        inputCharaLuk,
+        inputCardPow,
+        inputCardInt,
+        inputCardVit,
+        inputCardSpd,
+        inputCardLuk,
+        inputTotalPow,
+        inputTotalInt,
+        inputTotalVit,
+        inputTotalSpd,
+        inputTotalLuk,
+        inputAtk,
+        inputDef,
+        inputMat,
+        inputMdf,
+    }: InputParam
 ) => {
+    // エラーメッセージを格納
+    const [errorMessages, setErrorMessages] = useState({});
+
+    // 文字列ができるかどうかを事前にチェックする
+    // 入力値のStatusクラスへの格納や計算は別コンポーネントで行う
+    const calculate = (expression: string, field: string) => {
+        try {
+            const result = evaluate(expression);
+            // 成功した場合、エラーメッセージをクリア
+            setErrorMessages(prevErrors => ({ ...prevErrors, [field]: '' }));
+            return result;
+        } catch (error) {
+            // エラーが発生した場合、エラーメッセージを更新
+            setErrorMessages(prevErrors => ({ ...prevErrors, [field]: MESSAGES.INPUT_ERROR.CANNOT_CALCULATE }));
+            return null; // または適切なデフォルト値
+        }
+    };
 
     return (
         <Box
@@ -46,6 +111,7 @@ const CharacterArea = (
                     name='level'
                     label='Lv:'
                     placeholder='99'
+                    value={}
                 />
             </Grid>
             <Grid item xs={3}>
