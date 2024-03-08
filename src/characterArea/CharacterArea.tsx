@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+import { evaluate } from 'maths.ts';
+
 import { CharacterStatus } from '../interface/Status';
+import { MESSAGES } from '../constants/text';
 import './CharacterArea.css';
 
 import { TextField, Box, Grid } from '@mui/material';
@@ -8,23 +11,80 @@ import { TextField, Box, Grid } from '@mui/material';
 interface CharacterAreaProps {
     characterStatus: CharacterStatus;
     updateCharacterStatus: (newStatus: CharacterStatus) => void;
+    cardStatus: CharacterStatus;
+    updateCardStatus: (newStatus: CharacterStatus) => void;
+    inputTotalStatus: CharacterStatus;
+    updateInputTotalStatus: (newStatus: CharacterStatus) => void;
 }
 
-const CharacterArea = ({ characterStatus, updateCharacterStatus }: CharacterAreaProps) => {
+// 入力用パラメータ
+interface InputParam {
+    inputLevel: string;
+    inputHp: string;
+    inputSp: string;
+    inputCharaPow: string;
+    inputCharaInt: string;
+    inputCharaVit: string;
+    inputCharaSpd: string;
+    inputCharaLuk: string;
+    inputCardPow: string;
+    inputCardInt: string;
+    inputCardVit: string;
+    inputCardSpd: string;
+    inputCardLuk: string;
+    inputTotalPow: string;
+    inputTotalInt: string;
+    inputTotalVit: string;
+    inputTotalSpd: string;
+    inputTotalLuk: string;
+    inputAtk: string;
+    inputDef: string;
+    inputMat: string;
+    inputMdf: string;
+}
 
-    const handleInputStatusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
+const CharacterArea = (
+    {
+        inputLevel,
+        inputHp,
+        inputSp,
+        inputCharaPow,
+        inputCharaInt,
+        inputCharaVit,
+        inputCharaSpd,
+        inputCharaLuk,
+        inputCardPow,
+        inputCardInt,
+        inputCardVit,
+        inputCardSpd,
+        inputCardLuk,
+        inputTotalPow,
+        inputTotalInt,
+        inputTotalVit,
+        inputTotalSpd,
+        inputTotalLuk,
+        inputAtk,
+        inputDef,
+        inputMat,
+        inputMdf,
+    }: InputParam
+) => {
+    // エラーメッセージを格納
+    const [errorMessages, setErrorMessages] = useState({});
 
-        // TODO type見てstringなら↓してNumberする
-        // const anExampleVariable = Function('return (' + your-string + ');')()
-        const newStatus = {
-            ...characterStatus,
-            status: {
-                ...characterStatus.status,
-                [name]: Number(value),
-            },
-        };
-        updateCharacterStatus(newStatus); // Appから渡された関数を使用して状態を更新
+    // 文字列ができるかどうかを事前にチェックする
+    // 入力値のStatusクラスへの格納や計算は別コンポーネントで行う
+    const calculate = (expression: string, field: string) => {
+        try {
+            const result = evaluate(expression);
+            // 成功した場合、エラーメッセージをクリア
+            setErrorMessages(prevErrors => ({ ...prevErrors, [field]: '' }));
+            return result;
+        } catch (error) {
+            // エラーが発生した場合、エラーメッセージを更新
+            setErrorMessages(prevErrors => ({ ...prevErrors, [field]: MESSAGES.INPUT_ERROR.CANNOT_CALCULATE }));
+            return null; // または適切なデフォルト値
+        }
     };
 
     return (
@@ -51,27 +111,21 @@ const CharacterArea = ({ characterStatus, updateCharacterStatus }: CharacterArea
                     name='level'
                     label='Lv:'
                     placeholder='99'
-                    value={characterStatus.status.pow === 0 ? '' : characterStatus.status.pow}
-                    onChange={handleInputStatusChange}
+                    value={}
                 />
             </Grid>
             <Grid item xs={3}>
                 <TextField 
-                    name='HP'
+                    name='hp'
                     label='HP:'
                     placeholder='10000'
-                    // TODO intに変える
-                    value={characterStatus.status.pow === 0 ? '' : characterStatus.status.pow}
-                    onChange={handleInputStatusChange}
                 />
             </Grid>
             <Grid item xs={3}>
                 <TextField 
-                    name='SP'
+                    name='sp'
                     label='SP:'
                     placeholder='10000'
-                    value={characterStatus.status.pow === 0 ? '' : characterStatus.status.pow}
-                    onChange={handleInputStatusChange}
                 />
             </Grid>
         </Grid>
@@ -87,36 +141,26 @@ const CharacterArea = ({ characterStatus, updateCharacterStatus }: CharacterArea
                         name='pow'
                         label='POW:'
                         placeholder='157'
-                        value={characterStatus.status.pow === 0 ? '' : characterStatus.status.pow}
-                        onChange={handleInputStatusChange}
                     />
                     <TextField 
                         name='int'
                         label='INT:'
                         placeholder='157'
-                        value={characterStatus.status.pow === 0 ? '' : characterStatus.status.pow}
-                        onChange={handleInputStatusChange}
                     />
                     <TextField 
                         name='spd'
                         label='SPD:'
                         placeholder='157'
-                        value={characterStatus.status.pow === 0 ? '' : characterStatus.status.pow}
-                        onChange={handleInputStatusChange}
                     />
                     <TextField 
                         name='vit'
                         label='VIT:'
                         placeholder='157'
-                        value={characterStatus.status.pow === 0 ? '' : characterStatus.status.pow}
-                        onChange={handleInputStatusChange}
                     />
                     <TextField 
                         name='luk'
                         label='LUK:'
                         placeholder='157'
-                        value={characterStatus.status.pow === 0 ? '' : characterStatus.status.pow}
-                        onChange={handleInputStatusChange}
                     />
                 </div>
                 </Grid>
@@ -127,37 +171,27 @@ const CharacterArea = ({ characterStatus, updateCharacterStatus }: CharacterArea
                     <TextField 
                         name='pow'
                         label='POW:'
-                        placeholder='157'
-                        value={characterStatus.status.pow === 0 ? '' : characterStatus.status.pow}
-                        onChange={handleInputStatusChange}
+                        placeholder='18'
                     />
                     <TextField 
                         name='int'
                         label='INT:'
-                        placeholder='157'
-                        value={characterStatus.status.pow === 0 ? '' : characterStatus.status.pow}
-                        onChange={handleInputStatusChange}
+                        placeholder='18'
                     />
                     <TextField 
                         name='spd'
                         label='SPD:'
-                        placeholder='157'
-                        value={characterStatus.status.pow === 0 ? '' : characterStatus.status.pow}
-                        onChange={handleInputStatusChange}
+                        placeholder='18'
                     />
                     <TextField 
                         name='vit'
                         label='VIT:'
-                        placeholder='157'
-                        value={characterStatus.status.pow === 0 ? '' : characterStatus.status.pow}
-                        onChange={handleInputStatusChange}
+                        placeholder='18'
                     />
                     <TextField 
                         name='luk'
                         label='LUK:'
-                        placeholder='157'
-                        value={characterStatus.status.pow === 0 ? '' : characterStatus.status.pow}
-                        onChange={handleInputStatusChange}
+                        placeholder='18'
                     />
                 </div>
                 </Grid>
@@ -168,42 +202,27 @@ const CharacterArea = ({ characterStatus, updateCharacterStatus }: CharacterArea
                     <TextField 
                         name='pow'
                         label='合計POW:'
-                        type='string'
                         placeholder='入力例: 162+342'
-                        value={characterStatus.status.pow === 0 ? '' : characterStatus.status.pow}
-                        onChange={handleInputStatusChange}
                     />
                     <TextField 
                         name='int'
                         label='INT:'
-                        type='string'
                         placeholder='入力例: 162+342'
-                        value={characterStatus.status.pow === 0 ? '' : characterStatus.status.pow}
-                        onChange={handleInputStatusChange}
                     />
                     <TextField 
                         name='spd'
                         label='SPD:'
-                        type='string'
                         placeholder='入力例: 162+342'
-                        value={characterStatus.status.pow === 0 ? '' : characterStatus.status.pow}
-                        onChange={handleInputStatusChange}
                     />
                     <TextField 
                         name='vit'
                         label='VIT:'
-                        type='string'
                         placeholder='入力例: 162+342'
-                        value={characterStatus.status.pow === 0 ? '' : characterStatus.status.pow}
-                        onChange={handleInputStatusChange}
                     />
                     <TextField 
                         name='luk'
                         label='LUK:'
-                        type='string'
                         placeholder='入力例: 162+342'
-                        value={characterStatus.status.pow === 0 ? '' : characterStatus.status.pow}
-                        onChange={handleInputStatusChange}
                     />
                 </div>
                 </Grid>
@@ -215,42 +234,30 @@ const CharacterArea = ({ characterStatus, updateCharacterStatus }: CharacterArea
             <Grid container spacing={2} className='detail-status'>
                 <Grid item xs={5}>
                 <TextField 
-                    type='string'
-                    label='ATK:'
+                    label='表示ATK:'
                     name='atk'
                     placeholder='1'
-                    value={characterStatus.status.pow === 0 ? '' : characterStatus.status.pow}
-                    onChange={handleInputStatusChange}
                 />
                 </Grid>
                 <Grid item xs={5}>
                 <TextField 
-                    type='string'
-                    label='DEF:'
+                    label='表示DEF:'
                     name='def'
                     placeholder='1'
-                    value={characterStatus.status.pow === 0 ? '' : characterStatus.status.pow}
-                    onChange={handleInputStatusChange}
                 />
                 </Grid>
                 <Grid item xs={5}>
                 <TextField 
-                    type='string'
-                    label='MAT:'
+                    label='表示MAT:'
                     name='mat'
                     placeholder='1'
-                    value={characterStatus.status.pow === 0 ? '' : characterStatus.status.pow}
-                    onChange={handleInputStatusChange}
                 />
                 </Grid>
                 <Grid item xs={5}>
                 <TextField 
-                    type='string'
-                    label='MDF:'
+                    label='表示MDF:'
                     name='mdf'
                     placeholder='1'
-                    value={characterStatus.status.pow === 0 ? '' : characterStatus.status.pow}
-                    onChange={handleInputStatusChange}
                 />
                 </Grid>
             </Grid>
