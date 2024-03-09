@@ -28,13 +28,13 @@ const theme = createTheme({
         //     dark: '#b26a00',
         //     contrastText: '#000000',
         // },
-        // // Secondaryカラーを設定
-        // secondary: {
-        //     light: '#33eb91',
-        //     main: '#00e676',
-        //     dark: '#00a152',
-        //     contrastText: '#ffffff',
-        // },
+        // Secondaryカラーを設定
+        secondary: {
+            light: '#2196f3',
+            main: '#ffffff',
+            dark: '#00a152',
+            contrastText: '#2196f3',
+        },
     },
     mixins: {
         // ツールバーの高さ

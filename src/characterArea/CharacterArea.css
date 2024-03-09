@@ -18,7 +18,7 @@
     margin-top: 10px;
 } */
 
-.status-row {
+/* .status-row {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
@@ -29,7 +29,7 @@
 .status-row label {
     margin-right: 5px;
     white-space: nowrap;
-}
+} */
 
 /* .status-grid {
     display: grid; */
@@ -38,7 +38,7 @@
     gap: 10px;
 } */
 
-.status-cell {
+/* .status-cell {
     display: flex;
     align-items: center;
 }
@@ -46,4 +46,4 @@
 .status-cell label {
     margin-right: 5px;
     white-space: nowrap;
-}
+} */
