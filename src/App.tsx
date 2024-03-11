@@ -20,6 +20,7 @@ import Typography from '@mui/material/Typography';
 import CssBaseline from '@mui/material/CssBaseline';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Box from '@mui/material/Box';
+import ItemArea from './itemArea/ItemArea';
 
 
 function App() {
@@ -119,7 +120,9 @@ function App() {
         </Grid>
 
         {/* アイテムボタンを配置しているエリア */}
-        <Grid item xs={7}></Grid>
+        <Grid item xs={7}>
+        <ItemArea/>
+        </Grid>
 
         {/* スキルボタンを配置しているエリア */}
 
