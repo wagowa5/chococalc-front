@@ -42,60 +42,55 @@ interface EditStatus {
     inputMdf: string;
 }
 
-/**
- * キャラクターのステータスを管理するクラス
- */
-class CharacterStatus {
+// 汎用的なステータスクラス
+class GenericStatus {
     constructor(public status: Status) {}
+
+    update(status: Status) {
+        this.status = status;
+    }
 }
 
-/**
- * カードのステータスを管理するクラス
- */
-class CardStatus {
-    constructor(public status: Status) {}
-}
+// キャラクターが持つ各種ステータスを管理するクラス
+class Character {
+    // ステ振りのステータス
+    characterStatus: GenericStatus;
+    // カードのステータス
+    cardStatus: GenericStatus;
+    // ビタのステータス
+    vitaStatus: GenericStatus;
+    // 入力された合計ステータス
+    inputedTotalStatus: GenericStatus;
+    // 巻物のステータス
+    scrollStatus: GenericStatus;
+    // 缶・シールのステータス
+    canStatus: GenericStatus;
+    // 特殊スキルのステータス
+    specialSkillStatus: GenericStatus;
+    // 表示用の合計ステータス
+    displayStatus: GenericStatus;
 
-/**
- * 入力用のステータスを管理するクラス
- */
-class InputTotalStatus {
-    constructor(public status: Status) {}
-}
+    constructor(
+        characterStatus: Status,
+        cardStatus: Status,
+        vitaStatus: Status,
+        inputedTotalStatus: Status,
+        scrollStatus: Status,
+        canStatus: Status,
+        specialSkillStatus: Status,
+        displayStatus: Status
+    ) {
+        this.characterStatus = new GenericStatus(characterStatus);
+        this.cardStatus = new GenericStatus(cardStatus);
+        this.vitaStatus = new GenericStatus(vitaStatus);
+        this.inputedTotalStatus = new GenericStatus(inputedTotalStatus);
+        this.scrollStatus = new GenericStatus(scrollStatus);
+        this.canStatus = new GenericStatus(canStatus);
+        this.specialSkillStatus = new GenericStatus(specialSkillStatus);
+        this.displayStatus = new GenericStatus(displayStatus);
+    }
 
-/**
- * ビタのステータスを管理するクラス
- */
-class VitaStatus {
-    constructor(public status: Status) {}
-}
-
-/**
- * 巻物のステータスを管理するクラス
- */
-class ScrollStatus {
-    constructor(public status: Status) {}
-}
-
-/**
- * 缶・シールのステータスを管理するクラス
- */
-class CanStatus {
-    constructor(public status: Status) {}
-}
-
-/**
- * 特殊スキルのステータスを管理するクラス
- */
-class SpecialSkillStatus {
-    constructor(public status: Status) {}
-}
-
-/**
- * 表示用の合計ステータスを管理するクラス
- */
-class DisplayStatus {
-    constructor(public status: Status) {}
+    // 必要に応じてキャラクター関連のメソッドを追加
 }
 
 /**
@@ -110,13 +105,6 @@ class InputStatus {
 }
 
 export {
-    CharacterStatus,
-    CardStatus,
-    InputTotalStatus,
-    VitaStatus,
-    ScrollStatus,
-    CanStatus,
-    SpecialSkillStatus,
-    DisplayStatus,
+    Character,
     InputStatus,
 };
