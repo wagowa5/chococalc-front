@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import './App.css';
 import CharacterArea from './characterArea/CharacterArea';
-import {  Character, InputStatus } from './interface/Status';
+import {  Character } from './interface/Status';
+import { MESSAGES, FIELDS } from './constants/text';
 //import AppHeader from './util/AppHeader'
 import { Tabs, Button, Grid } from "@mui/material";
 
@@ -13,6 +14,23 @@ import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Box from '@mui/material/Box';
 import ItemArea from './itemArea/ItemArea';
 
+/**
+ * ステータス入力管理
+ * @param フィールドごとの入力値
+ * @param フィールドごとのエラーメッセージ
+ */
+interface StatusInputFields {
+  [key: string]: {
+      value: string;
+      errorMessage: string;
+  }
+}
+
+const initialStatusInputFields: StatusInputFields = Object.keys(FIELDS).reduce<StatusInputFields>((acc, key) => {
+  const fieldKey = FIELDS[key as keyof typeof FIELDS]; // This ensures that fieldKey is typed correctly
+  acc[fieldKey] = { value: '', errorMessage: '' };
+  return acc;
+}, {});
 
 function App() {
   // デフォルトステータスオブジェクト
@@ -32,36 +50,12 @@ function App() {
     defaultStatus  // displayStatus
   ));
 
-  // 入力用ステータス
-  const [inputStatus, setInputStatus] = useState(new InputStatus({
-    inputLevel: '',
-    inputHp: '',
-    inputSp: '',
-    inputCharaPow: '',
-    inputCharaInt: '',
-    inputCharaVit: '',
-    inputCharaSpd: '',
-    inputCharaLuk: '',
-    inputCardPow: '',
-    inputCardInt: '',
-    inputCardVit: '',
-    inputCardSpd: '',
-    inputCardLuk: '',
-    inputTotalPow: '',
-    inputTotalInt: '',
-    inputTotalVit: '',
-    inputTotalSpd: '',
-    inputTotalLuk: '',
-    inputAtk: '',
-    inputDef: '',
-    inputMat: '',
-    inputMdf: '',
-}))
-
-  // ステータス更新関数
-  const updateInputStatus = (newInputStatus: InputStatus) => {
-    setInputStatus(newInputStatus);
-  }
+  // CharacterAreaの入力フィールドを管理する
+  const [inputStatus, setInputStatus] = useState<StatusInputFields>(initialStatusInputFields);
+  // inputStatusを更新する関数
+  const updateInputStatus = (newStatus: StatusInputFields) => {
+    setInputStatus(newStatus);
+  };
 
   return (
     <>
@@ -93,7 +87,7 @@ function App() {
 
         {/* アイテムボタンを配置しているエリア */}
         <Grid item xs={7}>
-        <ItemArea/>
+        {/* <ItemArea/> */}
         </Grid>
 
         {/* スキルボタンを配置しているエリア */}

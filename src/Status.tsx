@@ -16,58 +16,6 @@ interface Status {
     mdf: number;
 }
 
-// 入力されたステータス
-interface EditStatus {
-    inputLevel: string;
-    inputHp: string;
-    inputSp: string;
-    inputCharaPow: string;
-    inputCharaInt: string;
-    inputCharaVit: string;
-    inputCharaSpd: string;
-    inputCharaLuk: string;
-    inputCardPow: string;
-    inputCardInt: string;
-    inputCardVit: string;
-    inputCardSpd: string;
-    inputCardLuk: string;
-    inputTotalPow: string;
-    inputTotalInt: string;
-    inputTotalVit: string;
-    inputTotalSpd: string;
-    inputTotalLuk: string;
-    inputAtk: string;
-    inputDef: string;
-    inputMat: string;
-    inputMdf: string;
-}
-
-// 入力フィールドに対応するエラーメッセージ
-interface EditStatusErrorMessages {
-    inputLevel: string;
-    inputHp: string;
-    inputSp: string;
-    inputCharaPow: string;
-    inputCharaInt: string;
-    inputCharaVit: string;
-    inputCharaSpd: string;
-    inputCharaLuk: string;
-    inputCardPow: string;
-    inputCardInt: string;
-    inputCardVit: string;
-    inputCardSpd: string;
-    inputCardLuk: string;
-    inputTotalPow: string;
-    inputTotalInt: string;
-    inputTotalVit: string;
-    inputTotalSpd: string;
-    inputTotalLuk: string;
-    inputAtk: string;
-    inputDef: string;
-    inputMat: string;
-    inputMdf: string;
-}
-
 // 汎用的なステータスクラス
 class GenericStatus {
     constructor(public status: Status) {}
@@ -119,24 +67,6 @@ class Character {
     // 必要に応じてキャラクター関連のメソッドを追加
 }
 
-/**
- * 入力した文字列をそのまま管理するクラス
- */
-class InputStatus {
-    constructor(
-        public editStatus: EditStatus
-    ) {}
-
-    // TODO 各入力フィールドに対応するエラーメッセージをこの入力管理クラス管理できるようにする
-
-    update(editStatus: EditStatus) {
-        this.editStatus = editStatus;
-    }
-
-    
-}
-
 export {
     Character,
-    InputStatus,
 };
