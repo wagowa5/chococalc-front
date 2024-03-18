@@ -87,7 +87,7 @@ function App() {
 
         {/* アイテムボタンを配置しているエリア */}
         <Grid item xs={7}>
-        {/* <ItemArea/> */}
+        <ItemArea/>
         </Grid>
 
         {/* スキルボタンを配置しているエリア */}
