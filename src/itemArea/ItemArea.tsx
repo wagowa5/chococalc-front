@@ -54,16 +54,52 @@ const sealButtons = [
     <Button key="iseal">シールINT</Button>,
 ];
 
+/**
+ * HP,SP巻物のセレクトボックスの値
+ */
+const hpSpScrollValues = [
+    <MenuItem value={0}><em>None</em></MenuItem>,
+    <MenuItem value={800}>肆ノ巻</MenuItem>,
+    <MenuItem value={1000}>伍ノ巻</MenuItem>,
+    <MenuItem value={1200}>陸ノ巻</MenuItem>,
+];
+
+/**
+ * POW, INT, SPD, VIT, LUK巻物のセレクトボックスの値
+ */
+const basicScrollValues = [
+    <MenuItem value={0}><em>None</em></MenuItem>,
+    <MenuItem value={4}>肆ノ巻</MenuItem>,
+    <MenuItem value={5}>伍ノ巻</MenuItem>,
+    <MenuItem value={6}>陸ノ巻</MenuItem>,
+];
+
+/**
+ * ATK, DEF, MAT, MDF巻物のセレクトボックスの値
+ */
+const detailScrollValues = [
+    <MenuItem value={0}><em>None</em></MenuItem>,
+    <MenuItem value={80}>肆ノ巻</MenuItem>,
+    <MenuItem value={100}>伍ノ巻</MenuItem>,
+    <MenuItem value={120}>陸ノ巻</MenuItem>,
+];
+
 const ItemArea = (
     {
     }: ItemAreaProps
 ) => {
     const [errorMessages, setErrorMessages] = useState<ErrorMessages>({});
 
-    // 巻物の選択
+    // 巻物のセレクトボックス
     const [hpScroll, setHpScroll] = React.useState('');
+    const [spScroll, setSpScroll] = React.useState('');
+
+    // セレクトボックスの変更時の処理
     const handleHpScrollChange = (event: SelectChangeEvent) => {
         setHpScroll(event.target.value);
+    };
+    const handleSpScrollChange = (event: SelectChangeEvent) => {
+        setSpScroll(event.target.value);
     };
 
     return (
@@ -124,29 +160,47 @@ const ItemArea = (
 
             {/* 巻物 */}
             <Grid item xs={6}>
-                <FormControl sx={{ m: 1, minWidth: 80 }}>
-                    <InputLabel id="demo-simple-select-autowidth-label">HP</InputLabel>
-                    <Select
-                        labelId="demo-simple-select-autowidth-label"
-                        id="demo-simple-select-autowidth"
-                        value={hpScroll}
-                        onChange={handleHpScrollChange}
-                        autoWidth
-                        label="HP"
-                    >
-                        <MenuItem value="">
-                            <em>None</em>
-                        </MenuItem>
-                        <MenuItem value={10}>4</MenuItem>
-                        <MenuItem value={21}>伍ノ巻</MenuItem>
-                        <MenuItem value={22}>6</MenuItem>
-                    </Select>
-                </FormControl>
+                <Grid container spacing={2}>
+                    {/* HP, POW, INT, SPD, VIT, LUK */}
+                    <Grid item xs={6}>
+                    {/* HP */}
+                    <FormControl sx={{ m: 1, minWidth: 80 }}>
+                        <InputLabel id="demo-simple-select-autowidth-label">HP</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-autowidth-label"
+                            id="demo-simple-select-autowidth"
+                            value={hpScroll}
+                            onChange={handleHpScrollChange}
+                            autoWidth
+                            label="HP"
+                        >
+                            {hpSpScrollValues}
+                        </Select>
+                    </FormControl>
+                    </Grid>
+
+                    {/* SP, ATK, DEF, MAT, MDF */}
+                    <Grid item xs={6}>
+                    <FormControl sx={{ m: 1, minWidth: 80 }}>
+                        <InputLabel id="demo-simple-select-autowidth-label">SP</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-autowidth-label"
+                            id="demo-simple-select-autowidth"
+                            value={spScroll}
+                            onChange={handleSpScrollChange}
+                            autoWidth
+                            label="SP"
+                        >
+                            {hpSpScrollValues}
+                        </Select>
+                    </FormControl>
+                    </Grid>
+                </Grid>
             </Grid>
 
             {/* リキッド */}
             <Grid item xs={6}>
-                
+
             </Grid>
         </Grid>
         </>
