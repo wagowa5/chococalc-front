@@ -4,6 +4,12 @@ import { evaluate } from 'maths.ts';
 
 import { Character } from '../interface/Status';
 import { MESSAGES, FIELDS } from '../constants/text';
+import ButtonGroupComponent from './ButtonGroupComponent';
+import ScrollSelect from './ScrollSelect';
+import { 
+    vitaButtonsData, canButtonsData, sealButtonsData,
+    hpSpScrollOptions, basicScrollOptions, detailScrollOptions
+} from './itemConfig';
 
 import { TextField, Box, Grid } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -24,66 +30,6 @@ interface ErrorMessages {
 interface ItemAreaProps {
 }
 
-/**
- * ビタボタン
- *  TODO 全ボタン用意する
- *  TODO フィールド名を定数ファイルにして、そこから取得する
- */
-const vitaButtons = [
-    <Button key="all-vita">ALLビタ</Button>,
-    <Button key="pvita">POWビタ</Button>,
-    <Button key="ivita">INTビタ</Button>,
-    <Button key="svita">SPDビタ</Button>,
-];
-
-/**
- * 缶ボタン
- *  TODO フィールド名を定数ファイルにして、そこから取得する
- */
-const canButtons = [
-    <Button key="canA">魔獣覚醒缶A</Button>,
-    <Button key="canB">魔獣覚醒缶B</Button>,
-];
-
-/**
- * シールボタン(かき氷)
- *  TODO フィールド名を定数ファイルにして、そこから取得する
- */
-const sealButtons = [
-    <Button key="pseal">シールPOW</Button>,
-    <Button key="iseal">シールINT</Button>,
-];
-
-/**
- * HP,SP巻物のセレクトボックスの値
- */
-const hpSpScrollValues = [
-    <MenuItem value={0}><em>None</em></MenuItem>,
-    <MenuItem value={800}>肆ノ巻</MenuItem>,
-    <MenuItem value={1000}>伍ノ巻</MenuItem>,
-    <MenuItem value={1200}>陸ノ巻</MenuItem>,
-];
-
-/**
- * POW, INT, SPD, VIT, LUK巻物のセレクトボックスの値
- */
-const basicScrollValues = [
-    <MenuItem value={0}><em>None</em></MenuItem>,
-    <MenuItem value={4}>肆ノ巻</MenuItem>,
-    <MenuItem value={5}>伍ノ巻</MenuItem>,
-    <MenuItem value={6}>陸ノ巻</MenuItem>,
-];
-
-/**
- * ATK, DEF, MAT, MDF巻物のセレクトボックスの値
- */
-const detailScrollValues = [
-    <MenuItem value={0}><em>None</em></MenuItem>,
-    <MenuItem value={80}>肆ノ巻</MenuItem>,
-    <MenuItem value={100}>伍ノ巻</MenuItem>,
-    <MenuItem value={120}>陸ノ巻</MenuItem>,
-];
-
 const ItemArea = (
     {
     }: ItemAreaProps
@@ -94,10 +40,12 @@ const ItemArea = (
     const [hpScroll, setHpScroll] = React.useState('');
     const [spScroll, setSpScroll] = React.useState('');
 
-    // セレクトボックスの変更時の処理
+    // HP巻物のセレクトボックスの変更時の処理
     const handleHpScrollChange = (event: SelectChangeEvent) => {
         setHpScroll(event.target.value);
     };
+
+    // SP巻物のセレクトボックスの変更時の処理
     const handleSpScrollChange = (event: SelectChangeEvent) => {
         setSpScroll(event.target.value);
     };
@@ -115,9 +63,7 @@ const ItemArea = (
                     },
                 }}
             >
-                <ButtonGroup orientation="vertical" aria-label="Vertical button group">
-                    {vitaButtons}
-                </ButtonGroup>
+                <ButtonGroupComponent buttons={vitaButtonsData} />
             </Box>
             </Grid>
 
@@ -134,9 +80,7 @@ const ItemArea = (
                             },
                         }}
                         >
-                        <ButtonGroup orientation="vertical" aria-label="Vertical button group">
-                            {canButtons}
-                        </ButtonGroup>
+                        <ButtonGroupComponent buttons={canButtonsData} />
                     </Box>
                     </Grid>
 
@@ -150,9 +94,7 @@ const ItemArea = (
                             },
                         }}
                         >
-                        <ButtonGroup orientation="vertical" aria-label="Vertical button group">
-                            {sealButtons}
-                        </ButtonGroup>
+                        <ButtonGroupComponent buttons={sealButtonsData} />
                     </Box>
                     </Grid>
                 </Grid>
@@ -162,38 +104,25 @@ const ItemArea = (
             <Grid item xs={6}>
                 <Grid container spacing={2}>
                     {/* HP, POW, INT, SPD, VIT, LUK */}
-                    <Grid item xs={6}>
                     {/* HP */}
-                    <FormControl sx={{ m: 1, minWidth: 80 }}>
-                        <InputLabel id="demo-simple-select-autowidth-label">HP</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-autowidth-label"
-                            id="demo-simple-select-autowidth"
-                            value={hpScroll}
-                            onChange={handleHpScrollChange}
-                            autoWidth
+                    <Grid item xs={6}>
+                        <ScrollSelect
+                            options={hpSpScrollOptions}
                             label="HP"
-                        >
-                            {hpSpScrollValues}
-                        </Select>
-                    </FormControl>
+                            selectedValue={hpScroll}
+                            onChange={handleHpScrollChange}
+                        />
                     </Grid>
 
                     {/* SP, ATK, DEF, MAT, MDF */}
+                    {/* SP */}
                     <Grid item xs={6}>
-                    <FormControl sx={{ m: 1, minWidth: 80 }}>
-                        <InputLabel id="demo-simple-select-autowidth-label">SP</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-autowidth-label"
-                            id="demo-simple-select-autowidth"
-                            value={spScroll}
-                            onChange={handleSpScrollChange}
-                            autoWidth
+                        <ScrollSelect
+                            options={hpSpScrollOptions} // この例では、HPとSPで同じオプションを使用しています。必要に応じて変更してください。
                             label="SP"
-                        >
-                            {hpSpScrollValues}
-                        </Select>
-                    </FormControl>
+                            selectedValue={spScroll}
+                            onChange={handleSpScrollChange}
+                        />
                     </Grid>
                 </Grid>
             </Grid>
