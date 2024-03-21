@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { evaluate } from 'maths.ts';
 
 import { Character } from '../interface/Status';
-import { MESSAGES, FIELDS } from '../constants/text';
+import { MESSAGES, FIELDS } from '../constants/constants';
 import ButtonGroupComponent from './ButtonGroupComponent';
 import ScrollSelect from './ScrollSelect';
 import { 

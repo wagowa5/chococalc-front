@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import CharacterArea from './characterArea/CharacterArea';
 import {  Character } from './interface/Status';
-import { MESSAGES, FIELDS } from './constants/text';
+import { MESSAGES, FIELDS } from './constants/constants';
 //import AppHeader from './util/AppHeader'
 import { Tabs, Button, Grid } from "@mui/material";
 
