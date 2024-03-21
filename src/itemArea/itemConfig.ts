@@ -1,24 +1,34 @@
-import { SCROLL_RANK } from "../constants/constants"; 
+import { ITEMS, SCROLL_RANK } from "../constants/constants"; 
 
 // ボタン設定
-// TODO フィールド名を定数ファイルに追加して、そこから取得する
 export const vitaButtonsData = [
-    { key: "all-vita", label: "ALLビタ" },
-    { key: "pvita", label: "POWビタ" },
-    { key: "ivita", label: "INTビタ" },
-    { key: "svita", label: "SPDビタ" },
+    ITEMS.VITA.ALL,
+    ITEMS.VITA.POW,
+    ITEMS.VITA.INT,
+    ITEMS.VITA.SPD,
+    ITEMS.VITA.VIT,
+    ITEMS.VITA.LUK,
 ];
 
 export const canButtonsData = [
-    { key: "canA", label: "魔獣覚醒缶A" },
-    { key: "canB", label: "魔獣覚醒缶B" },
+    ITEMS.CAN.A,
+    ITEMS.CAN.B,
 ];
 
 export const sealButtonsData = [
-    { key: "pseal", label: "シールPOW" },
-    { key: "iseal", label: "シールINT" },
+    ITEMS.SEAL.POW,
+    ITEMS.SEAL.INT,
+    ITEMS.SEAL.SPD,
+    ITEMS.SEAL.VIT,
+    ITEMS.SEAL.LUK,
 ];
 
+export const liquidButtonsData = [
+    ITEMS.LIQUID.ATK,
+    ITEMS.LIQUID.DEF,
+    ITEMS.LIQUID.MAT,
+    ITEMS.LIQUID.MDF,
+];
 
 // 巻物設定
 export const hpSpScrollOptions = [
