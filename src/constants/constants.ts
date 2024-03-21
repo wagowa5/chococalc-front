@@ -29,6 +29,34 @@ export const FIELDS = {
     MDF: 'inputMdf',
 }
 
+export const ITEMS = {
+    VITA: {
+        ALL: 'allVita',
+        POW: 'powVita',
+        INT: 'intVita',
+        SPD: 'spdVita',
+        VIT: 'vitVita',
+        LUK: 'lukVita',
+    },
+    CAN: {
+        A: 'canA',
+        B: 'canB',
+    },
+    SEAL: {
+        POW: 'powSeal',
+        INT: 'intSeal',
+        SPD: 'spdSeal',
+        VIT: 'vitSeal',
+        LUK: 'lukSeal',
+    },
+    LIQUID: {
+        ATK: 'atkLiquid',
+        DEF: 'defLiquid',
+        MAT: 'matLiquid',
+        MDF: 'mdfLiquid',
+    }
+}
+
 export const SCROLL_RANK = {
     NONE: 'None',
     RANK1: '壱ノ巻',
