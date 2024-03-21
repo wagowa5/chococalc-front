@@ -31,30 +31,81 @@ export const FIELDS = {
 
 export const ITEMS = {
     VITA: {
-        ALL: 'allVita',
-        POW: 'powVita',
-        INT: 'intVita',
-        SPD: 'spdVita',
-        VIT: 'vitVita',
-        LUK: 'lukVita',
+        ALL: {
+            key: 'allVita',
+            label: 'ALLビタ',
+        },
+        POW: {
+            key: 'powVita',
+            label: 'POWビタ',
+        },
+        INT: {
+            key: 'intVita',
+            label: 'INTビタ',
+        },
+        SPD: {
+            key: 'spdVita',
+            label: 'SPDビタ',
+        },
+        VIT: {
+            key: 'vitVita',
+            label: 'VITビタ',
+        },
+        LUK: {
+            key: 'lukVita',
+            label: 'LUKビタ',
+        },
     },
     CAN: {
-        A: 'canA',
-        B: 'canB',
+        A: {
+            key: 'canA',
+            label: '魔獣覚醒缶A',
+        },
+        B: {
+            key: 'canB',
+            label: '魔獣覚醒缶B',
+        },
     },
     SEAL: {
-        POW: 'powSeal',
-        INT: 'intSeal',
-        SPD: 'spdSeal',
-        VIT: 'vitSeal',
-        LUK: 'lukSeal',
+        POW: {
+            key: 'powSeal',
+            label: 'POWシール',
+        },
+        INT: {
+            key: 'intSeal',
+            label: 'INTシール',
+        },
+        SPD: {
+            key: 'spdSeal',
+            label: 'SPDシール',
+        },
+        VIT: {
+            key: 'vitSeal',
+            label: 'VITシール',
+        },
+        LUK: {
+            key: 'lukSeal',
+            label: 'LUKシール',
+        },
     },
     LIQUID: {
-        ATK: 'atkLiquid',
-        DEF: 'defLiquid',
-        MAT: 'matLiquid',
-        MDF: 'mdfLiquid',
-    }
+        ATK: {
+            key: 'atkLiquid',
+            label: 'アタークリキッド',
+        },
+        DEF: {
+            key: 'defLiquid',
+            label: 'マモールリキッド',
+        },
+        MAT: {
+            key: 'matLiquid',
+            label: 'マホアタリキッド',
+        },
+        MDF: {
+            key: 'mdfLiquid',
+            label: 'マホマモリキッド',
+        },
+    },
 }
 
 export const SCROLL_RANK = {
