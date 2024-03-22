@@ -48,10 +48,6 @@ def create_prompt(code_diff):
               '- Be sure to comment on areas for improvement.\n'
               '- Please make review comments in Japanese.\n'
               '- Ignore the use of "self." when using variables and functions.\n'
-              '- Please prefix your review comments with one of the following labels "MUST:","IMO:","NITS:".\n'
-              '  - MUST: must be modified\n'
-              '  - IMO: personal opinion or minor proposal\n'
-              '  - NITS: Proposals that do not require modification\n'
               '- The following json format should be followed.\n'
               '{"files":[{"fileName":"<file_name>","reviews": [{"lineNumber":<line_number>,"reviewComment":"<review comment>"}]}]}\n'
               '- If there is no review comment, please answer {"files":[]}\n')
