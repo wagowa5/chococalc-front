@@ -26,7 +26,7 @@ def get_openai_review(prompt):
     # レスポンスをjson、modelにGPT-4 Turboを指定
     chat_completion = client.chat.completions.create(
         model="gpt-4-turbo-preview",
-        response_format={ "type": "json_object" },
+        #response_format={ "type": "json_object" },
         messages=[
             {
                 "role": "system",
