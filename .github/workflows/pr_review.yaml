@@ -5,7 +5,7 @@ jobs:
   pr_review:
     # This job only runs for pull request comments
     name: PR review
-    if: ${{ github.event.issue.pull_request }} && ${{ github.event.comment.body == '/review' }}"
+    if: ${{ github.event.issue.pull_request && github.event.comment.body == '/review' }}"
     runs-on: ubuntu-latest
     # ActionsからPRへのコメントを許可
     permissions:
@@ -27,7 +27,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           REPOSITORY: "wagowa5/chococalc-front"
-          PR_NUMBER: ${{ github.event.number }}
+          PR_NUMBER: ${{ github.event.issue.number }}
       - run: |
           echo A comment on PR $NUMBER
         env:
