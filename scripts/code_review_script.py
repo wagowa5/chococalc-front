@@ -25,19 +25,17 @@ def get_openai_review(prompt):
     client = OpenAI(api_key=OPENAI_API_KEY)
     # レスポンスをjson、modelにGPT-4 Turboを指定
     chat_completion = client.chat.completions.create(
-        model="gpt-4-turbo-preview",
-        #response_format={ "type": "json_object" },
+        model="gpt-4-0125-preview",
         messages=[
             {
                 "role": "system",
-                "content": "This GPT is configured to analyze GitHub diffs and provide code reviews in Japanese to output JSON. The goal is to offer concrete suggestions for improving the quality of code, as well as insights into potential areas of improvement. This process emphasizes efficiency, maintainability, security, and adherence to style and standards. In terms of efficiency, it assesses whether the code uses resources efficiently (from the perspectives of time and memory). For maintainability, it considers whether the code will be easy for other developers to understand and modify in the future. Regarding security, it checks if the code avoids potential security risks. In terms of style and standards, it verifies compliance with coding standards and style guides. The tone of the conversation should be strictly professional."},
+                "content": "This GPT is configured to analyze differences in GitHub and provide code reviews in Japanese. The goal is to offer concrete suggestions to improve the quality of the code, as well as insights into areas of improvement, with an emphasis on efficiency, maintainability, security, and adherence to styles and standards. Efficiency assesses whether the code uses resources efficiently (from the perspectives of time and memory). Maintainability considers whether the code will be easy for other developers to understand and modify in the future. Security checks if the code avoids potential security risks. Styles and standards examine whether coding standards and style guides are being followed. The review results are provided in JSON format, which contains review comments for each file. The \"files\" key indicates an array of reviewed files, \"fileName\" indicates the file name, and \"reviews\" indicates an array of review comments within that file. Each review comment contains \"lineNumber\" and \"reviewComment\" keys, representing the target line number and the review comment, respectively. The tone of the conversation should be strictly professional."},
             {
                 "role": "user",
                 "content": prompt,
             }
         ],
         response_format={"type":"json_object"}, 
-        
     )
     review_result = chat_completion.choices[0].message.content
     return review_result
