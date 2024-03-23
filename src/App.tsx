@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
-import './App.css';
-import CharacterArea from './characterArea/CharacterArea';
-import {  Character } from './interface/Status';
-import { MESSAGES, FIELDS } from './constants/constants';
-//import AppHeader from './util/AppHeader'
-import { Tabs, Button, Grid } from "@mui/material";
 
+// material-ui
+import { Tabs, Button, Grid, Divider } from "@mui/material";
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import CssBaseline from '@mui/material/CssBaseline';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Box from '@mui/material/Box';
+
+// MyComponents
+import './App.css';
+import CharacterArea from './characterArea/CharacterArea';
+import {  Character } from './interface/Status';
 import ItemArea from './itemArea/ItemArea';
+import DisplayArea from './displayArea/DisplayArea';
+import { MESSAGES, FIELDS } from './constants/constants';
+//import AppHeader from './util/AppHeader'
 
 /**
  * ステータス入力管理
@@ -89,10 +93,22 @@ function App() {
         <Grid item xs={7}>
         <ItemArea/>
         </Grid>
+      </Grid>
+
+      <Divider textAlign="left"></Divider>
+
+      <Grid container spacing={2} margin={1}>
+        {/* 計算結果を表示するエリア */}
+        <Grid item xs={6}>
+        <DisplayArea
+          inputStatus={inputStatus}
+          updateInputStatus={updateInputStatus}
+        />
+        </Grid>
 
         {/* スキルボタンを配置しているエリア */}
-
-        {/* 計算結果を表示するエリア */}
+        <Grid item xs={6}>
+        </Grid>
       </Grid>
     </>
   );
