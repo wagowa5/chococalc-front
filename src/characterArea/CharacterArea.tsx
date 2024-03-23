@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { evaluate } from 'maths.ts';
 
-import { MESSAGES, FIELDS } from '../constants/text';
+import { MESSAGES, FIELDS } from '../constants/constants';
 import './CharacterArea.css';
 
 import { TextField, Box, Grid } from '@mui/material';
