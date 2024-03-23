@@ -5,7 +5,7 @@ jobs:
   pr_review:
     # This job only runs for pull request comments
     name: PR review
-    if: ${{ github.event.issue.pull_request && github.event.comment.body == '/review' }}"
+    if: ${{ github.event.issue.pull_request }} && github.event.comment.body == '/review'
     runs-on: ubuntu-latest
     # ActionsからPRへのコメントを許可
     permissions:
