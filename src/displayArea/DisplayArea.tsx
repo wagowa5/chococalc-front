@@ -37,28 +37,12 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
-/**
- * ステータス入力管理
- * @param フィールドごとの入力値
- * @param フィールドごとのエラーメッセージ
- */
-interface StatusInputFields {
-    [key: string]: {
-        value: string;
-        errorMessage: string;
-    }
-}
-
 // propsの型定義を追加
 interface DisplayAreaProps {
-    inputStatus: StatusInputFields;
-    updateInputStatus: (newInputStatus: StatusInputFields) => void;
 }
 
 const DisplayArea = (
     {
-        inputStatus,
-        updateInputStatus,
     }: DisplayAreaProps
 ) => {
 
@@ -82,18 +66,6 @@ const DisplayArea = (
                         <StyledTableCell align="center">1100({100})</StyledTableCell>
                         <StyledTableCell align="center">1100({100})</StyledTableCell>
                         </StyledTableRow>
-                        {/* TODO ステータスを受け取って表示する */}
-                        {/* {rows.map((row) => (
-                            <StyledTableRow key={row.name}>
-                            <StyledTableCell component="th" scope="row">
-                                {row.name}
-                            </StyledTableCell>
-                            <StyledTableCell align="right">{row.calories}</StyledTableCell>
-                            <StyledTableCell align="right">{row.fat}</StyledTableCell>
-                            <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-                            <StyledTableCell align="right">{row.protein}</StyledTableCell>
-                            </StyledTableRow>
-                        ))} */}
                     </TableBody>
                 </Table>
                 </TableContainer>
