@@ -86,30 +86,25 @@ const ItemArea = (
 
     return (
         <>
-        <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={1} justifyContent="center" alignItems="start">
             {/* ----- 1行目 ----- */}
             {/* ビタと缶・シールのリセットボタン */}
-            <Grid xs={1}></Grid>
-            <Grid item xs={3} justifyContent="center" alignItems="center">
+            <Grid item xs={4}>
                 <Button variant="contained">ビタリセット</Button>
             </Grid>
-            <Grid xs={2}></Grid>
-            <Grid item xs={4} justifyContent="center" alignItems="center">
+            <Grid item xs={4}>
                 <Button variant="contained">缶・シールリセット</Button>
             </Grid>
-            <Grid xs={2}></Grid>
+            <Grid item xs={4}></Grid>
                 
             {/* ----- 2行目 ----- */}
-            <Grid xs={1}></Grid>
             {/* ビタ */}
-            <Grid item xs={3}>
+            <Grid item xs={4}>
                 <ButtonGroupComponent buttons={vitaButtonsData} />
             </Grid>
-            <Grid xs={2}></Grid>
-
+            
             {/* 魔獣缶・シール(かき氷) */}
-            <Grid item xs={5}>
+            <Grid item xs={4}>
                 <Grid container spacing={1}>
                     {/* 魔獣缶 */}
                     <Grid item xs = {6}>
@@ -122,25 +117,23 @@ const ItemArea = (
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid xs={1}></Grid>
+            <Grid item xs={4}></Grid>
 
             {/* ----- 3行目 ----- */}
             {/* 巻物とリキッドのリセットボタン */}
-            <Grid xs={1}></Grid>
-            <Grid item xs={3} justifyContent="center" alignItems="center">
+            <Grid item xs={8}>
                 <Button variant="contained">巻物リセット</Button>
             </Grid>
-            <Grid xs={3}></Grid>
-            <Grid item xs={5} justifyContent="center" alignItems="center">
+            <Grid item xs={4}>
                 <Button variant="contained">リキッドリセット</Button>
             </Grid>
 
             {/* ----- 4行目 ----- */}
             {/* 巻物 */}
-            <Grid item xs={6}>
+            <Grid item xs={8}>
                 <Grid container spacing={0}>
                     {/* HP */}
-                    <Grid item xs={6}>
+                    <Grid item xs={3}>
                         <ScrollSelect
                             options={hpSpScrollOptions}
                             label="HP"
@@ -149,7 +142,7 @@ const ItemArea = (
                         />
                     </Grid>
                     {/* SP */}
-                    <Grid item xs={6}>
+                    <Grid item xs={3}>
                         <ScrollSelect
                             options={hpSpScrollOptions}
                             label="SP"
@@ -157,8 +150,9 @@ const ItemArea = (
                             onChange={handleSpScrollChange}
                         />
                     </Grid>
+                    <Grid item xs={6}></Grid>
                     {/* POW */}
-                    <Grid item xs={4}>
+                    <Grid item xs={3}>
                         <ScrollSelect
                             options={basicScrollOptions}
                             label="POW"
@@ -167,7 +161,7 @@ const ItemArea = (
                         />
                     </Grid>
                     {/* INT */}
-                    <Grid item xs={4}>
+                    <Grid item xs={3}>
                         <ScrollSelect
                             options={basicScrollOptions}
                             label="INT"
@@ -176,7 +170,7 @@ const ItemArea = (
                         />
                     </Grid>
                     {/* VIT */}
-                    <Grid item xs={4}>
+                    <Grid item xs={3}>
                         <ScrollSelect
                             options={basicScrollOptions}
                             label="VIT"
@@ -184,8 +178,9 @@ const ItemArea = (
                             onChange={handleVitScrollChange}
                         />
                     </Grid>
+                    <Grid item xs={3}></Grid>
                     {/* SPD */}
-                    <Grid item xs={4}>
+                    <Grid item xs={3}>
                         <ScrollSelect
                             options={basicScrollOptions}
                             label="SPD"
@@ -194,7 +189,7 @@ const ItemArea = (
                         />
                     </Grid>
                     {/* LUK */}
-                    <Grid item xs={4}>
+                    <Grid item xs={3}>
                         <ScrollSelect
                             options={basicScrollOptions}
                             label="LUK"
@@ -202,7 +197,7 @@ const ItemArea = (
                             onChange={handleLukScrollChange}
                         />
                     </Grid>
-                    <Grid item xs={4}></Grid>
+                    <Grid item xs={6}></Grid>
 
                     {/* ATK */}
                     <Grid item xs={3}>
@@ -244,13 +239,11 @@ const ItemArea = (
                 </Grid>
             </Grid>
 
-            <Grid item xs={1}></Grid>
             {/* リキッド */}
-            <Grid item xs={5} alignItems={'start'}>
+            <Grid item xs={4}>
                 <ButtonGroupComponent buttons={liquidButtonsData} />
             </Grid>
         </Grid>
-        </Box>
         </>
     )
 }

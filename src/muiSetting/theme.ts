@@ -59,11 +59,28 @@ const theme = createTheme({
                 size: 'small',
             },
         },
+        MuiFormControl: {
+            defaultProps: {
+                sx: {
+                    minWidth: 80,
+                },
+                variant: 'outlined',
+                size: 'small',
+            },
+        },
         MuiTextField: {
             defaultProps: {
                 variant: 'outlined',
                 size: 'small',
                 type: 'string',
+                margin: 'dense',
+            },
+        },
+        MuiSelect: {
+            defaultProps: {
+                variant: 'outlined',
+                size: 'small',
+                margin: 'dense',
             },
         },
     },
