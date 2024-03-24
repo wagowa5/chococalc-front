@@ -13,7 +13,8 @@ import { Grid } from '@mui/material';
 
 import { evaluate } from 'maths.ts';
 
-import { MESSAGES, FIELDS } from '../constants/constants';
+import { STATUS } from '../constants/constants';
+import { CharacterStatus } from '../interface/Status';
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -39,10 +40,12 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 // propsの型定義を追加
 interface DisplayAreaProps {
+    characterStatus: CharacterStatus;
 }
 
 const DisplayArea = (
     {
+        characterStatus
     }: DisplayAreaProps
 ) => {
 
@@ -88,11 +91,11 @@ const DisplayArea = (
                     </TableHead>
                     <TableBody>
                         <StyledTableRow key={"disp-basic-status"}>
-                        <StyledTableCell align="center">1100</StyledTableCell>
-                        <StyledTableCell align="center">1100</StyledTableCell>
-                        <StyledTableCell align="center">1100</StyledTableCell>
-                        <StyledTableCell align="center">1100</StyledTableCell>
-                        <StyledTableCell align="center">1100</StyledTableCell>
+                        <StyledTableCell align="center">{characterStatus[STATUS.POW].displayStatus}</StyledTableCell>
+                        <StyledTableCell align="center">{characterStatus[STATUS.INT].displayStatus}</StyledTableCell>
+                        <StyledTableCell align="center">{characterStatus[STATUS.SPD].displayStatus}</StyledTableCell>
+                        <StyledTableCell align="center">{characterStatus[STATUS.VIT].displayStatus}</StyledTableCell>
+                        <StyledTableCell align="center">{characterStatus[STATUS.LUK].displayStatus}</StyledTableCell>
                         </StyledTableRow>
                     </TableBody>
                 </Table>

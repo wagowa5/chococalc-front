@@ -92,9 +92,9 @@ const ItemArea = (
         setMdfScroll(event.target.value);
     };
 
+    // 入力フィールドを取得する関数
     const getInputStatus = () => {
         const newCharacterStatus = { ...characterStatus };
-        // 入力値を取得
         newCharacterStatus[STATUS.POW].base = evaluate(inputStatus[FIELDS.CHARA_POW].value).getNumberValue();
         newCharacterStatus[STATUS.INT].base = evaluate(inputStatus[FIELDS.CHARA_INT].value).getNumberValue();
         newCharacterStatus[STATUS.VIT].base = evaluate(inputStatus[FIELDS.CHARA_VIT].value).getNumberValue();
@@ -120,11 +120,139 @@ const ItemArea = (
         updateCharacter(newCharacterStatus);
     };
 
+    // 表示用のステータスを計算する関数
+    const calculateDisplayStatus = () => {
+        const newCharacterStatus = { ...characterStatus };
+        // HPの表示用ステータスを計算
+        newCharacterStatus[STATUS.HP].displayStatus = 
+            newCharacterStatus[STATUS.HP].totalWithoutItem
+            + newCharacterStatus[STATUS.HP].scroll
+            + newCharacterStatus[STATUS.HP].specialSkill;
+        
+        // SPの表示用ステータスを計算
+        newCharacterStatus[STATUS.SP].displayStatus = 
+            newCharacterStatus[STATUS.SP].totalWithoutItem
+            + newCharacterStatus[STATUS.SP].scroll
+            + newCharacterStatus[STATUS.SP].specialSkill;
+        
+        // POWの表示用ステータスを計算
+        newCharacterStatus[STATUS.POW].displayStatus = 
+            newCharacterStatus[STATUS.POW].totalWithoutItem
+            + newCharacterStatus[STATUS.POW].card
+            + newCharacterStatus[STATUS.POW].allVita
+            + newCharacterStatus[STATUS.POW].vita
+            + newCharacterStatus[STATUS.POW].scroll
+            + newCharacterStatus[STATUS.POW].canSeal
+            + newCharacterStatus[STATUS.POW].bradScraper
+            + newCharacterStatus[STATUS.POW].specialSkill;
+        
+        // INTの表示用ステータスを計算
+        newCharacterStatus[STATUS.INT].displayStatus = 
+            newCharacterStatus[STATUS.INT].totalWithoutItem
+            + newCharacterStatus[STATUS.INT].card
+            + newCharacterStatus[STATUS.INT].allVita
+            + newCharacterStatus[STATUS.INT].vita
+            + newCharacterStatus[STATUS.INT].scroll
+            + newCharacterStatus[STATUS.INT].canSeal
+            + newCharacterStatus[STATUS.INT].specialSkill;
+        
+        // SPDの表示用ステータスを計算
+        newCharacterStatus[STATUS.SPD].displayStatus = 
+            newCharacterStatus[STATUS.SPD].totalWithoutItem
+            + newCharacterStatus[STATUS.SPD].card
+            + newCharacterStatus[STATUS.SPD].allVita
+            + newCharacterStatus[STATUS.SPD].vita
+            + newCharacterStatus[STATUS.SPD].scroll
+            + newCharacterStatus[STATUS.SPD].canSeal
+            + newCharacterStatus[STATUS.SPD].specialSkill;
+        
+        // VITの表示用ステータスを計算
+        newCharacterStatus[STATUS.VIT].displayStatus = 
+            newCharacterStatus[STATUS.VIT].totalWithoutItem
+            + newCharacterStatus[STATUS.VIT].card
+            + newCharacterStatus[STATUS.VIT].allVita
+            + newCharacterStatus[STATUS.VIT].vita
+            + newCharacterStatus[STATUS.VIT].scroll
+            + newCharacterStatus[STATUS.VIT].canSeal
+            + newCharacterStatus[STATUS.VIT].specialSkill;
+        
+        // LUKの表示用ステータスを計算
+        newCharacterStatus[STATUS.LUK].displayStatus = 
+            newCharacterStatus[STATUS.LUK].totalWithoutItem
+            + newCharacterStatus[STATUS.LUK].card
+            + newCharacterStatus[STATUS.LUK].allVita
+            + newCharacterStatus[STATUS.LUK].vita
+            + newCharacterStatus[STATUS.LUK].scroll
+            + newCharacterStatus[STATUS.LUK].canSeal
+            + newCharacterStatus[STATUS.LUK].specialSkill;
+        
+        // ATKの表示用ステータスを計算
+        newCharacterStatus[STATUS.ATK].displayStatus = 
+            newCharacterStatus[STATUS.ATK].totalWithoutItem
+            + newCharacterStatus[STATUS.ATK].scroll
+            + newCharacterStatus[STATUS.ATK].specialSkill
+            + newCharacterStatus[STATUS.ATK].liquid
+            + 3*(
+                newCharacterStatus[STATUS.POW].card
+                + newCharacterStatus[STATUS.POW].allVita
+                + newCharacterStatus[STATUS.POW].vita
+                + newCharacterStatus[STATUS.POW].scroll
+                + newCharacterStatus[STATUS.POW].canSeal
+                + newCharacterStatus[STATUS.POW].bradScraper
+                + newCharacterStatus[STATUS.POW].specialSkill
+            )
+            ;
+        
+        // DEFの表示用ステータスを計算
+        newCharacterStatus[STATUS.DEF].displayStatus = 
+            newCharacterStatus[STATUS.DEF].totalWithoutItem
+            + newCharacterStatus[STATUS.DEF].scroll
+            + newCharacterStatus[STATUS.DEF].specialSkill
+            + newCharacterStatus[STATUS.DEF].liquid
+            + 2*(
+                newCharacterStatus[STATUS.VIT].card
+                + newCharacterStatus[STATUS.VIT].allVita
+                + newCharacterStatus[STATUS.VIT].vita
+                + newCharacterStatus[STATUS.VIT].scroll
+                + newCharacterStatus[STATUS.VIT].canSeal
+                + newCharacterStatus[STATUS.VIT].specialSkill
+            );
+        
+        // MATの表示用ステータスを計算
+        newCharacterStatus[STATUS.MAT].displayStatus = 
+            newCharacterStatus[STATUS.MAT].totalWithoutItem
+            + newCharacterStatus[STATUS.MAT].scroll
+            + newCharacterStatus[STATUS.MAT].specialSkill
+            + newCharacterStatus[STATUS.MAT].liquid
+            + 2*(
+                newCharacterStatus[STATUS.INT].card
+                + newCharacterStatus[STATUS.INT].allVita
+                + newCharacterStatus[STATUS.INT].vita
+                + newCharacterStatus[STATUS.INT].scroll
+                + newCharacterStatus[STATUS.INT].canSeal
+                + newCharacterStatus[STATUS.INT].specialSkill
+            );
+        
+        // MDFの表示用ステータスを計算
+        newCharacterStatus[STATUS.MDF].displayStatus = 
+            newCharacterStatus[STATUS.MDF].totalWithoutItem
+            + newCharacterStatus[STATUS.MDF].scroll
+            + newCharacterStatus[STATUS.MDF].specialSkill
+            + newCharacterStatus[STATUS.MDF].liquid
+            + 15*(
+                newCharacterStatus[STATUS.INT].card
+                + newCharacterStatus[STATUS.INT].allVita
+                + newCharacterStatus[STATUS.INT].vita
+                + newCharacterStatus[STATUS.INT].scroll
+                + newCharacterStatus[STATUS.INT].canSeal
+                + newCharacterStatus[STATUS.INT].specialSkill
+            );
+        updateCharacter(newCharacterStatus);
+    };
+
     // ビタボタンクリック時の処理
     const handleVitaButtons: {[key: string]: { handle: () => void; }} = {
         [ITEMS.VITA.ALL.key]: { handle: () => {
-            console.log('ALLビタボタンクリック');
-            console.log(inputStatus);
             // 入力値を取得
             getInputStatus();
 
@@ -157,6 +285,7 @@ const ItemArea = (
             };
 
             updateCharacter(newCharacterStatus);
+            calculateDisplayStatus();
         }},
         [ITEMS.VITA.POW.key]: { handle: () => {
             // 入力値を取得
@@ -170,6 +299,7 @@ const ItemArea = (
                 newCharacterStatus[STATUS.POW].vita = Math.floor(newCharacterStatus[STATUS.POW].base * 0.2);
             };
             updateCharacter(newCharacterStatus);
+            calculateDisplayStatus();
         }},
         [ITEMS.VITA.INT.key]: { handle: () => {
             // 入力値を取得
@@ -183,6 +313,7 @@ const ItemArea = (
                 newCharacterStatus[STATUS.INT].vita = Math.floor(newCharacterStatus[STATUS.INT].base * 0.2);
             };
             updateCharacter(newCharacterStatus);
+            calculateDisplayStatus();
         }},
         [ITEMS.VITA.SPD.key]: { handle: () => {
             // 入力値を取得
@@ -196,6 +327,7 @@ const ItemArea = (
                 newCharacterStatus[STATUS.SPD].vita = Math.floor(newCharacterStatus[STATUS.SPD].base * 0.2);
             }
             updateCharacter(newCharacterStatus);
+            calculateDisplayStatus();
         }},
         [ITEMS.VITA.VIT.key]: { handle: () => {
             // 入力値を取得
@@ -209,6 +341,7 @@ const ItemArea = (
                 newCharacterStatus[STATUS.VIT].vita = Math.floor(newCharacterStatus[STATUS.VIT].base * 0.2);
             }
             updateCharacter(newCharacterStatus);
+            calculateDisplayStatus();
         }},
         [ITEMS.VITA.LUK.key]: { handle: () => {
             // 入力値を取得
@@ -222,6 +355,7 @@ const ItemArea = (
                 newCharacterStatus[STATUS.LUK].vita = Math.floor(newCharacterStatus[STATUS.LUK].base * 0.2);
             }
             updateCharacter(newCharacterStatus);
+            calculateDisplayStatus();
         }},
     };
 

@@ -37,6 +37,7 @@ const initialCharacterStatus: CharacterStatus = Object.keys(STATUS).reduce<Chara
     canSeal: 0,
     bradScraper: 0,
     specialSkill: 0,
+    liquid: 0,
     displayStatus: 0
   };
   return acc;
@@ -104,6 +105,7 @@ function App() {
         {/* 計算結果を表示するエリア */}
         <Grid item xs={7}>
         <DisplayArea
+          characterStatus={characterStatus}
         />
         </Grid>
 

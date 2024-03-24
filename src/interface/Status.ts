@@ -22,6 +22,7 @@ export interface CharacterStatus {
         canSeal: number; // 缶・シールのステータス
         bradScraper: number; // ブラッドスクレイパーのステータス
         specialSkill: number; // 特殊スキルのステータス
+        liquid: number; // リキッドのステータス
         displayStatus: number; // 表示用の合計ステータス
     }
 }
