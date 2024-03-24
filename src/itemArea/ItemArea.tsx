@@ -1,41 +1,43 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-import { evaluate } from 'maths.ts';
+import { Grid } from '@mui/material';
+import Button from '@mui/material/Button';
 
-import { Character } from '../interface/Status';
-import { MESSAGES, FIELDS } from '../constants/constants';
+import { StatusInputFields, CharacterStatus } from './../interface/Status';
+import { ITEMS, STATUS } from '../constants/constants';
 import ButtonGroupComponent from './ButtonGroupComponent';
 import ScrollSelect from './ScrollSelect';
 import { 
     vitaButtonsData, canButtonsData, sealButtonsData, liquidButtonsData,
     hpSpScrollOptions, basicScrollOptions, detailScrollOptions
 } from './itemConfig';
-
-import { TextField, Box, Grid } from '@mui/material';
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-
-
-interface ErrorMessages {
-    [key: string]: string;
-}
+import { 
+    getInputStatus,
+    calculateDisplayStatus,
+    resetVitaStatus,
+    resetCanSealStatus,
+    resetScrollStatus,
+    resetLiquidStatus,
+} from '../util/StatusUtil';
 
 /**
  * ItemAreaProps
  */
 interface ItemAreaProps {
+    characterStatus: CharacterStatus;
+    updateCharacter: (newCharacterStatus: CharacterStatus) => void;
+    inputStatus: StatusInputFields;
+    updateInputStatus: (newInputStatus: StatusInputFields) => void;
 }
 
 const ItemArea = (
     {
+        characterStatus,
+        updateCharacter,
+        inputStatus,
+        updateInputStatus,
     }: ItemAreaProps
 ) => {
-    const [errorMessages, setErrorMessages] = useState<ErrorMessages>({});
-
     // 巻物のセレクトボックス
     const [hpScroll, setHpScroll] = React.useState('');
     const [spScroll, setSpScroll] = React.useState('');
@@ -50,38 +52,312 @@ const ItemArea = (
     const [mdfScroll, setMdfScroll] = React.useState('');
 
     // 巻物のセレクトボックスの変更時の処理
-    const handleHpScrollChange = (event: SelectChangeEvent) => {
-        setHpScroll(event.target.value);
+    const handleScrollChange = (statusType: string, value: string) => {
+        // スクロールの状態を更新
+        const setScrollStateFunction = {
+            [STATUS.HP]: setHpScroll,
+            [STATUS.SP]: setSpScroll,
+            [STATUS.POW]: setPowScroll,
+            [STATUS.INT]: setIntScroll,
+            [STATUS.SPD]: setSpdScroll,
+            [STATUS.VIT]: setVitScroll,
+            [STATUS.LUK]: setLukScroll,
+            [STATUS.ATK]: setAtkScroll,
+            [STATUS.DEF]: setDefScroll,
+            [STATUS.MAT]: setMatScroll,
+            [STATUS.MDF]: setMdfScroll,
+        }[statusType];
+        setScrollStateFunction(value);
+    
+        // 巻物ステータスをリセットして更新
+        resetScrollStatus(characterStatus, updateCharacter);
+        const newCharacterStatus = { ...characterStatus };
+        newCharacterStatus[statusType].scroll = Number(value);
+        updateCharacter(newCharacterStatus);
+        // 表示用ステータスを計算
+        calculateDisplayStatus(characterStatus, updateCharacter);
     };
-    const handleSpScrollChange = (event: SelectChangeEvent) => {
-        setSpScroll(event.target.value);
+
+    // ビタボタンクリック時の処理を生成する関数
+    const generateVitaHandler = (statusKey: string) => {
+        // 入力値を取得
+        getInputStatus(characterStatus, inputStatus, updateCharacter);
+
+        const newCharacterStatus = { ...characterStatus };        
+        // ビタのステータスを更新
+        if (newCharacterStatus[statusKey].base * 0.2 < 1) {
+            newCharacterStatus[statusKey].vita = 1;
+        } else {
+            newCharacterStatus[statusKey].vita = Math.floor(newCharacterStatus[statusKey].base * 0.2);
+        };
+        
+        updateCharacter(newCharacterStatus);
+        calculateDisplayStatus(characterStatus, updateCharacter);
     };
-    const handlePowScrollChange = (event: SelectChangeEvent) => {
-        setPowScroll(event.target.value);
+    // ビタボタンクリック時の処理
+    const handleVitaButtons: {[key: string]: { handle: () => void; }} = {
+        [ITEMS.VITA.ALL.key]: { handle: () => {
+            // 入力値を取得
+            getInputStatus(characterStatus, inputStatus, updateCharacter);
+
+            const newCharacterStatus = { ...characterStatus };
+            // ビタのステータスを更新
+            if (newCharacterStatus[STATUS.POW].base * 0.1 < 1) {
+                newCharacterStatus[STATUS.POW].allVita = 1;
+            } else {
+                newCharacterStatus[STATUS.POW].allVita = Math.floor(newCharacterStatus[STATUS.POW].base * 0.1);
+            };
+            if (newCharacterStatus[STATUS.INT].base * 0.1 < 1) {
+                newCharacterStatus[STATUS.INT].allVita = 1;
+            } else {
+                newCharacterStatus[STATUS.INT].allVita = Math.floor(newCharacterStatus[STATUS.INT].base * 0.1);
+            };
+            if (newCharacterStatus[STATUS.SPD].base * 0.1 < 1) {
+                newCharacterStatus[STATUS.SPD].allVita = 1;
+            } else {
+                newCharacterStatus[STATUS.SPD].allVita = Math.floor(newCharacterStatus[STATUS.SPD].base * 0.1);
+            };
+            if (newCharacterStatus[STATUS.VIT].base * 0.1 < 1) {
+                newCharacterStatus[STATUS.VIT].allVita = 1;
+            } else {
+                newCharacterStatus[STATUS.VIT].allVita = Math.floor(newCharacterStatus[STATUS.VIT].base * 0.1);
+            };
+            if (newCharacterStatus[STATUS.LUK].base * 0.1 < 1) {
+                newCharacterStatus[STATUS.LUK].allVita = 1;
+            } else {
+                newCharacterStatus[STATUS.LUK].allVita = Math.floor(newCharacterStatus[STATUS.LUK].base * 0.1);
+            };
+
+            updateCharacter(newCharacterStatus);
+            calculateDisplayStatus(characterStatus, updateCharacter);
+        }},
+        [ITEMS.VITA.POW.key]: { handle: () => { generateVitaHandler(STATUS.POW); }},
+        [ITEMS.VITA.INT.key]: { handle: () => { generateVitaHandler(STATUS.INT); }},
+        [ITEMS.VITA.SPD.key]: { handle: () => { generateVitaHandler(STATUS.SPD); }},
+        [ITEMS.VITA.VIT.key]: { handle: () => { generateVitaHandler(STATUS.VIT); }},
+        [ITEMS.VITA.LUK.key]: { handle: () => { generateVitaHandler(STATUS.LUK); }},
     };
-    const handleIntScrollChange = (event: SelectChangeEvent) => {
-        setIntScroll(event.target.value);
+
+    // 缶ボタンクリック時の処理
+    const handleCanButtons: {[key: string]: { handle: () => void; }} = {
+        [ITEMS.CAN.A.key]: { handle: () => {
+            // 入力値を取得
+            getInputStatus(characterStatus, inputStatus, updateCharacter);
+
+            // ビタ・缶・シールのステータスをリセットしてから更新
+            resetCanSealStatus(characterStatus, updateCharacter);
+            const newCharacterStatus = { ...characterStatus };
+            newCharacterStatus[STATUS.POW].canSeal = 10;
+            newCharacterStatus[STATUS.INT].canSeal = -10;
+            
+            updateCharacter(newCharacterStatus);
+            calculateDisplayStatus(characterStatus, updateCharacter);
+        }},
+        [ITEMS.CAN.B.key]: { handle: () => {
+            // 入力値を取得
+            getInputStatus(characterStatus, inputStatus, updateCharacter);
+            
+            // ビタ・缶・シールのステータスをリセットしてから更新
+            resetCanSealStatus(characterStatus, updateCharacter);
+            const newCharacterStatus = { ...characterStatus };
+            newCharacterStatus[STATUS.INT].canSeal = 10;
+            newCharacterStatus[STATUS.VIT].canSeal = -10;
+            
+            updateCharacter(newCharacterStatus);
+            calculateDisplayStatus(characterStatus, updateCharacter);
+        }},
     };
-    const handleSpdScrollChange = (event: SelectChangeEvent) => {
-        setSpdScroll(event.target.value);
+    // シールボタンクリック時の処理
+    const handleSealButtons: {[key: string]: { handle: () => void; }} = {
+        [ITEMS.SEAL.POW.key]: { handle: () => {
+            // 入力値を取得
+            getInputStatus(characterStatus, inputStatus, updateCharacter);
+
+            // ビタ・缶・シールのステータスをリセットしてから更新
+            resetCanSealStatus(characterStatus, updateCharacter);
+            const newCharacterStatus = { ...characterStatus };
+            newCharacterStatus[STATUS.POW].canSeal = 15;
+            newCharacterStatus[STATUS.INT].canSeal = -15;
+            
+            updateCharacter(newCharacterStatus);
+            calculateDisplayStatus(characterStatus, updateCharacter);
+        }},
+        [ITEMS.SEAL.INT.key]: { handle: () => {
+            // 入力値を取得
+            getInputStatus(characterStatus, inputStatus, updateCharacter);
+            
+            // ビタ・缶・シールのステータスをリセットしてから更新
+            resetCanSealStatus(characterStatus, updateCharacter);
+            const newCharacterStatus = { ...characterStatus };
+            newCharacterStatus[STATUS.INT].canSeal = 15;
+            newCharacterStatus[STATUS.POW].canSeal = -15;
+            
+            updateCharacter(newCharacterStatus);
+            calculateDisplayStatus(characterStatus, updateCharacter);
+        }},
+        [ITEMS.SEAL.SPD.key]: { handle: () => {
+            // 入力値を取得
+            getInputStatus(characterStatus, inputStatus, updateCharacter);
+            
+            // ビタ・缶・シールのステータスをリセットしてから更新
+            resetCanSealStatus(characterStatus, updateCharacter);
+            const newCharacterStatus = { ...characterStatus };
+            newCharacterStatus[STATUS.SPD].canSeal = 15;
+            newCharacterStatus[STATUS.LUK].canSeal = -15;
+            
+            updateCharacter(newCharacterStatus);
+            calculateDisplayStatus(characterStatus, updateCharacter);
+        }},
+        [ITEMS.SEAL.VIT.key]: { handle: () => {
+            // 入力値を取得
+            getInputStatus(characterStatus, inputStatus, updateCharacter);
+            
+            // ビタ・缶・シールのステータスをリセットしてから更新
+            resetCanSealStatus(characterStatus, updateCharacter);
+            const newCharacterStatus = { ...characterStatus };
+            newCharacterStatus[STATUS.VIT].canSeal = 15;
+            newCharacterStatus[STATUS.SPD].canSeal = -15;
+            
+            updateCharacter(newCharacterStatus);
+            calculateDisplayStatus(characterStatus, updateCharacter);
+        }},
+        [ITEMS.SEAL.LUK.key]: { handle: () => {
+            // 入力値を取得
+            getInputStatus(characterStatus, inputStatus, updateCharacter);
+            
+            // ビタ・缶・シールのステータスをリセットしてから更新
+            resetCanSealStatus(characterStatus, updateCharacter);
+            const newCharacterStatus = { ...characterStatus };
+            newCharacterStatus[STATUS.LUK].canSeal = 15;
+            newCharacterStatus[STATUS.VIT].canSeal = -15;
+            
+            updateCharacter(newCharacterStatus);
+            calculateDisplayStatus(characterStatus, updateCharacter);
+        }},
     };
-    const handleVitScrollChange = (event: SelectChangeEvent) => {
-        setVitScroll(event.target.value);
+
+    // リキッドボタンクリック時の処理
+    const handleLiquidButtons: {[key: string]: { handle: () => void; }} = {
+        [ITEMS.LIQUID.ATK.key]: { handle: () => {
+            getInputStatus(characterStatus, inputStatus, updateCharacter);
+            calculateDisplayStatus(characterStatus, updateCharacter);
+
+            const newCharacterStatus = { ...characterStatus };
+            const magnified = 
+                newCharacterStatus[STATUS.ATK].totalWithoutItem
+                + newCharacterStatus[STATUS.ATK].scroll
+                - newCharacterStatus[STATUS.POW].totalWithoutItem * 3
+                + newCharacterStatus[STATUS.POW].displayStatus * 2;
+            const magnif = Math.max(
+                newCharacterStatus[STATUS.POW].displayStatus + newCharacterStatus[STATUS.LEVEL].totalWithoutItem - 100,
+                110
+            ) * 0.01;
+
+            newCharacterStatus[STATUS.ATK].liquid = Math.floor(magnified * magnif);
+
+            updateCharacter(newCharacterStatus);
+            calculateDisplayStatus(characterStatus, updateCharacter);
+        }},
+        [ITEMS.LIQUID.DEF.key]: { handle: () => {
+            getInputStatus(characterStatus, inputStatus, updateCharacter);
+            calculateDisplayStatus(characterStatus, updateCharacter);
+
+            const newCharacterStatus = { ...characterStatus };
+            const magnified = 
+                newCharacterStatus[STATUS.DEF].totalWithoutItem
+                + newCharacterStatus[STATUS.DEF].scroll
+                - newCharacterStatus[STATUS.VIT].totalWithoutItem * 2
+                + newCharacterStatus[STATUS.VIT].displayStatus * 2;
+            const magnif = Math.max(
+                newCharacterStatus[STATUS.VIT].displayStatus + newCharacterStatus[STATUS.LEVEL].totalWithoutItem - 100,
+                110
+            ) * 0.01;
+
+            newCharacterStatus[STATUS.DEF].liquid = Math.floor(magnified * magnif);
+
+            updateCharacter(newCharacterStatus);
+            calculateDisplayStatus(characterStatus, updateCharacter);
+        }},
+        [ITEMS.LIQUID.MAT.key]: { handle: () => {
+            getInputStatus(characterStatus, inputStatus, updateCharacter);
+            calculateDisplayStatus(characterStatus, updateCharacter);
+
+            const newCharacterStatus = { ...characterStatus };
+            const magnified = 
+                newCharacterStatus[STATUS.MAT].totalWithoutItem
+                + newCharacterStatus[STATUS.MAT].scroll
+                - newCharacterStatus[STATUS.INT].totalWithoutItem * 2
+                + newCharacterStatus[STATUS.INT].displayStatus * 2;
+            const magnif = Math.max(
+                newCharacterStatus[STATUS.INT].displayStatus + newCharacterStatus[STATUS.LEVEL].totalWithoutItem - 100,
+                110
+            ) * 0.01;
+
+            newCharacterStatus[STATUS.MAT].liquid = Math.floor(magnified * magnif);
+
+            updateCharacter(newCharacterStatus);
+            calculateDisplayStatus(characterStatus, updateCharacter);
+        }},
+        [ITEMS.LIQUID.MDF.key]: { handle: () => {
+            getInputStatus(characterStatus, inputStatus, updateCharacter);
+            calculateDisplayStatus(characterStatus, updateCharacter);
+
+            const newCharacterStatus = { ...characterStatus };
+            const magnifiedInt = 
+                newCharacterStatus[STATUS.MDF].totalWithoutItem
+                + newCharacterStatus[STATUS.MDF].scroll
+                - newCharacterStatus[STATUS.INT].totalWithoutItem * 15
+                + newCharacterStatus[STATUS.INT].displayStatus * 2;
+            const magnifiedVit =
+                newCharacterStatus[STATUS.MDF].totalWithoutItem
+                + newCharacterStatus[STATUS.MDF].scroll
+                - newCharacterStatus[STATUS.INT].totalWithoutItem * 15
+                + newCharacterStatus[STATUS.VIT].displayStatus * 2;
+            const magnifInt = Math.max(
+                newCharacterStatus[STATUS.INT].displayStatus + newCharacterStatus[STATUS.LEVEL].totalWithoutItem - 100,
+                110
+            ) * 0.01;
+            const magnifVit = Math.max(
+                newCharacterStatus[STATUS.VIT].displayStatus + newCharacterStatus[STATUS.LEVEL].totalWithoutItem - 100,
+                110
+            ) * 0.01;
+
+            newCharacterStatus[STATUS.MDF].liquid = Math.max(
+                Math.floor(magnifiedInt * magnifInt),
+                Math.floor(magnifiedVit * magnifVit)
+            )
+
+            updateCharacter(newCharacterStatus);
+            calculateDisplayStatus(characterStatus, updateCharacter);
+        }},
+    }
+
+    // ビタリセットボタンクリック時の処理
+    const handleVitaReset = () => {
+        // ビタのステータスをリセットして更新
+        resetVitaStatus(characterStatus, updateCharacter);
+        calculateDisplayStatus(characterStatus, updateCharacter);
     };
-    const handleLukScrollChange = (event: SelectChangeEvent) => {
-        setLukScroll(event.target.value);
+
+    // 缶・シールリセットボタンクリック時の処理
+    const handleCanSealReset = () => {
+        // 缶・シールのステータスをリセットして更新
+        resetCanSealStatus(characterStatus, updateCharacter);
+        calculateDisplayStatus(characterStatus, updateCharacter);
     };
-    const handleAtkScrollChange = (event: SelectChangeEvent) => {
-        setAtkScroll(event.target.value);
+
+    // 巻物リセットボタンクリック時の処理
+    const handleScrollReset = () => {
+        // 巻物のステータスをリセットして更新
+        resetScrollStatus(characterStatus, updateCharacter);
+        calculateDisplayStatus(characterStatus, updateCharacter);
     };
-    const handleDefScrollChange = (event: SelectChangeEvent) => {
-        setDefScroll(event.target.value);
-    };
-    const handleMatScrollChange = (event: SelectChangeEvent) => {
-        setMatScroll(event.target.value);
-    };
-    const handleMdfScrollChange = (event: SelectChangeEvent) => {
-        setMdfScroll(event.target.value);
+
+    // リキッドリセットボタンクリック時の処理
+    const handleLiquidReset = () => {
+        // リキッドのステータスをリセットして更新
+        resetLiquidStatus(characterStatus, updateCharacter);
+        calculateDisplayStatus(characterStatus, updateCharacter);
     };
 
     return (
@@ -90,17 +366,29 @@ const ItemArea = (
             {/* ----- 1行目 ----- */}
             {/* ビタと缶・シールのリセットボタン */}
             <Grid item xs={4}>
-                <Button variant="contained">ビタリセット</Button>
+                <Button
+                    variant="contained"
+                    onClick={handleVitaReset}
+                    color='warning'
+                >
+                    ビタリセット
+                </Button>
             </Grid>
             <Grid item xs={4}>
-                <Button variant="contained">缶・シールリセット</Button>
+                <Button
+                    variant="contained"
+                    onClick={handleCanSealReset}
+                    color='warning'
+                >
+                    缶・シールリセット
+                </Button>
             </Grid>
             <Grid item xs={4}></Grid>
                 
             {/* ----- 2行目 ----- */}
             {/* ビタ */}
             <Grid item xs={4}>
-                <ButtonGroupComponent buttons={vitaButtonsData} />
+                <ButtonGroupComponent buttons={vitaButtonsData} handles={handleVitaButtons} />
             </Grid>
             
             {/* 魔獣缶・シール(かき氷) */}
@@ -108,12 +396,12 @@ const ItemArea = (
                 <Grid container spacing={1}>
                     {/* 魔獣缶 */}
                     <Grid item xs = {6}>
-                        <ButtonGroupComponent buttons={canButtonsData} />
+                        <ButtonGroupComponent buttons={canButtonsData} handles={handleCanButtons} />
                     </Grid>
 
                     {/* シール(かき氷) */}
                     <Grid item xs = {6}>
-                        <ButtonGroupComponent buttons={sealButtonsData} />
+                        <ButtonGroupComponent buttons={sealButtonsData} handles={handleSealButtons} />
                     </Grid>
                 </Grid>
             </Grid>
@@ -122,10 +410,22 @@ const ItemArea = (
             {/* ----- 3行目 ----- */}
             {/* 巻物とリキッドのリセットボタン */}
             <Grid item xs={8}>
-                <Button variant="contained">巻物リセット</Button>
+                <Button
+                    variant="contained"
+                    onClick={handleScrollReset}
+                    color='warning'
+                >
+                    巻物リセット
+                </Button>
             </Grid>
             <Grid item xs={4}>
-                <Button variant="contained">リキッドリセット</Button>
+                <Button
+                    variant="contained"
+                    onClick={handleLiquidReset}
+                    color='warning'
+                >
+                    リキッドリセット
+                </Button>
             </Grid>
 
             {/* ----- 4行目 ----- */}
@@ -138,7 +438,7 @@ const ItemArea = (
                             options={hpSpScrollOptions}
                             label="HP"
                             selectedValue={hpScroll}
-                            onChange={handleHpScrollChange}
+                            onChange={(event) => handleScrollChange(STATUS.HP, event.target.value)}
                         />
                     </Grid>
                     {/* SP */}
@@ -147,7 +447,7 @@ const ItemArea = (
                             options={hpSpScrollOptions}
                             label="SP"
                             selectedValue={spScroll}
-                            onChange={handleSpScrollChange}
+                            onChange={(event) => handleScrollChange(STATUS.SP, event.target.value)}
                         />
                     </Grid>
                     <Grid item xs={6}></Grid>
@@ -157,7 +457,7 @@ const ItemArea = (
                             options={basicScrollOptions}
                             label="POW"
                             selectedValue={powScroll}
-                            onChange={handlePowScrollChange}
+                            onChange={(event) => handleScrollChange(STATUS.POW, event.target.value)}
                         />
                     </Grid>
                     {/* INT */}
@@ -166,7 +466,7 @@ const ItemArea = (
                             options={basicScrollOptions}
                             label="INT"
                             selectedValue={intScroll}
-                            onChange={handleIntScrollChange}
+                            onChange={(event) => handleScrollChange(STATUS.INT, event.target.value)}
                         />
                     </Grid>
                     {/* VIT */}
@@ -175,7 +475,7 @@ const ItemArea = (
                             options={basicScrollOptions}
                             label="VIT"
                             selectedValue={vitScroll}
-                            onChange={handleVitScrollChange}
+                            onChange={(event) => handleScrollChange(STATUS.VIT, event.target.value)}
                         />
                     </Grid>
                     <Grid item xs={3}></Grid>
@@ -185,7 +485,7 @@ const ItemArea = (
                             options={basicScrollOptions}
                             label="SPD"
                             selectedValue={spdScroll}
-                            onChange={handleSpdScrollChange}
+                            onChange={(event) => handleScrollChange(STATUS.SPD, event.target.value)}
                         />
                     </Grid>
                     {/* LUK */}
@@ -194,7 +494,7 @@ const ItemArea = (
                             options={basicScrollOptions}
                             label="LUK"
                             selectedValue={lukScroll}
-                            onChange={handleLukScrollChange}
+                            onChange={(event) => handleScrollChange(STATUS.LUK, event.target.value)}
                         />
                     </Grid>
                     <Grid item xs={6}></Grid>
@@ -205,7 +505,7 @@ const ItemArea = (
                             options={detailScrollOptions}
                             label="ATK"
                             selectedValue={atkScroll}
-                            onChange={handleAtkScrollChange}
+                            onChange={(event) => handleScrollChange(STATUS.ATK, event.target.value)}
                         />
                     </Grid>
                     {/* DEF */}
@@ -214,7 +514,7 @@ const ItemArea = (
                             options={detailScrollOptions}
                             label="DEF"
                             selectedValue={defScroll}
-                            onChange={handleDefScrollChange}
+                            onChange={(event) => handleScrollChange(STATUS.DEF, event.target.value)}
                         />
                     </Grid>
                     {/* MAT */}
@@ -223,7 +523,7 @@ const ItemArea = (
                             options={detailScrollOptions}
                             label="MAT"
                             selectedValue={matScroll}
-                            onChange={handleMatScrollChange}
+                            onChange={(event) => handleScrollChange(STATUS.MAT, event.target.value)}
                         />
                     </Grid>
                     {/* MDF */}
@@ -232,7 +532,7 @@ const ItemArea = (
                             options={detailScrollOptions}
                             label="MDF"
                             selectedValue={mdfScroll}
-                            onChange={handleMdfScrollChange}
+                            onChange={(event) => handleScrollChange(STATUS.MDF, event.target.value)}
                         />
                     </Grid>
                     
@@ -241,7 +541,7 @@ const ItemArea = (
 
             {/* リキッド */}
             <Grid item xs={4}>
-                <ButtonGroupComponent buttons={liquidButtonsData} />
+                <ButtonGroupComponent buttons={liquidButtonsData} handles={handleLiquidButtons}/>
             </Grid>
         </Grid>
         </>

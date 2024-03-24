@@ -29,6 +29,21 @@ export const FIELDS = {
     MDF: 'inputMdf',
 }
 
+export const STATUS = {
+    LEVEL: 'level',
+    HP: 'hp',
+    SP: 'sp',
+    POW: 'pow',
+    INT: 'int',
+    VIT: 'vit',
+    SPD: 'spd',
+    LUK: 'luk',
+    ATK: 'atk',
+    DEF: 'def',
+    MAT: 'mat',
+    MDF: 'mdf',
+};
+
 export const ITEMS = {
     VITA: {
         ALL: {

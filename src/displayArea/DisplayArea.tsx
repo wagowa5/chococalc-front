@@ -1,5 +1,3 @@
-import React, { useEffect, useState } from 'react';
-
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -8,12 +6,15 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Divider from '@mui/material/Divider';
+import Button from '@mui/material/Button';
 import { Grid } from '@mui/material';
 
-import { evaluate } from 'maths.ts';
-
-import { MESSAGES, FIELDS } from '../constants/constants';
+import { STATUS } from '../constants/constants';
+import { CharacterStatus } from '../interface/Status';
+import {
+    calculateDisplayStatus,
+    resetAllItemSkillStatus,
+} from '../util/StatusUtil';
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -39,12 +40,21 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 // propsの型定義を追加
 interface DisplayAreaProps {
+    characterStatus: CharacterStatus;
+    updateCharacter: (newCharacterStatus: CharacterStatus) => void;
 }
 
 const DisplayArea = (
     {
+        characterStatus,
+        updateCharacter,
     }: DisplayAreaProps
 ) => {
+
+    const handleResetAll = () => {
+        resetAllItemSkillStatus(characterStatus, updateCharacter);
+        calculateDisplayStatus(characterStatus, updateCharacter);
+    }
 
     return (
         <>
@@ -63,8 +73,8 @@ const DisplayArea = (
                     </TableHead>
                     <TableBody>
                         <StyledTableRow key={"disp-hp-sp"}>
-                        <StyledTableCell align="center">1100({100})</StyledTableCell>
-                        <StyledTableCell align="center">1100({100})</StyledTableCell>
+                        <StyledTableCell align="center">{characterStatus[STATUS.HP].displayStatus} ({characterStatus[STATUS.HP].specialSkill})</StyledTableCell>
+                        <StyledTableCell align="center">{characterStatus[STATUS.SP].displayStatus} ({characterStatus[STATUS.SP].specialSkill})</StyledTableCell>
                         </StyledTableRow>
                     </TableBody>
                 </Table>
@@ -88,11 +98,11 @@ const DisplayArea = (
                     </TableHead>
                     <TableBody>
                         <StyledTableRow key={"disp-basic-status"}>
-                        <StyledTableCell align="center">1100</StyledTableCell>
-                        <StyledTableCell align="center">1100</StyledTableCell>
-                        <StyledTableCell align="center">1100</StyledTableCell>
-                        <StyledTableCell align="center">1100</StyledTableCell>
-                        <StyledTableCell align="center">1100</StyledTableCell>
+                        <StyledTableCell align="center">{characterStatus[STATUS.POW].displayStatus}</StyledTableCell>
+                        <StyledTableCell align="center">{characterStatus[STATUS.INT].displayStatus}</StyledTableCell>
+                        <StyledTableCell align="center">{characterStatus[STATUS.SPD].displayStatus}</StyledTableCell>
+                        <StyledTableCell align="center">{characterStatus[STATUS.VIT].displayStatus}</StyledTableCell>
+                        <StyledTableCell align="center">{characterStatus[STATUS.LUK].displayStatus}</StyledTableCell>
                         </StyledTableRow>
                     </TableBody>
                 </Table>
@@ -114,14 +124,26 @@ const DisplayArea = (
                     </TableHead>
                     <TableBody>
                         <StyledTableRow key={"disp-detail-status"}>
-                        <StyledTableCell align="center">66000 (64000)</StyledTableCell>
-                        <StyledTableCell align="center">110000 (100000)</StyledTableCell>
-                        <StyledTableCell align="center">110000 (100000)</StyledTableCell>
-                        <StyledTableCell align="center">110000 (100000)</StyledTableCell>
+                        <StyledTableCell align="center">{characterStatus[STATUS.ATK].displayStatus} ({characterStatus[STATUS.ATK].liquid})</StyledTableCell>
+                        <StyledTableCell align="center">{characterStatus[STATUS.DEF].displayStatus} ({characterStatus[STATUS.DEF].liquid})</StyledTableCell>
+                        <StyledTableCell align="center">{characterStatus[STATUS.MAT].displayStatus} ({characterStatus[STATUS.MAT].liquid})</StyledTableCell>
+                        <StyledTableCell align="center">{characterStatus[STATUS.MDF].displayStatus} ({characterStatus[STATUS.MDF].liquid})</StyledTableCell>
                         </StyledTableRow>
                     </TableBody>
                 </Table>
                 </TableContainer>
+            </Grid>
+
+            {/* 4行目 */}
+            {/* すべてリセットボタン */}
+            <Grid item xs={4}></Grid>
+            <Grid item xs={4}></Grid>
+            <Grid item xs={4}>
+                <Button 
+                    variant="contained"
+                    onClick={handleResetAll}
+                    color='error'
+                >すべてリセット</Button>
             </Grid>
         </Grid>
         </>

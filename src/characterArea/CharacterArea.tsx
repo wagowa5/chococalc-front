@@ -1,23 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { evaluate } from 'maths.ts';
 
 import { MESSAGES, FIELDS } from '../constants/constants';
+import { StatusInputFields } from '../interface/Status';
 import './CharacterArea.css';
 
-import { TextField, Box, Grid, Chip } from '@mui/material';
-import { start } from 'repl';
-
-/**
- * ステータス入力管理
- * @param フィールドごとの入力値
- * @param フィールドごとのエラーメッセージ
- */
-interface StatusInputFields {
-    [key: string]: {
-        value: string;
-        errorMessage: string;
-    }
-}
+import { TextField, Grid, Chip } from '@mui/material';
 
 // propsの型定義を追加
 interface CharacterAreaProps {
@@ -39,7 +27,6 @@ const CharacterArea = (
         // 現在のinputStatusをコピーして新しい状態を生成
         let newInputStatus = { ...inputStatus };
 
-        
         // 文字列が計算可能か事前にチェックする
         // 入力値のStatusクラスへの格納や計算は別コンポーネントで行う
         try {
@@ -163,7 +150,7 @@ const CharacterArea = (
                     name={FIELDS.CARD_INT}
                     label='INT:'
                     placeholder='0'
-                    defaultValue={'0'}
+                    defaultValue='0'
                     error={!!inputStatus[FIELDS.CARD_INT].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
                     helperText={inputStatus[FIELDS.CARD_INT].errorMessage || ''} // エラーメッセージを表示
                     onChange={handleInputStatusChange}
@@ -172,7 +159,7 @@ const CharacterArea = (
                     name={FIELDS.CARD_SPD}
                     label='SPD:'
                     placeholder='0'
-                    defaultValue={'0'}
+                    defaultValue='0'
                     error={!!inputStatus[FIELDS.CARD_SPD].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
                     helperText={inputStatus[FIELDS.CARD_SPD].errorMessage || ''} // エラーメッセージを表示
                     onChange={handleInputStatusChange}
@@ -181,7 +168,7 @@ const CharacterArea = (
                     name={FIELDS.CARD_VIT}
                     label='VIT:'
                     placeholder='0'
-                    defaultValue={'0'}
+                    defaultValue='0'
                     error={!!inputStatus[FIELDS.CARD_VIT].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
                     helperText={inputStatus[FIELDS.CARD_VIT].errorMessage || ''} // エラーメッセージを表示
                     onChange={handleInputStatusChange}
@@ -190,7 +177,7 @@ const CharacterArea = (
                     name={FIELDS.CARD_LUK}
                     label='LUK:'
                     placeholder='0'
-                    defaultValue={'0'}
+                    defaultValue='0'
                     error={!!inputStatus[FIELDS.CARD_LUK].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
                     helperText={inputStatus[FIELDS.CARD_LUK].errorMessage || ''} // エラーメッセージを表示
                     onChange={handleInputStatusChange}
