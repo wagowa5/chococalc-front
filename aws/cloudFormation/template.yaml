@@ -6,7 +6,7 @@ Resources:
       AccessControl: PublicRead
       WebsiteConfiguration:
         IndexDocument: index.html
-        ErrorDocument: error.html
+        #ErrorDocument: error.html
 
   S3BucketPolicyForWebsite:
     Type: 'AWS::S3::BucketPolicy'
