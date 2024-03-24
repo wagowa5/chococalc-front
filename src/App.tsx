@@ -12,51 +12,48 @@ import Box from '@mui/material/Box';
 // MyComponents
 import './App.css';
 import CharacterArea from './characterArea/CharacterArea';
-import {  Character } from './interface/Status';
+import { StatusInputFields, CharacterStatus } from './interface/Status';
 import ItemArea from './itemArea/ItemArea';
 import DisplayArea from './displayArea/DisplayArea';
 import SkillArea from './skillArea/SkillArea';
-import { MESSAGES, FIELDS } from './constants/constants';
+import { MESSAGES, FIELDS, STATUS } from './constants/constants';
 //import AppHeader from './util/AppHeader'
-
-/**
- * ステータス入力管理
- * @param フィールドごとの入力値
- * @param フィールドごとのエラーメッセージ
- */
-interface StatusInputFields {
-  [key: string]: {
-      value: string;
-      errorMessage: string;
-  }
-}
 
 const initialStatusInputFields: StatusInputFields = Object.keys(FIELDS).reduce<StatusInputFields>((acc, key) => {
   const fieldKey = FIELDS[key as keyof typeof FIELDS]; // This ensures that fieldKey is typed correctly
-  acc[fieldKey] = { value: '', errorMessage: '' };
+  acc[fieldKey] = { value: '0', errorMessage: '' };
+  return acc;
+}, {});
+
+const initialCharacterStatus: CharacterStatus = Object.keys(STATUS).reduce<CharacterStatus>((acc, key) => {
+  const statusKey = STATUS[key as keyof typeof STATUS]; // This ensures that fieldKey is typed correctly
+  acc[statusKey] = { 
+    base: 0,
+    card: 0,
+    totalWithoutItem: 0,
+    allVita: 0,
+    vita: 0,
+    scroll: 0,
+    canSeal: 0,
+    bradScraper: 0,
+    specialSkill: 0,
+    displayStatus: 0
+  };
   return acc;
 }, {});
 
 function App() {
-  // デフォルトステータスオブジェクト
-  const defaultStatus = {
-    level: 0, hp: 0, sp: 0, pow: 0, int: 0, vit: 0, spd: 0, luk: 0, atk: 0, def: 0, mat: 0, mdf: 0
-  };
-
   // 数値格納用のステータス
-  const [character, setCharacter] = useState(new Character(
-    defaultStatus, // characterStatus
-    defaultStatus, // cardStatus
-    defaultStatus, // vitaStatus
-    defaultStatus, // inputedTotalStatus
-    defaultStatus, // scrollStatus
-    defaultStatus, // canStatus
-    defaultStatus, // specialSkillStatus
-    defaultStatus  // displayStatus
-  ));
-
+  const [characterStatus, setCharacterStatus] = useState<CharacterStatus>(
+    initialCharacterStatus
+  );
   // CharacterAreaの入力フィールドを管理する
   const [inputStatus, setInputStatus] = useState<StatusInputFields>(initialStatusInputFields);
+  
+  // characterを更新する関数
+  const updateCharacter = (newCharacterStatus: CharacterStatus) => {
+    setCharacterStatus(newCharacterStatus);
+  };
   // inputStatusを更新する関数
   const updateInputStatus = (newStatus: StatusInputFields) => {
     setInputStatus(newStatus);
@@ -92,7 +89,12 @@ function App() {
 
         {/* アイテムボタンを配置しているエリア */}
         <Grid item xs={7}>
-        <ItemArea/>
+        <ItemArea
+          characterStatus={characterStatus}
+          updateCharacter={updateCharacter}
+          inputStatus={inputStatus}
+          updateInputStatus={updateInputStatus}
+        />
         </Grid>
       </Grid>
 

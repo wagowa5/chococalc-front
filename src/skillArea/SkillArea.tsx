@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { evaluate } from 'maths.ts';
 
-import { Character } from '../interface/Status';
+import { StatusInputFields, CharacterStatus } from '../interface/Status';
 import { MESSAGES, FIELDS } from '../constants/constants';
 
 import { TextField, Box, Grid } from '@mui/material';

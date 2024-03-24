@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import { evaluate } from 'maths.ts';
 
-import { Character } from '../interface/Status';
-import { MESSAGES, FIELDS } from '../constants/constants';
+import { StatusInputFields, CharacterStatus } from './../interface/Status';
+import { MESSAGES, FIELDS, ITEMS, STATUS } from '../constants/constants';
 import ButtonGroupComponent from './ButtonGroupComponent';
 import ScrollSelect from './ScrollSelect';
 import { 
@@ -28,10 +28,18 @@ interface ErrorMessages {
  * ItemAreaProps
  */
 interface ItemAreaProps {
+    characterStatus: CharacterStatus;
+    updateCharacter: (newCharacterStatus: CharacterStatus) => void;
+    inputStatus: StatusInputFields;
+    updateInputStatus: (newInputStatus: StatusInputFields) => void;
 }
 
 const ItemArea = (
     {
+        characterStatus,
+        updateCharacter,
+        inputStatus,
+        updateInputStatus,
     }: ItemAreaProps
 ) => {
     const [errorMessages, setErrorMessages] = useState<ErrorMessages>({});
@@ -84,6 +92,160 @@ const ItemArea = (
         setMdfScroll(event.target.value);
     };
 
+    const getInputStatus = () => {
+        const newCharacterStatus = { ...characterStatus };
+        // 入力値を取得
+        newCharacterStatus[STATUS.POW].base = evaluate(inputStatus[FIELDS.CHARA_POW].value).getNumberValue();
+        newCharacterStatus[STATUS.INT].base = evaluate(inputStatus[FIELDS.CHARA_INT].value).getNumberValue();
+        newCharacterStatus[STATUS.VIT].base = evaluate(inputStatus[FIELDS.CHARA_VIT].value).getNumberValue();
+        newCharacterStatus[STATUS.SPD].base = evaluate(inputStatus[FIELDS.CHARA_SPD].value).getNumberValue();
+        newCharacterStatus[STATUS.LUK].base = evaluate(inputStatus[FIELDS.CHARA_LUK].value).getNumberValue();
+        newCharacterStatus[STATUS.POW].card = evaluate(inputStatus[FIELDS.CARD_POW].value).getNumberValue();
+        newCharacterStatus[STATUS.INT].card = evaluate(inputStatus[FIELDS.CARD_INT].value).getNumberValue();
+        newCharacterStatus[STATUS.VIT].card = evaluate(inputStatus[FIELDS.CARD_VIT].value).getNumberValue();
+        newCharacterStatus[STATUS.SPD].card = evaluate(inputStatus[FIELDS.CARD_SPD].value).getNumberValue();
+        newCharacterStatus[STATUS.LUK].card = evaluate(inputStatus[FIELDS.CARD_LUK].value).getNumberValue();
+        newCharacterStatus[STATUS.LEVEL].totalWithoutItem = evaluate(inputStatus[FIELDS.LEVEL].value).getNumberValue();
+        newCharacterStatus[STATUS.HP].totalWithoutItem = evaluate(inputStatus[FIELDS.HP].value).getNumberValue();
+        newCharacterStatus[STATUS.SP].totalWithoutItem = evaluate(inputStatus[FIELDS.SP].value).getNumberValue();
+        newCharacterStatus[STATUS.POW].totalWithoutItem = evaluate(inputStatus[FIELDS.TOTAL_POW].value).getNumberValue();
+        newCharacterStatus[STATUS.INT].totalWithoutItem = evaluate(inputStatus[FIELDS.TOTAL_INT].value).getNumberValue();
+        newCharacterStatus[STATUS.VIT].totalWithoutItem = evaluate(inputStatus[FIELDS.TOTAL_VIT].value).getNumberValue();
+        newCharacterStatus[STATUS.SPD].totalWithoutItem = evaluate(inputStatus[FIELDS.TOTAL_SPD].value).getNumberValue();
+        newCharacterStatus[STATUS.LUK].totalWithoutItem = evaluate(inputStatus[FIELDS.TOTAL_LUK].value).getNumberValue();
+        newCharacterStatus[STATUS.ATK].totalWithoutItem = evaluate(inputStatus[FIELDS.ATK].value).getNumberValue();
+        newCharacterStatus[STATUS.DEF].totalWithoutItem = evaluate(inputStatus[FIELDS.DEF].value).getNumberValue();
+        newCharacterStatus[STATUS.MAT].totalWithoutItem = evaluate(inputStatus[FIELDS.MAT].value).getNumberValue();
+        newCharacterStatus[STATUS.MDF].totalWithoutItem = evaluate(inputStatus[FIELDS.MDF].value).getNumberValue();
+        updateCharacter(newCharacterStatus);
+    };
+
+    // ビタボタンクリック時の処理
+    const handleVitaButtons: {[key: string]: { handle: () => void; }} = {
+        [ITEMS.VITA.ALL.key]: { handle: () => {
+            console.log('ALLビタボタンクリック');
+            console.log(inputStatus);
+            // 入力値を取得
+            getInputStatus();
+
+            const newCharacterStatus = { ...characterStatus };
+            // ビタのステータスを更新
+            if (newCharacterStatus[STATUS.POW].base * 0.1 < 1) {
+                newCharacterStatus[STATUS.POW].allVita = 1;
+            } else {
+                newCharacterStatus[STATUS.POW].allVita = Math.floor(newCharacterStatus[STATUS.POW].base * 0.1);
+            };
+            if (newCharacterStatus[STATUS.INT].base * 0.1 < 1) {
+                newCharacterStatus[STATUS.INT].allVita = 1;
+            } else {
+                newCharacterStatus[STATUS.INT].allVita = Math.floor(newCharacterStatus[STATUS.INT].base * 0.1);
+            };
+            if (newCharacterStatus[STATUS.SPD].base * 0.1 < 1) {
+                newCharacterStatus[STATUS.SPD].allVita = 1;
+            } else {
+                newCharacterStatus[STATUS.SPD].allVita = Math.floor(newCharacterStatus[STATUS.SPD].base * 0.1);
+            };
+            if (newCharacterStatus[STATUS.VIT].base * 0.1 < 1) {
+                newCharacterStatus[STATUS.VIT].allVita = 1;
+            } else {
+                newCharacterStatus[STATUS.VIT].allVita = Math.floor(newCharacterStatus[STATUS.VIT].base * 0.1);
+            };
+            if (newCharacterStatus[STATUS.LUK].base * 0.1 < 1) {
+                newCharacterStatus[STATUS.LUK].allVita = 1;
+            } else {
+                newCharacterStatus[STATUS.LUK].allVita = Math.floor(newCharacterStatus[STATUS.LUK].base * 0.1);
+            };
+
+            updateCharacter(newCharacterStatus);
+        }},
+        [ITEMS.VITA.POW.key]: { handle: () => {
+            // 入力値を取得
+            getInputStatus();
+
+            const newCharacterStatus = { ...characterStatus };        
+            // ビタのステータスを更新
+            if (newCharacterStatus[STATUS.POW].base * 0.2 < 1) {
+                newCharacterStatus[STATUS.POW].vita = 1;
+            } else {
+                newCharacterStatus[STATUS.POW].vita = Math.floor(newCharacterStatus[STATUS.POW].base * 0.2);
+            };
+            updateCharacter(newCharacterStatus);
+        }},
+        [ITEMS.VITA.INT.key]: { handle: () => {
+            // 入力値を取得
+            getInputStatus();
+
+            const newCharacterStatus = { ...characterStatus };
+            // ビタのステータスを更新
+            if (newCharacterStatus[STATUS.INT].base * 0.2 < 1) {
+                newCharacterStatus[STATUS.INT].vita = 1;
+            } else {
+                newCharacterStatus[STATUS.INT].vita = Math.floor(newCharacterStatus[STATUS.INT].base * 0.2);
+            };
+            updateCharacter(newCharacterStatus);
+        }},
+        [ITEMS.VITA.SPD.key]: { handle: () => {
+            // 入力値を取得
+            getInputStatus();
+
+            const newCharacterStatus = { ...characterStatus };
+            // ビタのステータスを更新
+            if (newCharacterStatus[STATUS.SPD].base * 0.2 < 1) {
+                newCharacterStatus[STATUS.SPD].vita = 1;
+            } else {
+                newCharacterStatus[STATUS.SPD].vita = Math.floor(newCharacterStatus[STATUS.SPD].base * 0.2);
+            }
+            updateCharacter(newCharacterStatus);
+        }},
+        [ITEMS.VITA.VIT.key]: { handle: () => {
+            // 入力値を取得
+            getInputStatus();
+
+            const newCharacterStatus = { ...characterStatus };
+            // ビタのステータスを更新
+            if (newCharacterStatus[STATUS.VIT].base * 0.2 < 1) {
+                newCharacterStatus[STATUS.VIT].vita = 1;
+            } else {
+                newCharacterStatus[STATUS.VIT].vita = Math.floor(newCharacterStatus[STATUS.VIT].base * 0.2);
+            }
+            updateCharacter(newCharacterStatus);
+        }},
+        [ITEMS.VITA.LUK.key]: { handle: () => {
+            // 入力値を取得
+            getInputStatus();
+
+            const newCharacterStatus = { ...characterStatus };
+            // ビタのステータスを更新
+            if (newCharacterStatus[STATUS.LUK].base * 0.2 < 1) {
+                newCharacterStatus[STATUS.LUK].vita = 1;
+            } else {
+                newCharacterStatus[STATUS.LUK].vita = Math.floor(newCharacterStatus[STATUS.LUK].base * 0.2);
+            }
+            updateCharacter(newCharacterStatus);
+        }},
+    };
+
+    // 缶ボタンクリック時の処理
+    const handleCanButtons: {[key: string]: { handle: () => void; }} = {
+        [ITEMS.CAN.A.key]: { handle: () => {
+            // 入力値を取得
+            getInputStatus();
+
+            const newCharacterStatus = { ...characterStatus };
+
+            updateCharacter(newCharacterStatus);
+        }},
+        [ITEMS.CAN.B.key]: { handle: () => {
+            // 入力値を取得
+            getInputStatus();
+
+            const newCharacterStatus = { ...characterStatus };
+            
+
+            updateCharacter(newCharacterStatus);
+        }},
+    };
+
     return (
         <>
         <Grid container spacing={1} justifyContent="center" alignItems="start">
@@ -100,7 +262,7 @@ const ItemArea = (
             {/* ----- 2行目 ----- */}
             {/* ビタ */}
             <Grid item xs={4}>
-                <ButtonGroupComponent buttons={vitaButtonsData} />
+                <ButtonGroupComponent buttons={vitaButtonsData} handles={handleVitaButtons} />
             </Grid>
             
             {/* 魔獣缶・シール(かき氷) */}
