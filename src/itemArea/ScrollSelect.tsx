@@ -11,7 +11,7 @@ interface ScrollSelectProps {
 
 const ScrollSelect: React.FC<ScrollSelectProps> = ({ options, label, selectedValue, onChange }) => {
     return (
-        <FormControl sx={{ m: 1, minWidth: 80 }}>
+        <FormControl>
             <InputLabel id={`select-${label}-label`}>{label}</InputLabel>
             <Select
                 labelId={`select-${label}-label`}

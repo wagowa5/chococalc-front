@@ -15,6 +15,7 @@ import CharacterArea from './characterArea/CharacterArea';
 import {  Character } from './interface/Status';
 import ItemArea from './itemArea/ItemArea';
 import DisplayArea from './displayArea/DisplayArea';
+import SkillArea from './skillArea/SkillArea';
 import { MESSAGES, FIELDS } from './constants/constants';
 //import AppHeader from './util/AppHeader'
 
@@ -80,7 +81,7 @@ function App() {
       <Toolbar /> {/* AppBarによって占められる領域分の余白を確保 */}
       
       {/* コンテンツ */}
-      <Grid container spacing={2} margin={1}>
+      <Grid container spacing={1} margin={1} justifyContent={'center'} alignItems={'start'}>
         {/* キャラクターの情報入力欄を配置しているエリア */}
         <Grid item xs={5}>
         <CharacterArea 
@@ -97,17 +98,16 @@ function App() {
 
       <Divider textAlign="left"></Divider>
 
-      <Grid container spacing={2} margin={1}>
+      <Grid container spacing={0} margin={1}>
         {/* 計算結果を表示するエリア */}
-        <Grid item xs={6}>
+        <Grid item xs={7}>
         <DisplayArea
-          inputStatus={inputStatus}
-          updateInputStatus={updateInputStatus}
         />
         </Grid>
 
         {/* スキルボタンを配置しているエリア */}
-        <Grid item xs={6}>
+        <Grid item xs={5}>
+          <SkillArea/>
         </Grid>
       </Grid>
     </>
