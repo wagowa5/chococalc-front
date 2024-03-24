@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { evaluate } from 'maths.ts';
 
 import { MESSAGES, FIELDS } from '../constants/constants';
 import { StatusInputFields } from '../interface/Status';
 import './CharacterArea.css';
 
-import { TextField, Box, Grid, Chip } from '@mui/material';
-import { start } from 'repl';
+import { TextField, Grid, Chip } from '@mui/material';
 
 // propsの型定義を追加
 interface CharacterAreaProps {
@@ -28,7 +27,6 @@ const CharacterArea = (
         // 現在のinputStatusをコピーして新しい状態を生成
         let newInputStatus = { ...inputStatus };
 
-        
         // 文字列が計算可能か事前にチェックする
         // 入力値のStatusクラスへの格納や計算は別コンポーネントで行う
         try {

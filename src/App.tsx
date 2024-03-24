@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // material-ui
-import { Tabs, Button, Grid, Divider } from "@mui/material";
+import { Button, Grid, Divider } from "@mui/material";
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -9,15 +9,13 @@ import CssBaseline from '@mui/material/CssBaseline';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Box from '@mui/material/Box';
 
-// MyComponents
 import './App.css';
 import CharacterArea from './characterArea/CharacterArea';
 import { StatusInputFields, CharacterStatus } from './interface/Status';
 import ItemArea from './itemArea/ItemArea';
 import DisplayArea from './displayArea/DisplayArea';
 import SkillArea from './skillArea/SkillArea';
-import { MESSAGES, FIELDS, STATUS } from './constants/constants';
-//import AppHeader from './util/AppHeader'
+import { FIELDS, STATUS } from './constants/constants';
 
 const initialStatusInputFields: StatusInputFields = Object.keys(FIELDS).reduce<StatusInputFields>((acc, key) => {
   const fieldKey = FIELDS[key as keyof typeof FIELDS]; // This ensures that fieldKey is typed correctly

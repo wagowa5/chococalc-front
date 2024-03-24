@@ -1,5 +1,3 @@
-import React, { useEffect, useState } from 'react';
-
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -16,12 +14,6 @@ import { CharacterStatus } from '../interface/Status';
 import {
     calculateDisplayStatus,
     resetAllItemSkillStatus,
-    resetVitaStatus,
-    resetCanSealStatus,
-    resetScrollStatus,
-    resetLiquidStatus,
-    resetBradScraperStatus,
-    resetSpecialSkillStatus,
 } from '../util/StatusUtil';
 
 

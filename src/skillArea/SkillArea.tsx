@@ -1,29 +1,14 @@
-import React, { useEffect, useState } from 'react';
-
-import { evaluate } from 'maths.ts';
+import { Grid } from '@mui/material';
+import Button from '@mui/material/Button';
 
 import { StatusInputFields, CharacterStatus } from '../interface/Status';
-import { MESSAGES, FIELDS, STATUS } from '../constants/constants';
+import { STATUS } from '../constants/constants';
 import { 
     getInputStatus,
     calculateDisplayStatus,
-    resetAllItemSkillStatus,
-    resetVitaStatus,
-    resetCanSealStatus,
-    resetScrollStatus,
-    resetLiquidStatus,
     resetBradScraperStatus,
     resetSpecialSkillStatus,
 } from '../util/StatusUtil';
-
-import { TextField, Box, Grid } from '@mui/material';
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-
 
 /**
  * SkillAreaProps
