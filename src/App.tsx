@@ -106,12 +106,18 @@ function App() {
         <Grid item xs={7}>
         <DisplayArea
           characterStatus={characterStatus}
+          updateCharacter={updateCharacter}
         />
         </Grid>
 
         {/* スキルボタンを配置しているエリア */}
         <Grid item xs={5}>
-          <SkillArea/>
+          <SkillArea
+            characterStatus={characterStatus}
+            updateCharacter={updateCharacter}
+            inputStatus={inputStatus}
+            updateInputStatus={updateInputStatus}
+          />
         </Grid>
       </Grid>
     </>

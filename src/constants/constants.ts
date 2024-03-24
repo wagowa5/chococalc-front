@@ -42,7 +42,7 @@ export const STATUS = {
     DEF: 'def',
     MAT: 'mat',
     MDF: 'mdf',
-}
+};
 
 export const ITEMS = {
     VITA: {

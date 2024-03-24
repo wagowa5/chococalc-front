@@ -4,6 +4,17 @@ import { evaluate } from 'maths.ts';
 
 import { StatusInputFields, CharacterStatus } from '../interface/Status';
 import { MESSAGES, FIELDS } from '../constants/constants';
+import { 
+    getInputStatus,
+    calculateDisplayStatus,
+    resetAllItemSkillStatus,
+    resetVitaStatus,
+    resetCanSealStatus,
+    resetScrollStatus,
+    resetLiquidStatus,
+    resetBradScraperStatus,
+    resetSpecialSkillStatus,
+} from '../util/StatusUtil';
 
 import { TextField, Box, Grid } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -14,82 +25,109 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 
-interface ErrorMessages {
-    [key: string]: string;
-}
-
 /**
- * ItemAreaProps
+ * SkillAreaProps
  */
-interface ItemAreaProps {
+interface SkillAreaProps {
+    characterStatus: CharacterStatus;
+    updateCharacter: (newCharacterStatus: CharacterStatus) => void;
+    inputStatus: StatusInputFields;
+    updateInputStatus: (newInputStatus: StatusInputFields) => void;
 }
 
-const ItemArea = (
+const SkillArea = (
     {
-    }: ItemAreaProps
+        characterStatus,
+        updateCharacter,
+        inputStatus,
+        updateInputStatus,
+    }: SkillAreaProps
 ) => {
+
+
+    // ブラッドスクレイパーのスキルを計算する
+    const handleBradScraper = () => {
+
+        calculateDisplayStatus(characterStatus, updateCharacter)
+    }
+
+    // ブラッドスクレイパーのスキルをリセットする
+    const handleResetBradScraper = () => {
+        resetBradScraperStatus(characterStatus, updateCharacter);
+        calculateDisplayStatus(characterStatus, updateCharacter)
+    }
+
+    // 特殊スキルをリセットする
+    const handleResetSpecialSkill = () => {
+        resetSpecialSkillStatus(characterStatus, updateCharacter);
+        calculateDisplayStatus(characterStatus, updateCharacter)
+    }
 
     return (
         <>
-        <Grid container spacing={1} justifyContent="center" alignItems="start">
+        <Grid container spacing={1} margin={1} justifyContent="center" alignItems="start">
             {/* ----- 1行目 ----- */}
             {/* スキルリセットボタン */}
-            <Grid item xs={3}></Grid>
             <Grid item xs={6}>
-                <Button variant="contained">スキルリセット</Button>
+                <Button
+                    variant="contained"
+                    onClick={handleResetBradScraper}
+                    color='warning'
+                >
+                    スクレイパーリセット
+                </Button>
             </Grid>
-            <Grid item xs={3}></Grid>
+            <Grid item xs={6}>
+                <Button
+                    variant="contained"
+                    onClick={handleResetSpecialSkill}
+                    color='warning'
+                >
+                    特殊リセット
+                </Button>
+            </Grid>
 
             {/* スキル */}
             {/* ----- 2行目 ----- */}
-            <Grid item xs={3}></Grid>
             <Grid item xs={6}>
-                <Button variant="outlined">ブラッドスクレイパー</Button>
+                <Button variant="outlined" onClick={handleBradScraper}>ブラッドスクレイパー</Button>
             </Grid>
-            <Grid item xs={3}></Grid>
+            <Grid item xs={6}></Grid>
 
             {/* ----- 3行目 ----- */}
-            <Grid item xs={1}></Grid>
-            <Grid item xs={5}>
+            <Grid item xs={6}>
                 <Button variant="outlined">妖精王の祝福(物理)</Button>
             </Grid>
-            <Grid item xs={5}>
+            <Grid item xs={6}>
                 <Button variant="outlined">妖精王の祝福(魔法)</Button>
             </Grid>
-            <Grid item xs={1}></Grid>
-
+            
             {/* ----- 4行目 ----- */}
-            <Grid item xs={1}></Grid>
-            <Grid item xs={5}>
+            <Grid item xs={6}>
                 <Button variant="outlined">大天使の加護</Button>
             </Grid>
-            <Grid item xs={5}>
+            <Grid item xs={6}>
                 <Button variant="outlined">祝福の蒼盾</Button>
             </Grid>
-            <Grid item xs={1}></Grid>
 
             {/* ----- 5行目 ----- */}
-            <Grid item xs={1}></Grid>
-            <Grid item xs={5}>
+            <Grid item xs={6}>
                 <Button variant="outlined">リエ</Button>
             </Grid>
-            <Grid item xs={5}>
+            <Grid item xs={6}>
                 <Button variant="outlined">リアぱ</Button>
             </Grid>
-            <Grid item xs={1}></Grid>
-
+            
             {/* ----- 6行目 ----- */}
-            <Grid item xs={1}></Grid>
-            <Grid item xs={5}>
+            <Grid item xs={6}>
                 <Button variant="outlined">邪神の呪詛</Button>
             </Grid>
-            <Grid item xs={5}>
+            <Grid item xs={6}>
                 <Button variant="outlined"></Button>
             </Grid>
-            <Grid item xs={1}></Grid>
         </Grid>
         </>
     )
 }
 
-export default ItemArea;
+export default SkillArea;

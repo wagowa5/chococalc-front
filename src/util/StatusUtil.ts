@@ -2,35 +2,50 @@ import { evaluate } from 'maths.ts';
 import { STATUS, FIELDS } from '../constants/constants';
 import { CharacterStatus, StatusInputFields } from '../interface/Status';
 
+/**
+ * 文字列が計算可能かチェックする関数
+ * 可能であれば計算結果を返す
+ * 不可能であれば一律0を返す
+ */
+const strCalculate = (value: string): number => {
+    // 数値がNaNまたは無限大の場合、計算不可とする
+    try {
+        const isCalculatable = isFinite(evaluate(value).getNumberValue())
+        return isCalculatable ? evaluate(value).getNumberValue() : 0;
+    } catch (error) {
+        return 0;
+    }
+}
+
 // 入力フィールドを取得する関数
 export const getInputStatus = (
     characterStatus: CharacterStatus,
     inputStatus: StatusInputFields,
-    updateCharacter: (newCharacterStatus: CharacterStatus) => void
+    updateCharacter: (newCharacterStatus: CharacterStatus) => void,
 ) => {
     const newCharacterStatus = { ...characterStatus };
-    newCharacterStatus[STATUS.POW].base = evaluate(inputStatus[FIELDS.CHARA_POW].value).getNumberValue();
-    newCharacterStatus[STATUS.INT].base = evaluate(inputStatus[FIELDS.CHARA_INT].value).getNumberValue();
-    newCharacterStatus[STATUS.VIT].base = evaluate(inputStatus[FIELDS.CHARA_VIT].value).getNumberValue();
-    newCharacterStatus[STATUS.SPD].base = evaluate(inputStatus[FIELDS.CHARA_SPD].value).getNumberValue();
-    newCharacterStatus[STATUS.LUK].base = evaluate(inputStatus[FIELDS.CHARA_LUK].value).getNumberValue();
-    newCharacterStatus[STATUS.POW].card = evaluate(inputStatus[FIELDS.CARD_POW].value).getNumberValue();
-    newCharacterStatus[STATUS.INT].card = evaluate(inputStatus[FIELDS.CARD_INT].value).getNumberValue();
-    newCharacterStatus[STATUS.VIT].card = evaluate(inputStatus[FIELDS.CARD_VIT].value).getNumberValue();
-    newCharacterStatus[STATUS.SPD].card = evaluate(inputStatus[FIELDS.CARD_SPD].value).getNumberValue();
-    newCharacterStatus[STATUS.LUK].card = evaluate(inputStatus[FIELDS.CARD_LUK].value).getNumberValue();
-    newCharacterStatus[STATUS.LEVEL].totalWithoutItem = evaluate(inputStatus[FIELDS.LEVEL].value).getNumberValue();
-    newCharacterStatus[STATUS.HP].totalWithoutItem = evaluate(inputStatus[FIELDS.HP].value).getNumberValue();
-    newCharacterStatus[STATUS.SP].totalWithoutItem = evaluate(inputStatus[FIELDS.SP].value).getNumberValue();
-    newCharacterStatus[STATUS.POW].totalWithoutItem = evaluate(inputStatus[FIELDS.TOTAL_POW].value).getNumberValue();
-    newCharacterStatus[STATUS.INT].totalWithoutItem = evaluate(inputStatus[FIELDS.TOTAL_INT].value).getNumberValue();
-    newCharacterStatus[STATUS.VIT].totalWithoutItem = evaluate(inputStatus[FIELDS.TOTAL_VIT].value).getNumberValue();
-    newCharacterStatus[STATUS.SPD].totalWithoutItem = evaluate(inputStatus[FIELDS.TOTAL_SPD].value).getNumberValue();
-    newCharacterStatus[STATUS.LUK].totalWithoutItem = evaluate(inputStatus[FIELDS.TOTAL_LUK].value).getNumberValue();
-    newCharacterStatus[STATUS.ATK].totalWithoutItem = evaluate(inputStatus[FIELDS.ATK].value).getNumberValue();
-    newCharacterStatus[STATUS.DEF].totalWithoutItem = evaluate(inputStatus[FIELDS.DEF].value).getNumberValue();
-    newCharacterStatus[STATUS.MAT].totalWithoutItem = evaluate(inputStatus[FIELDS.MAT].value).getNumberValue();
-    newCharacterStatus[STATUS.MDF].totalWithoutItem = evaluate(inputStatus[FIELDS.MDF].value).getNumberValue();
+    newCharacterStatus[STATUS.POW].base = strCalculate(inputStatus[FIELDS.CHARA_POW].value);
+    newCharacterStatus[STATUS.INT].base = strCalculate(inputStatus[FIELDS.CHARA_INT].value);
+    newCharacterStatus[STATUS.VIT].base = strCalculate(inputStatus[FIELDS.CHARA_VIT].value);
+    newCharacterStatus[STATUS.SPD].base = strCalculate(inputStatus[FIELDS.CHARA_SPD].value);
+    newCharacterStatus[STATUS.LUK].base = strCalculate(inputStatus[FIELDS.CHARA_LUK].value);
+    newCharacterStatus[STATUS.POW].card = strCalculate(inputStatus[FIELDS.CARD_POW].value);
+    newCharacterStatus[STATUS.INT].card = strCalculate(inputStatus[FIELDS.CARD_INT].value);
+    newCharacterStatus[STATUS.VIT].card = strCalculate(inputStatus[FIELDS.CARD_VIT].value);
+    newCharacterStatus[STATUS.SPD].card = strCalculate(inputStatus[FIELDS.CARD_SPD].value);
+    newCharacterStatus[STATUS.LUK].card = strCalculate(inputStatus[FIELDS.CARD_LUK].value);
+    newCharacterStatus[STATUS.LEVEL].totalWithoutItem = strCalculate(inputStatus[FIELDS.LEVEL].value);
+    newCharacterStatus[STATUS.HP].totalWithoutItem = strCalculate(inputStatus[FIELDS.HP].value);
+    newCharacterStatus[STATUS.SP].totalWithoutItem = strCalculate(inputStatus[FIELDS.SP].value);
+    newCharacterStatus[STATUS.POW].totalWithoutItem = strCalculate(inputStatus[FIELDS.TOTAL_POW].value);
+    newCharacterStatus[STATUS.INT].totalWithoutItem = strCalculate(inputStatus[FIELDS.TOTAL_INT].value);
+    newCharacterStatus[STATUS.VIT].totalWithoutItem = strCalculate(inputStatus[FIELDS.TOTAL_VIT].value);
+    newCharacterStatus[STATUS.SPD].totalWithoutItem = strCalculate(inputStatus[FIELDS.TOTAL_SPD].value);
+    newCharacterStatus[STATUS.LUK].totalWithoutItem = strCalculate(inputStatus[FIELDS.TOTAL_LUK].value);
+    newCharacterStatus[STATUS.ATK].totalWithoutItem = strCalculate(inputStatus[FIELDS.ATK].value);
+    newCharacterStatus[STATUS.DEF].totalWithoutItem = strCalculate(inputStatus[FIELDS.DEF].value);
+    newCharacterStatus[STATUS.MAT].totalWithoutItem = strCalculate(inputStatus[FIELDS.MAT].value);
+    newCharacterStatus[STATUS.MDF].totalWithoutItem = strCalculate(inputStatus[FIELDS.MDF].value);
     updateCharacter(newCharacterStatus);
 };
 

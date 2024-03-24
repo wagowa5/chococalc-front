@@ -30,11 +30,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
-
-interface ErrorMessages {
-    [key: string]: string;
-}
-
 /**
  * ItemAreaProps
  */
@@ -53,8 +48,6 @@ const ItemArea = (
         updateInputStatus,
     }: ItemAreaProps
 ) => {
-    const [errorMessages, setErrorMessages] = useState<ErrorMessages>({});
-
     // 巻物のセレクトボックス
     const [hpScroll, setHpScroll] = React.useState('');
     const [spScroll, setSpScroll] = React.useState('');
@@ -69,38 +62,30 @@ const ItemArea = (
     const [mdfScroll, setMdfScroll] = React.useState('');
 
     // 巻物のセレクトボックスの変更時の処理
-    const handleHpScrollChange = (event: SelectChangeEvent) => {
-        setHpScroll(event.target.value);
-    };
-    const handleSpScrollChange = (event: SelectChangeEvent) => {
-        setSpScroll(event.target.value);
-    };
-    const handlePowScrollChange = (event: SelectChangeEvent) => {
-        setPowScroll(event.target.value);
-    };
-    const handleIntScrollChange = (event: SelectChangeEvent) => {
-        setIntScroll(event.target.value);
-    };
-    const handleSpdScrollChange = (event: SelectChangeEvent) => {
-        setSpdScroll(event.target.value);
-    };
-    const handleVitScrollChange = (event: SelectChangeEvent) => {
-        setVitScroll(event.target.value);
-    };
-    const handleLukScrollChange = (event: SelectChangeEvent) => {
-        setLukScroll(event.target.value);
-    };
-    const handleAtkScrollChange = (event: SelectChangeEvent) => {
-        setAtkScroll(event.target.value);
-    };
-    const handleDefScrollChange = (event: SelectChangeEvent) => {
-        setDefScroll(event.target.value);
-    };
-    const handleMatScrollChange = (event: SelectChangeEvent) => {
-        setMatScroll(event.target.value);
-    };
-    const handleMdfScrollChange = (event: SelectChangeEvent) => {
-        setMdfScroll(event.target.value);
+    const handleScrollChange = (statusType: string, value: string) => {
+        // スクロールの状態を更新
+        const setScrollStateFunction = {
+            [STATUS.HP]: setHpScroll,
+            [STATUS.SP]: setSpScroll,
+            [STATUS.POW]: setPowScroll,
+            [STATUS.INT]: setIntScroll,
+            [STATUS.SPD]: setSpdScroll,
+            [STATUS.VIT]: setVitScroll,
+            [STATUS.LUK]: setLukScroll,
+            [STATUS.ATK]: setAtkScroll,
+            [STATUS.DEF]: setDefScroll,
+            [STATUS.MAT]: setMatScroll,
+            [STATUS.MDF]: setMdfScroll,
+        }[statusType];
+        setScrollStateFunction(value);
+    
+        // 巻物ステータスをリセットして更新
+        resetScrollStatus(characterStatus, updateCharacter);
+        const newCharacterStatus = { ...characterStatus };
+        newCharacterStatus[statusType].scroll = Number(value);
+        updateCharacter(newCharacterStatus);
+        // 表示用ステータスを計算
+        calculateDisplayStatus(characterStatus, updateCharacter);
     };
 
     // ビタボタンクリック時の処理を生成する関数
@@ -192,7 +177,6 @@ const ItemArea = (
             calculateDisplayStatus(characterStatus, updateCharacter);
         }},
     };
-
     // シールボタンクリック時の処理
     const handleSealButtons: {[key: string]: { handle: () => void; }} = {
         [ITEMS.SEAL.POW.key]: { handle: () => {
@@ -262,16 +246,56 @@ const ItemArea = (
         }},
     };
 
+    // ビタリセットボタンクリック時の処理
+    const handleVitaReset = () => {
+        // ビタのステータスをリセットして更新
+        resetVitaStatus(characterStatus, updateCharacter);
+        calculateDisplayStatus(characterStatus, updateCharacter);
+    };
+
+    // 缶・シールリセットボタンクリック時の処理
+    const handleCanSealReset = () => {
+        // 缶・シールのステータスをリセットして更新
+        resetCanSealStatus(characterStatus, updateCharacter);
+        calculateDisplayStatus(characterStatus, updateCharacter);
+    };
+
+    // 巻物リセットボタンクリック時の処理
+    const handleScrollReset = () => {
+        // 巻物のステータスをリセットして更新
+        resetScrollStatus(characterStatus, updateCharacter);
+        calculateDisplayStatus(characterStatus, updateCharacter);
+    };
+
+    // リキッドリセットボタンクリック時の処理
+    const handleLiquidReset = () => {
+        // リキッドのステータスをリセットして更新
+        resetLiquidStatus(characterStatus, updateCharacter);
+        calculateDisplayStatus(characterStatus, updateCharacter);
+    };
+
     return (
         <>
         <Grid container spacing={1} justifyContent="center" alignItems="start">
             {/* ----- 1行目 ----- */}
             {/* ビタと缶・シールのリセットボタン */}
             <Grid item xs={4}>
-                <Button variant="contained">ビタリセット</Button>
+                <Button
+                    variant="contained"
+                    onClick={handleVitaReset}
+                    color='warning'
+                >
+                    ビタリセット
+                </Button>
             </Grid>
             <Grid item xs={4}>
-                <Button variant="contained">缶・シールリセット</Button>
+                <Button
+                    variant="contained"
+                    onClick={handleCanSealReset}
+                    color='warning'
+                >
+                    缶・シールリセット
+                </Button>
             </Grid>
             <Grid item xs={4}></Grid>
                 
@@ -300,10 +324,22 @@ const ItemArea = (
             {/* ----- 3行目 ----- */}
             {/* 巻物とリキッドのリセットボタン */}
             <Grid item xs={8}>
-                <Button variant="contained">巻物リセット</Button>
+                <Button
+                    variant="contained"
+                    onClick={handleScrollReset}
+                    color='warning'
+                >
+                    巻物リセット
+                </Button>
             </Grid>
             <Grid item xs={4}>
-                <Button variant="contained">リキッドリセット</Button>
+                <Button
+                    variant="contained"
+                    onClick={handleLiquidReset}
+                    color='warning'
+                >
+                    リキッドリセット
+                </Button>
             </Grid>
 
             {/* ----- 4行目 ----- */}
@@ -316,7 +352,7 @@ const ItemArea = (
                             options={hpSpScrollOptions}
                             label="HP"
                             selectedValue={hpScroll}
-                            onChange={handleHpScrollChange}
+                            onChange={(event) => handleScrollChange(STATUS.HP, event.target.value)}
                         />
                     </Grid>
                     {/* SP */}
@@ -325,7 +361,7 @@ const ItemArea = (
                             options={hpSpScrollOptions}
                             label="SP"
                             selectedValue={spScroll}
-                            onChange={handleSpScrollChange}
+                            onChange={(event) => handleScrollChange(STATUS.SP, event.target.value)}
                         />
                     </Grid>
                     <Grid item xs={6}></Grid>
@@ -335,7 +371,7 @@ const ItemArea = (
                             options={basicScrollOptions}
                             label="POW"
                             selectedValue={powScroll}
-                            onChange={handlePowScrollChange}
+                            onChange={(event) => handleScrollChange(STATUS.POW, event.target.value)}
                         />
                     </Grid>
                     {/* INT */}
@@ -344,7 +380,7 @@ const ItemArea = (
                             options={basicScrollOptions}
                             label="INT"
                             selectedValue={intScroll}
-                            onChange={handleIntScrollChange}
+                            onChange={(event) => handleScrollChange(STATUS.INT, event.target.value)}
                         />
                     </Grid>
                     {/* VIT */}
@@ -353,7 +389,7 @@ const ItemArea = (
                             options={basicScrollOptions}
                             label="VIT"
                             selectedValue={vitScroll}
-                            onChange={handleVitScrollChange}
+                            onChange={(event) => handleScrollChange(STATUS.VIT, event.target.value)}
                         />
                     </Grid>
                     <Grid item xs={3}></Grid>
@@ -363,7 +399,7 @@ const ItemArea = (
                             options={basicScrollOptions}
                             label="SPD"
                             selectedValue={spdScroll}
-                            onChange={handleSpdScrollChange}
+                            onChange={(event) => handleScrollChange(STATUS.SPD, event.target.value)}
                         />
                     </Grid>
                     {/* LUK */}
@@ -372,7 +408,7 @@ const ItemArea = (
                             options={basicScrollOptions}
                             label="LUK"
                             selectedValue={lukScroll}
-                            onChange={handleLukScrollChange}
+                            onChange={(event) => handleScrollChange(STATUS.LUK, event.target.value)}
                         />
                     </Grid>
                     <Grid item xs={6}></Grid>
@@ -383,7 +419,7 @@ const ItemArea = (
                             options={detailScrollOptions}
                             label="ATK"
                             selectedValue={atkScroll}
-                            onChange={handleAtkScrollChange}
+                            onChange={(event) => handleScrollChange(STATUS.ATK, event.target.value)}
                         />
                     </Grid>
                     {/* DEF */}
@@ -392,7 +428,7 @@ const ItemArea = (
                             options={detailScrollOptions}
                             label="DEF"
                             selectedValue={defScroll}
-                            onChange={handleDefScrollChange}
+                            onChange={(event) => handleScrollChange(STATUS.DEF, event.target.value)}
                         />
                     </Grid>
                     {/* MAT */}
@@ -401,7 +437,7 @@ const ItemArea = (
                             options={detailScrollOptions}
                             label="MAT"
                             selectedValue={matScroll}
-                            onChange={handleMatScrollChange}
+                            onChange={(event) => handleScrollChange(STATUS.MAT, event.target.value)}
                         />
                     </Grid>
                     {/* MDF */}
@@ -410,7 +446,7 @@ const ItemArea = (
                             options={detailScrollOptions}
                             label="MDF"
                             selectedValue={mdfScroll}
-                            onChange={handleMdfScrollChange}
+                            onChange={(event) => handleScrollChange(STATUS.MDF, event.target.value)}
                         />
                     </Grid>
                     

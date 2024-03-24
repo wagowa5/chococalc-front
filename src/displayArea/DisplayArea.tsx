@@ -8,13 +8,21 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Divider from '@mui/material/Divider';
+import Button from '@mui/material/Button';
 import { Grid } from '@mui/material';
-
-import { evaluate } from 'maths.ts';
 
 import { STATUS } from '../constants/constants';
 import { CharacterStatus } from '../interface/Status';
+import {
+    calculateDisplayStatus,
+    resetAllItemSkillStatus,
+    resetVitaStatus,
+    resetCanSealStatus,
+    resetScrollStatus,
+    resetLiquidStatus,
+    resetBradScraperStatus,
+    resetSpecialSkillStatus,
+} from '../util/StatusUtil';
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -41,13 +49,20 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 // propsの型定義を追加
 interface DisplayAreaProps {
     characterStatus: CharacterStatus;
+    updateCharacter: (newCharacterStatus: CharacterStatus) => void;
 }
 
 const DisplayArea = (
     {
-        characterStatus
+        characterStatus,
+        updateCharacter,
     }: DisplayAreaProps
 ) => {
+
+    const handleResetAll = () => {
+        resetAllItemSkillStatus(characterStatus, updateCharacter);
+        calculateDisplayStatus(characterStatus, updateCharacter);
+    }
 
     return (
         <>
@@ -125,6 +140,18 @@ const DisplayArea = (
                     </TableBody>
                 </Table>
                 </TableContainer>
+            </Grid>
+
+            {/* 4行目 */}
+            {/* すべてリセットボタン */}
+            <Grid item xs={4}></Grid>
+            <Grid item xs={4}></Grid>
+            <Grid item xs={4}>
+                <Button 
+                    variant="contained"
+                    onClick={handleResetAll}
+                    color='error'
+                >すべてリセット</Button>
             </Grid>
         </Grid>
         </>
