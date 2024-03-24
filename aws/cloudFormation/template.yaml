@@ -2,6 +2,7 @@ AWSTemplateFormatVersion: '2010-09-09'
 Resources:
   S3BucketForWebsite:
     Type: 'AWS::S3::Bucket'
+    DeletionPolicy: Retain
     Properties:
       AccessControl: PublicRead
       WebsiteConfiguration:
@@ -10,6 +11,7 @@ Resources:
 
   S3BucketPolicyForWebsite:
     Type: 'AWS::S3::BucketPolicy'
+    DeletionPolicy: Retain
     Properties:
       Bucket: !Ref S3BucketForWebsite
       PolicyDocument:
@@ -17,18 +19,24 @@ Resources:
           - Sid: AllowCloudFrontAccess
             Effect: Allow
             Principal:
-              AWS: !Sub 'arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${CloudFrontOAI}'
+              AWS: !Sub 'arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${CloudFrontOAC}'
             Action: 's3:GetObject'
             Resource: !Sub 'arn:aws:s3:::${S3BucketForWebsite}/*'
 
-  CloudFrontOAI:
-    Type: 'AWS::CloudFront::CloudFrontOriginAccessIdentity'
+  CloudFrontOAC:
+    Type: 'AWS::CloudFront::OriginAccessControl'
+    DeletionPolicy: Retain
     Properties:
-      CloudFrontOriginAccessIdentityConfig:
-        Comment: OAI for accessing S3 bucket
+      OriginAccessControlConfig:
+        Description: 'OAC for accessing chococalc S3 bucket'
+        Name: 'chococalc-oac'
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
 
   CloudFrontDistributionForWebsite:
     Type: 'AWS::CloudFront::Distribution'
+    DeletionPolicy: Retain
     Properties:
       DistributionConfig:
         Enabled: true
@@ -36,14 +44,12 @@ Resources:
         Origins:
           - DomainName: !GetAtt S3BucketForWebsite.DomainName
             Id: S3Origin
-            S3OriginConfig:
-              OriginAccessIdentity: !Sub 'origin-access-identity/cloudfront/${CloudFrontOAI}'
+            OriginAccessControlId: !GetAtt CloudFrontOAC.Id
+            S3OriginConfig: {}
         DefaultCacheBehavior:
-          TargetOriginId: S3Origin
-          ViewerProtocolPolicy: redirect-to-https
           ForwardedValues:
-            QueryString: false
-            Cookies:
-              Forward: none
-        ViewerCertificate:
-          CloudFrontDefaultCertificate: true
+              QueryString: 'false'
+              Cookies:
+                Forward: none
+          TargetOriginId: S3Origin
+          ViewerProtocolPolicy: allow-all
