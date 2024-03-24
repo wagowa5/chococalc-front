@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { evaluate } from 'maths.ts';
 
 import { StatusInputFields, CharacterStatus } from '../interface/Status';
-import { MESSAGES, FIELDS } from '../constants/constants';
+import { MESSAGES, FIELDS, STATUS } from '../constants/constants';
 import { 
     getInputStatus,
     calculateDisplayStatus,
@@ -47,8 +47,11 @@ const SkillArea = (
 
     // ブラッドスクレイパーのスキルを計算する
     const handleBradScraper = () => {
-
-        calculateDisplayStatus(characterStatus, updateCharacter)
+        const newCharacterStatus = { ...characterStatus };
+        newCharacterStatus[STATUS.POW].bradScraper = 9;
+        updateCharacter(newCharacterStatus);
+        // 表示用ステータスを計算
+        calculateDisplayStatus(characterStatus, updateCharacter);
     }
 
     // ブラッドスクレイパーのスキルをリセットする
