@@ -28,10 +28,6 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           REPOSITORY: "wagowa5/chococalc-front"
           PR_NUMBER: ${{ github.event.issue.number }}
-      - run: |
-          echo A comment on PR $NUMBER
-        env:
-          NUMBER: ${{ github.event.issue.number }}
 
   issue_commented:
     # This job only runs for issue comments
