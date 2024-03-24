@@ -10,7 +10,17 @@ import {
     vitaButtonsData, canButtonsData, sealButtonsData, liquidButtonsData,
     hpSpScrollOptions, basicScrollOptions, detailScrollOptions
 } from './itemConfig';
-import { getInputStatus, calculateDisplayStatus } from '../util/StatusUtil';
+import { 
+    getInputStatus,
+    calculateDisplayStatus,
+    resetAllItemSkillStatus,
+    resetVitaStatus,
+    resetCanSealStatus,
+    resetScrollStatus,
+    resetLiquidStatus,
+    resetBradScraperStatus,
+    resetSpecialSkillStatus,
+} from '../util/StatusUtil';
 
 import { TextField, Box, Grid } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -93,6 +103,22 @@ const ItemArea = (
         setMdfScroll(event.target.value);
     };
 
+    // ビタボタンクリック時の処理を生成する関数
+    const generateVitaHandler = (statusKey: string) => {
+        // 入力値を取得
+        getInputStatus(characterStatus, inputStatus, updateCharacter);
+
+        const newCharacterStatus = { ...characterStatus };        
+        // ビタのステータスを更新
+        if (newCharacterStatus[statusKey].base * 0.2 < 1) {
+            newCharacterStatus[statusKey].vita = 1;
+        } else {
+            newCharacterStatus[statusKey].vita = Math.floor(newCharacterStatus[statusKey].base * 0.2);
+        };
+        
+        updateCharacter(newCharacterStatus);
+        calculateDisplayStatus(characterStatus, updateCharacter);
+    };
     // ビタボタンクリック時の処理
     const handleVitaButtons: {[key: string]: { handle: () => void; }} = {
         [ITEMS.VITA.ALL.key]: { handle: () => {
@@ -130,76 +156,11 @@ const ItemArea = (
             updateCharacter(newCharacterStatus);
             calculateDisplayStatus(characterStatus, updateCharacter);
         }},
-        [ITEMS.VITA.POW.key]: { handle: () => {
-            // 入力値を取得
-            getInputStatus(characterStatus, inputStatus, updateCharacter);
-
-            const newCharacterStatus = { ...characterStatus };        
-            // ビタのステータスを更新
-            if (newCharacterStatus[STATUS.POW].base * 0.2 < 1) {
-                newCharacterStatus[STATUS.POW].vita = 1;
-            } else {
-                newCharacterStatus[STATUS.POW].vita = Math.floor(newCharacterStatus[STATUS.POW].base * 0.2);
-            };
-            updateCharacter(newCharacterStatus);
-            calculateDisplayStatus(characterStatus, updateCharacter);
-        }},
-        [ITEMS.VITA.INT.key]: { handle: () => {
-            // 入力値を取得
-            getInputStatus(characterStatus, inputStatus, updateCharacter);
-
-            const newCharacterStatus = { ...characterStatus };
-            // ビタのステータスを更新
-            if (newCharacterStatus[STATUS.INT].base * 0.2 < 1) {
-                newCharacterStatus[STATUS.INT].vita = 1;
-            } else {
-                newCharacterStatus[STATUS.INT].vita = Math.floor(newCharacterStatus[STATUS.INT].base * 0.2);
-            };
-            updateCharacter(newCharacterStatus);
-            calculateDisplayStatus(characterStatus, updateCharacter);
-        }},
-        [ITEMS.VITA.SPD.key]: { handle: () => {
-            // 入力値を取得
-            getInputStatus(characterStatus, inputStatus, updateCharacter);
-
-            const newCharacterStatus = { ...characterStatus };
-            // ビタのステータスを更新
-            if (newCharacterStatus[STATUS.SPD].base * 0.2 < 1) {
-                newCharacterStatus[STATUS.SPD].vita = 1;
-            } else {
-                newCharacterStatus[STATUS.SPD].vita = Math.floor(newCharacterStatus[STATUS.SPD].base * 0.2);
-            }
-            updateCharacter(newCharacterStatus);
-            calculateDisplayStatus(characterStatus, updateCharacter);
-        }},
-        [ITEMS.VITA.VIT.key]: { handle: () => {
-            // 入力値を取得
-            getInputStatus(characterStatus, inputStatus, updateCharacter);
-
-            const newCharacterStatus = { ...characterStatus };
-            // ビタのステータスを更新
-            if (newCharacterStatus[STATUS.VIT].base * 0.2 < 1) {
-                newCharacterStatus[STATUS.VIT].vita = 1;
-            } else {
-                newCharacterStatus[STATUS.VIT].vita = Math.floor(newCharacterStatus[STATUS.VIT].base * 0.2);
-            }
-            updateCharacter(newCharacterStatus);
-            calculateDisplayStatus(characterStatus, updateCharacter);
-        }},
-        [ITEMS.VITA.LUK.key]: { handle: () => {
-            // 入力値を取得
-            getInputStatus(characterStatus, inputStatus, updateCharacter);
-
-            const newCharacterStatus = { ...characterStatus };
-            // ビタのステータスを更新
-            if (newCharacterStatus[STATUS.LUK].base * 0.2 < 1) {
-                newCharacterStatus[STATUS.LUK].vita = 1;
-            } else {
-                newCharacterStatus[STATUS.LUK].vita = Math.floor(newCharacterStatus[STATUS.LUK].base * 0.2);
-            }
-            updateCharacter(newCharacterStatus);
-            calculateDisplayStatus(characterStatus, updateCharacter);
-        }},
+        [ITEMS.VITA.POW.key]: { handle: () => { generateVitaHandler(STATUS.POW); }},
+        [ITEMS.VITA.INT.key]: { handle: () => { generateVitaHandler(STATUS.INT); }},
+        [ITEMS.VITA.SPD.key]: { handle: () => { generateVitaHandler(STATUS.SPD); }},
+        [ITEMS.VITA.VIT.key]: { handle: () => { generateVitaHandler(STATUS.VIT); }},
+        [ITEMS.VITA.LUK.key]: { handle: () => { generateVitaHandler(STATUS.LUK); }},
     };
 
     // 缶ボタンクリック時の処理
@@ -208,18 +169,96 @@ const ItemArea = (
             // 入力値を取得
             getInputStatus(characterStatus, inputStatus, updateCharacter);
 
+            // ビタ・缶・シールのステータスをリセットしてから更新
+            resetCanSealStatus(characterStatus, updateCharacter);
             const newCharacterStatus = { ...characterStatus };
-
+            newCharacterStatus[STATUS.POW].canSeal = 10;
+            newCharacterStatus[STATUS.INT].canSeal = -10;
+            
             updateCharacter(newCharacterStatus);
+            calculateDisplayStatus(characterStatus, updateCharacter);
         }},
         [ITEMS.CAN.B.key]: { handle: () => {
             // 入力値を取得
             getInputStatus(characterStatus, inputStatus, updateCharacter);
-
-            const newCharacterStatus = { ...characterStatus };
             
-
+            // ビタ・缶・シールのステータスをリセットしてから更新
+            resetCanSealStatus(characterStatus, updateCharacter);
+            const newCharacterStatus = { ...characterStatus };
+            newCharacterStatus[STATUS.INT].canSeal = 10;
+            newCharacterStatus[STATUS.VIT].canSeal = -10;
+            
             updateCharacter(newCharacterStatus);
+            calculateDisplayStatus(characterStatus, updateCharacter);
+        }},
+    };
+
+    // シールボタンクリック時の処理
+    const handleSealButtons: {[key: string]: { handle: () => void; }} = {
+        [ITEMS.SEAL.POW.key]: { handle: () => {
+            // 入力値を取得
+            getInputStatus(characterStatus, inputStatus, updateCharacter);
+
+            // ビタ・缶・シールのステータスをリセットしてから更新
+            resetCanSealStatus(characterStatus, updateCharacter);
+            const newCharacterStatus = { ...characterStatus };
+            newCharacterStatus[STATUS.POW].canSeal = 15;
+            newCharacterStatus[STATUS.INT].canSeal = -15;
+            
+            updateCharacter(newCharacterStatus);
+            calculateDisplayStatus(characterStatus, updateCharacter);
+        }},
+        [ITEMS.SEAL.INT.key]: { handle: () => {
+            // 入力値を取得
+            getInputStatus(characterStatus, inputStatus, updateCharacter);
+            
+            // ビタ・缶・シールのステータスをリセットしてから更新
+            resetCanSealStatus(characterStatus, updateCharacter);
+            const newCharacterStatus = { ...characterStatus };
+            newCharacterStatus[STATUS.INT].canSeal = 15;
+            newCharacterStatus[STATUS.POW].canSeal = -15;
+            
+            updateCharacter(newCharacterStatus);
+            calculateDisplayStatus(characterStatus, updateCharacter);
+        }},
+        [ITEMS.SEAL.SPD.key]: { handle: () => {
+            // 入力値を取得
+            getInputStatus(characterStatus, inputStatus, updateCharacter);
+            
+            // ビタ・缶・シールのステータスをリセットしてから更新
+            resetCanSealStatus(characterStatus, updateCharacter);
+            const newCharacterStatus = { ...characterStatus };
+            newCharacterStatus[STATUS.SPD].canSeal = 15;
+            newCharacterStatus[STATUS.LUK].canSeal = -15;
+            
+            updateCharacter(newCharacterStatus);
+            calculateDisplayStatus(characterStatus, updateCharacter);
+        }},
+        [ITEMS.SEAL.VIT.key]: { handle: () => {
+            // 入力値を取得
+            getInputStatus(characterStatus, inputStatus, updateCharacter);
+            
+            // ビタ・缶・シールのステータスをリセットしてから更新
+            resetCanSealStatus(characterStatus, updateCharacter);
+            const newCharacterStatus = { ...characterStatus };
+            newCharacterStatus[STATUS.VIT].canSeal = 15;
+            newCharacterStatus[STATUS.SPD].canSeal = -15;
+            
+            updateCharacter(newCharacterStatus);
+            calculateDisplayStatus(characterStatus, updateCharacter);
+        }},
+        [ITEMS.SEAL.LUK.key]: { handle: () => {
+            // 入力値を取得
+            getInputStatus(characterStatus, inputStatus, updateCharacter);
+            
+            // ビタ・缶・シールのステータスをリセットしてから更新
+            resetCanSealStatus(characterStatus, updateCharacter);
+            const newCharacterStatus = { ...characterStatus };
+            newCharacterStatus[STATUS.LUK].canSeal = 15;
+            newCharacterStatus[STATUS.VIT].canSeal = -15;
+            
+            updateCharacter(newCharacterStatus);
+            calculateDisplayStatus(characterStatus, updateCharacter);
         }},
     };
 
@@ -247,12 +286,12 @@ const ItemArea = (
                 <Grid container spacing={1}>
                     {/* 魔獣缶 */}
                     <Grid item xs = {6}>
-                        <ButtonGroupComponent buttons={canButtonsData} />
+                        <ButtonGroupComponent buttons={canButtonsData} handles={handleCanButtons} />
                     </Grid>
 
                     {/* シール(かき氷) */}
                     <Grid item xs = {6}>
-                        <ButtonGroupComponent buttons={sealButtonsData} />
+                        <ButtonGroupComponent buttons={sealButtonsData} handles={handleSealButtons} />
                     </Grid>
                 </Grid>
             </Grid>

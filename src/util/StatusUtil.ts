@@ -166,3 +166,112 @@ export const calculateDisplayStatus = (
         );
     updateCharacter(newCharacterStatus);
 };
+
+// 缶・シールのステータスをリセットする関数
+export const resetCanSealStatus = (
+    characterStatus: CharacterStatus,
+    updateCharacter: (newCharacterStatus: CharacterStatus) => void
+) => {
+    const newCharacterStatus = { ...characterStatus };
+    newCharacterStatus[STATUS.POW].canSeal = 0;
+    newCharacterStatus[STATUS.INT].canSeal = 0;
+    newCharacterStatus[STATUS.SPD].canSeal = 0;
+    newCharacterStatus[STATUS.VIT].canSeal = 0;
+    newCharacterStatus[STATUS.LUK].canSeal = 0;
+    updateCharacter(newCharacterStatus);
+}
+
+// ビタのステータスをリセットする関数
+export const resetVitaStatus = (
+    characterStatus: CharacterStatus,
+    updateCharacter: (newCharacterStatus: CharacterStatus) => void
+) => {
+    const newCharacterStatus = { ...characterStatus };
+    newCharacterStatus[STATUS.POW].allVita = 0;
+    newCharacterStatus[STATUS.POW].vita = 0;
+    newCharacterStatus[STATUS.INT].allVita = 0;
+    newCharacterStatus[STATUS.INT].vita = 0;
+    newCharacterStatus[STATUS.SPD].allVita = 0;
+    newCharacterStatus[STATUS.SPD].vita = 0;
+    newCharacterStatus[STATUS.VIT].allVita = 0;
+    newCharacterStatus[STATUS.VIT].vita = 0;
+    newCharacterStatus[STATUS.LUK].allVita = 0;
+    newCharacterStatus[STATUS.LUK].vita = 0;
+    updateCharacter(newCharacterStatus);
+}
+
+// 巻物のステータスをリセットする関数
+export const resetScrollStatus = (
+    characterStatus: CharacterStatus,
+    updateCharacter: (newCharacterStatus: CharacterStatus) => void
+) => {
+    const newCharacterStatus = { ...characterStatus };
+    newCharacterStatus[STATUS.HP].scroll = 0;
+    newCharacterStatus[STATUS.SP].scroll = 0;
+    newCharacterStatus[STATUS.POW].scroll = 0;
+    newCharacterStatus[STATUS.INT].scroll = 0;
+    newCharacterStatus[STATUS.SPD].scroll = 0;
+    newCharacterStatus[STATUS.VIT].scroll = 0;
+    newCharacterStatus[STATUS.LUK].scroll = 0;
+    newCharacterStatus[STATUS.ATK].scroll = 0;
+    newCharacterStatus[STATUS.DEF].scroll = 0;
+    newCharacterStatus[STATUS.MAT].scroll = 0;
+    newCharacterStatus[STATUS.MDF].scroll = 0;
+    updateCharacter(newCharacterStatus);
+}
+
+// リキッドのステータスをリセットする関数
+export const resetLiquidStatus = (
+    characterStatus: CharacterStatus,
+    updateCharacter: (newCharacterStatus: CharacterStatus) => void
+) => {
+    const newCharacterStatus = { ...characterStatus };
+    newCharacterStatus[STATUS.ATK].liquid = 0;
+    newCharacterStatus[STATUS.DEF].liquid = 0;
+    newCharacterStatus[STATUS.MAT].liquid = 0;
+    newCharacterStatus[STATUS.MDF].liquid = 0;
+    updateCharacter(newCharacterStatus);
+}
+
+// 特殊スキルのステータスをリセットする関数
+export const resetSpecialSkillStatus = (
+    characterStatus: CharacterStatus,
+    updateCharacter: (newCharacterStatus: CharacterStatus) => void
+) => {
+    const newCharacterStatus = { ...characterStatus };
+    newCharacterStatus[STATUS.HP].specialSkill = 0;
+    newCharacterStatus[STATUS.SP].specialSkill = 0;
+    newCharacterStatus[STATUS.POW].specialSkill = 0;
+    newCharacterStatus[STATUS.INT].specialSkill = 0;
+    newCharacterStatus[STATUS.SPD].specialSkill = 0;
+    newCharacterStatus[STATUS.VIT].specialSkill = 0;
+    newCharacterStatus[STATUS.LUK].specialSkill = 0;
+    newCharacterStatus[STATUS.ATK].specialSkill = 0;
+    newCharacterStatus[STATUS.DEF].specialSkill = 0;
+    newCharacterStatus[STATUS.MAT].specialSkill = 0;
+    newCharacterStatus[STATUS.MDF].specialSkill = 0;
+    updateCharacter(newCharacterStatus);
+}
+
+// ブラッドスクレイパーのステータスをリセットする関数
+export const resetBradScraperStatus = (
+    characterStatus: CharacterStatus,
+    updateCharacter: (newCharacterStatus: CharacterStatus) => void
+) => {
+    const newCharacterStatus = { ...characterStatus };
+    newCharacterStatus[STATUS.POW].bradScraper = 0;
+    updateCharacter(newCharacterStatus);
+}
+
+// アイテム・スキルをすべてリセットする関数
+export const resetAllItemSkillStatus = (
+    characterStatus: CharacterStatus,
+    updateCharacter: (newCharacterStatus: CharacterStatus) => void
+) => {
+    resetCanSealStatus(characterStatus, updateCharacter);
+    resetVitaStatus(characterStatus, updateCharacter);
+    resetScrollStatus(characterStatus, updateCharacter);
+    resetLiquidStatus(characterStatus, updateCharacter);
+    resetSpecialSkillStatus(characterStatus, updateCharacter);
+    resetBradScraperStatus(characterStatus, updateCharacter);
+}
