@@ -81,8 +81,8 @@ const DisplayArea = (
                     </TableHead>
                     <TableBody>
                         <StyledTableRow key={"disp-hp-sp"}>
-                        <StyledTableCell align="center">1100({100})</StyledTableCell>
-                        <StyledTableCell align="center">1100({100})</StyledTableCell>
+                        <StyledTableCell align="center">{characterStatus[STATUS.HP].displayStatus} ({characterStatus[STATUS.HP].specialSkill})</StyledTableCell>
+                        <StyledTableCell align="center">{characterStatus[STATUS.SP].displayStatus} ({characterStatus[STATUS.SP].specialSkill})</StyledTableCell>
                         </StyledTableRow>
                     </TableBody>
                 </Table>
@@ -132,10 +132,10 @@ const DisplayArea = (
                     </TableHead>
                     <TableBody>
                         <StyledTableRow key={"disp-detail-status"}>
-                        <StyledTableCell align="center">66000 (64000)</StyledTableCell>
-                        <StyledTableCell align="center">110000 (100000)</StyledTableCell>
-                        <StyledTableCell align="center">110000 (100000)</StyledTableCell>
-                        <StyledTableCell align="center">110000 (100000)</StyledTableCell>
+                        <StyledTableCell align="center">{characterStatus[STATUS.ATK].displayStatus} ({characterStatus[STATUS.ATK].liquid})</StyledTableCell>
+                        <StyledTableCell align="center">{characterStatus[STATUS.DEF].displayStatus} ({characterStatus[STATUS.DEF].liquid})</StyledTableCell>
+                        <StyledTableCell align="center">{characterStatus[STATUS.MAT].displayStatus} ({characterStatus[STATUS.MAT].liquid})</StyledTableCell>
+                        <StyledTableCell align="center">{characterStatus[STATUS.MDF].displayStatus} ({characterStatus[STATUS.MDF].liquid})</StyledTableCell>
                         </StyledTableRow>
                     </TableBody>
                 </Table>
