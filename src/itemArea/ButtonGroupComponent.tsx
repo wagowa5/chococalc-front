@@ -5,7 +5,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 // ButtonGroupComponentのPropsの型定義
 interface ButtonGroupComponentProps {
     buttons: { key: string; label: string; }[];
-    handles?: {
+    handles: {
         [key: string]: {
             handle: () => void;
         }
@@ -17,16 +17,12 @@ const ButtonGroupComponent: React.FC<ButtonGroupComponentProps> = ({ buttons, ha
     return (
         <ButtonGroup orientation="vertical" aria-label="Vertical button group">
             {buttons.map(button => (
-            handles && handles[button.key] ? (
                 <Button 
                     key={button.key}
                     onClick={handles[button.key].handle}
                 >
                     {button.label}
                 </Button>
-            ) : (
-                <Button key={button.key}>{button.label}</Button>
-            )
             ))}
         </ButtonGroup>
     );
