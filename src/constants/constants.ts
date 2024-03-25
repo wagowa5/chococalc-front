@@ -1,7 +1,7 @@
 export const MESSAGES = {
     INPUT_ERROR: {
         CANNOT_CALCULATE: '計算できません',
-    },
+    }
 }
 
 export const FIELDS = {

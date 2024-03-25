@@ -1,14 +1,14 @@
 import { Grid } from '@mui/material';
 import Button from '@mui/material/Button';
 
-import { StatusInputFields, CharacterStatus } from '../interface/Status';
-import { STATUS } from '../constants/constants';
+import { StatusInputFields, CharacterStatus } from '../../interface/Status';
+import { STATUS } from '../../constants/constants';
 import { 
     getInputStatus,
     calculateDisplayStatus,
     resetBradScraperStatus,
     resetSpecialSkillStatus,
-} from '../util/StatusUtil';
+} from '../../util/StatusUtil';
 
 /**
  * SkillAreaProps

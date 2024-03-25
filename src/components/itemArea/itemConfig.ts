@@ -1,4 +1,4 @@
-import { ITEMS, SCROLL_RANK } from "../constants/constants"; 
+import { ITEMS, SCROLL_RANK } from "../../constants/constants"; 
 
 // ボタン設定
 export const vitaButtonsData = [

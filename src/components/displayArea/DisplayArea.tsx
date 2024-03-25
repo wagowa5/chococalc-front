@@ -9,12 +9,12 @@ import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 import { Grid } from '@mui/material';
 
-import { STATUS } from '../constants/constants';
-import { CharacterStatus } from '../interface/Status';
+import { STATUS } from '../../constants/constants';
+import { CharacterStatus } from '../../interface/Status';
 import {
     calculateDisplayStatus,
     resetAllItemSkillStatus,
-} from '../util/StatusUtil';
+} from '../../util/StatusUtil';
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({

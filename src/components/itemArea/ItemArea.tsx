@@ -3,8 +3,8 @@ import React from 'react';
 import { Grid } from '@mui/material';
 import Button from '@mui/material/Button';
 
-import { StatusInputFields, CharacterStatus } from './../interface/Status';
-import { ITEMS, STATUS } from '../constants/constants';
+import { StatusInputFields, CharacterStatus } from '../../interface/Status';
+import { ITEMS, STATUS } from '../../constants/constants';
 import ButtonGroupComponent from './ButtonGroupComponent';
 import ScrollSelect from './ScrollSelect';
 import { 
@@ -18,7 +18,7 @@ import {
     resetCanSealStatus,
     resetScrollStatus,
     resetLiquidStatus,
-} from '../util/StatusUtil';
+} from '../../util/StatusUtil';
 
 /**
  * ItemAreaProps

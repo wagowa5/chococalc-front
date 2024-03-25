@@ -1,8 +1,8 @@
 import React from 'react';
 import { evaluate } from 'maths.ts';
 
-import { MESSAGES, FIELDS } from '../constants/constants';
-import { StatusInputFields } from '../interface/Status';
+import { MESSAGES, FIELDS } from '../../constants/constants';
+import { StatusInputFields } from '../../interface/Status';
 import './CharacterArea.css';
 
 import { TextField, Grid, Chip } from '@mui/material';
