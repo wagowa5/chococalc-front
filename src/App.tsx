@@ -3,7 +3,7 @@ import DesktopMainComponent from './components/desktop/DesktopMainComponent';
 import MobileMainComponent from './components/mobile/MobileMainComponent';
 
 const App: React.FC = () => {
-  const isMobile = window.innerWidth < 768; // 768pxをモバイルとデスクトップの分岐点とする
+  const isMobile = window.innerWidth <= 768; // 768pxをモバイルとデスクトップの分岐点とする
   return (
     <div>
       {isMobile ? <MobileMainComponent /> : <DesktopMainComponent />}

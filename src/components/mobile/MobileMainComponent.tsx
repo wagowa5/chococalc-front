@@ -9,7 +9,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Box from '@mui/material/Box';
 
-import './../../App.css';
+import './MobileMainComponent.css';
 import CharacterArea from './../characterArea/CharacterArea';
 import { StatusInputFields, CharacterStatus } from './../../interface/Status';
 import ItemArea from './../itemArea/ItemArea';
