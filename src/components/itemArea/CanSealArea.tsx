@@ -141,7 +141,7 @@ const ItemArea = (
         <>
         <Grid container spacing={1} justifyContent="center" alignItems="start">
             {/* ----- 1行目 ----- */}
-            {/* ビタと缶・シールのリセットボタン */}
+            {/* 缶・シールのリセットボタン */}
             <Grid item xs={12}>
                 <Button
                     variant="contained"
