@@ -75,8 +75,6 @@ const ScrollArea = (
         const newCharacterStatus = { ...characterStatus };
         //const newCharacterStatus = JSON.parse(JSON.stringify(characterStatus));
         newCharacterStatus[statusType].scroll = Number(value);
-        console.log(characterStatus);
-        console.log(newCharacterStatus);
         updateCharacter(newCharacterStatus);
         // 表示用ステータスを計算
         calculateDisplayStatus(characterStatus, updateCharacter);
