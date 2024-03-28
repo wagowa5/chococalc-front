@@ -1,7 +1,4 @@
-import * as React from 'react';
-import { red } from '@mui/material/colors';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-
+import { createTheme } from '@mui/material/styles';
 
 // フォントを設定
 const fontFamily = [
