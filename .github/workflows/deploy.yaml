@@ -35,7 +35,9 @@ jobs:
             ${{ runner.os }}-yarn
 
       - name: Build
-        run: yarn build
+        run: |
+          yarn install
+          yarn build
 
       - name: Deploy to S3 And CloudFront Cache Clear
         run: |
