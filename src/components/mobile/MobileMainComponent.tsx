@@ -85,7 +85,11 @@ function App() {
                     updateInputStatus={updateInputStatus}
                 />
                 </Grid>
+            </Grid>
 
+            <Divider textAlign="left"></Divider>
+
+            <Grid container spacing={1} margin={1} justifyContent={'center'} alignItems={'start'}>
                 {/* アイテムボタンを配置しているエリア */}
                 <Grid item xs={12}>
                 <MobileItemArea
@@ -99,7 +103,7 @@ function App() {
 
             <Divider textAlign="left"></Divider>
 
-            <Grid container spacing={0} margin={1}>
+            <Grid container spacing={0} margin={0}>
                 {/* スキルボタンを配置しているエリア */}
                 <Grid item xs={12}>
                     <SkillArea
@@ -109,7 +113,11 @@ function App() {
                         updateInputStatus={updateInputStatus}
                     />
                 </Grid>
+            </Grid>
 
+            <Divider textAlign="left"></Divider>
+            
+            <Grid container spacing={0} margin={1}>
                 {/* 計算結果を表示するエリア */}
                 <Grid item xs={12}>
                 <DisplayArea

@@ -156,7 +156,7 @@ const ItemArea = (
             {/* ----- 2行目 ----- */}
             {/* 魔獣缶・シール(かき氷) */}
             <Grid item xs={12}>
-                <Grid container spacing={1}>
+                <Grid container spacing={0}>
                     {/* 魔獣缶 */}
                     <Grid item xs = {6}>
                         <ButtonGroupComponent buttons={canButtonsData} handles={handleCanButtons} />

@@ -12,7 +12,7 @@ import Box from '@mui/material/Box';
 import './DesktopMainComponent.css';
 import CharacterArea from './../characterArea/CharacterArea';
 import { StatusInputFields, CharacterStatus } from './../../interface/Status';
-import ItemArea from './../itemArea/ItemArea';
+import DesktopItemArea from './DesktopItemArea';
 import DisplayArea from './../displayArea/DisplayArea';
 import SkillArea from './../skillArea/SkillArea';
 import { FIELDS, STATUS } from './../../constants/constants';
@@ -79,27 +79,63 @@ function App() {
             {/* コンテンツ */}
             <Grid container spacing={1} margin={1} justifyContent={'center'} alignItems={'start'}>
                 {/* キャラクターの情報入力欄を配置しているエリア */}
-                <Grid item xs={5}>
-                <CharacterArea 
-                    inputStatus={inputStatus}
-                    updateInputStatus={updateInputStatus}
-                />
+                <Grid item xs={6}>
+                <Box 
+                    sx={{
+                        bgcolor: 'background.paper',
+                        boxShadow: 1,
+                        borderRadius: 2,
+                        p: 2, 
+                    }}
+                >
+                    <CharacterArea 
+                        inputStatus={inputStatus}
+                        updateInputStatus={updateInputStatus}
+                    />
+                </Box>
                 </Grid>
-
-                {/* アイテムボタンを配置しているエリア */}
-                <Grid item xs={7}>
-                <ItemArea
-                    characterStatus={characterStatus}
-                    updateCharacter={updateCharacter}
-                    inputStatus={inputStatus}
-                    updateInputStatus={updateInputStatus}
-                />
+                <Grid item xs={6}>
+                <Box 
+                    sx={{
+                        bgcolor: 'background.paper',
+                        boxShadow: 1,
+                        borderRadius: 2,
+                        p: 2,
+                    }}
+                >
+                    マネキンエリアになる予定です
+                    マネキンエリアになる予定です
+                    マネキンエリアになる予定です
+                    </Box>
                 </Grid>
             </Grid>
 
             <Divider textAlign="left"></Divider>
 
-            <Grid container spacing={0} margin={1}>
+            <Grid container spacing={1} margin={1} justifyContent={'center'} alignItems={'start'}>
+            {/* アイテムボタンを配置しているエリア */}
+            <Grid item xs={12}>
+                <Box 
+                    sx={{
+                        bgcolor: 'background.paper',
+                        boxShadow: 1,
+                        borderRadius: 2,
+                        p: 2,
+                    }}
+                >
+                <DesktopItemArea
+                    characterStatus={characterStatus}
+                    updateCharacter={updateCharacter}
+                    inputStatus={inputStatus}
+                    updateInputStatus={updateInputStatus}
+                />
+                </Box>
+            </Grid>
+            </Grid>
+
+            <Divider textAlign="left"></Divider>
+
+            <Grid container spacing={1} margin={1}>
                 {/* 計算結果を表示するエリア */}
                 <Grid item xs={7}>
                 <DisplayArea
@@ -110,12 +146,21 @@ function App() {
 
                 {/* スキルボタンを配置しているエリア */}
                 <Grid item xs={5}>
-                    <SkillArea
-                        characterStatus={characterStatus}
-                        updateCharacter={updateCharacter}
-                        inputStatus={inputStatus}
-                        updateInputStatus={updateInputStatus}
-                    />
+                    <Box 
+                        sx={{
+                            bgcolor: 'background.paper',
+                            boxShadow: 1,
+                            borderRadius: 2,
+                            p: 2,
+                        }}
+                    >
+                        <SkillArea
+                            characterStatus={characterStatus}
+                            updateCharacter={updateCharacter}
+                            inputStatus={inputStatus}
+                            updateInputStatus={updateInputStatus}
+                        />
+                    </Box>
                 </Grid>
             </Grid>
         </>

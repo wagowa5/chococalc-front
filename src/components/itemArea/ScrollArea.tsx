@@ -42,8 +42,8 @@ const ScrollArea = (
 
     // 巻物のセレクトボックスの変更時の処理
     const handleScrollChange = (statusType: string, value: string) => {
-        // スクロールの状態を更新
-        const setScrollStateFunction = {
+        // ステート更新関数のマッピング
+        const setScrollStateFunctions = {
             [STATUS.HP]: setHpScroll,
             [STATUS.SP]: setSpScroll,
             [STATUS.POW]: setPowScroll,
@@ -55,13 +55,28 @@ const ScrollArea = (
             [STATUS.DEF]: setDefScroll,
             [STATUS.MAT]: setMatScroll,
             [STATUS.MDF]: setMdfScroll,
-        }[statusType];
-        setScrollStateFunction(value);
-    
+        };
+
+        // 選択されたスクロールタイプに対応するステートを更新
+        const updateFunction = setScrollStateFunctions[statusType];
+        if (updateFunction) {
+            updateFunction(value);
+        }
+
+        // その他のスクロールのステートをリセット
+        Object.keys(setScrollStateFunctions).forEach((key) => {
+            if (key !== statusType) {
+                setScrollStateFunctions[key]('');
+            }
+        });
+        
         // 巻物ステータスをリセットして更新
         resetScrollStatus(characterStatus, updateCharacter);
-        const newCharacterStatus = { ...characterStatus };
+        //const newCharacterStatus = { ...characterStatus };
+        const newCharacterStatus = JSON.parse(JSON.stringify(characterStatus));
         newCharacterStatus[statusType].scroll = Number(value);
+        console.log(characterStatus);
+        console.log(newCharacterStatus);
         updateCharacter(newCharacterStatus);
         // 表示用ステータスを計算
         calculateDisplayStatus(characterStatus, updateCharacter);
