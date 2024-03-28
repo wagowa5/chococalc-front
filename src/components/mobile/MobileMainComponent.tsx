@@ -12,10 +12,10 @@ import Box from '@mui/material/Box';
 import './MobileMainComponent.css';
 import CharacterArea from './../characterArea/CharacterArea';
 import { StatusInputFields, CharacterStatus } from './../../interface/Status';
-import ItemArea from './../itemArea/ItemArea';
 import DisplayArea from './../displayArea/DisplayArea';
 import SkillArea from './../skillArea/SkillArea';
 import { FIELDS, STATUS } from './../../constants/constants';
+import MobileItemArea from './MobileItemArea';
 
 const initialStatusInputFields: StatusInputFields = Object.keys(FIELDS).reduce<StatusInputFields>((acc, key) => {
     const fieldKey = FIELDS[key as keyof typeof FIELDS]; // This ensures that fieldKey is typed correctly
@@ -85,10 +85,14 @@ function App() {
                     updateInputStatus={updateInputStatus}
                 />
                 </Grid>
+            </Grid>
 
+            <Divider textAlign="left"></Divider>
+
+            <Grid container spacing={1} margin={1} justifyContent={'center'} alignItems={'start'}>
                 {/* アイテムボタンを配置しているエリア */}
                 <Grid item xs={12}>
-                <ItemArea
+                <MobileItemArea
                     characterStatus={characterStatus}
                     updateCharacter={updateCharacter}
                     inputStatus={inputStatus}
@@ -99,7 +103,7 @@ function App() {
 
             <Divider textAlign="left"></Divider>
 
-            <Grid container spacing={0} margin={1}>
+            <Grid container spacing={0} margin={0}>
                 {/* スキルボタンを配置しているエリア */}
                 <Grid item xs={12}>
                     <SkillArea
@@ -109,7 +113,11 @@ function App() {
                         updateInputStatus={updateInputStatus}
                     />
                 </Grid>
+            </Grid>
 
+            <Divider textAlign="left"></Divider>
+            
+            <Grid container spacing={0} margin={1}>
                 {/* 計算結果を表示するエリア */}
                 <Grid item xs={12}>
                 <DisplayArea
