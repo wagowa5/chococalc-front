@@ -101,7 +101,6 @@ function App() {
                         boxShadow: 1,
                         borderRadius: 2,
                         p: 2,
-                        whiteSpace: 'pre-wrap'
                     }}
                 >
                     ログイン機能実装後、マネキンエリアになる予定です。
