@@ -39,14 +39,15 @@ jobs:
           yarn install
           yarn build
 
-      - name: Deploy to S3 And CloudFront Cache Clear
+      - name: Deploy to S3
         run: |
-          # sync --deleteでS3バケットの内容をビルぢ内容と完全一致させる
+          # sync --deleteでS3バケットの内容をビルド内容と完全一致させる
           # metadataとcacheでエンドユーザーが常に最新のコンテンツを見れるようにする
           echo "deploy to s3"
           aws s3 --region ap-northeast-1 sync ./build ${{ secrets.AWS_S3_BUCKET_NAME }} --delete --metadata-directive "REPLACE" --cache-control "max-age=0"
-          echo "aws cloudfront create-invalidation"
-          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths '/*'
+          # CloudFrontのキャッシュ削除なしでも上手くいっているので一旦コメントアウト
+          #echo "aws cloudfront create-invalidation"
+          #aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths '/*'
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
