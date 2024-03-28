@@ -123,6 +123,8 @@ function App() {
                 <DisplayArea
                     characterStatus={characterStatus}
                     updateCharacter={updateCharacter}
+                    inputStatus={inputStatus}
+                    updateInputStatus={updateInputStatus}
                 />
                 </Grid>
             </Grid>

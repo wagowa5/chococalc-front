@@ -101,11 +101,12 @@ function App() {
                         boxShadow: 1,
                         borderRadius: 2,
                         p: 2,
+                        whiteSpace: 'pre-wrap'
                     }}
                 >
-                    マネキンエリアになる予定です
-                    マネキンエリアになる予定です
-                    マネキンエリアになる予定です
+                    ログイン機能実装後、マネキンエリアになる予定です。
+                    ログイン機能実装後、マネキンエリアになる予定です
+                    ログイン機能実装後、マネキンエリアになる予定です
                     </Box>
                 </Grid>
             </Grid>
@@ -141,6 +142,8 @@ function App() {
                 <DisplayArea
                     characterStatus={characterStatus}
                     updateCharacter={updateCharacter}
+                    inputStatus={inputStatus}
+                    updateInputStatus={updateInputStatus}
                 />
                 </Grid>
 

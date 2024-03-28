@@ -10,8 +10,9 @@ import Button from '@mui/material/Button';
 import { Grid } from '@mui/material';
 
 import { STATUS } from '../../constants/constants';
-import { CharacterStatus } from '../../interface/Status';
+import { CharacterStatus, StatusInputFields } from '../../interface/Status';
 import {
+    getInputStatus,
     calculateDisplayStatus,
     resetAllItemSkillStatus,
 } from '../../util/StatusUtil';
@@ -42,15 +43,27 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 interface DisplayAreaProps {
     characterStatus: CharacterStatus;
     updateCharacter: (newCharacterStatus: CharacterStatus) => void;
+    inputStatus: StatusInputFields;
+    updateInputStatus: (newInputStatus: StatusInputFields) => void;
 }
 
 const DisplayArea = (
     {
         characterStatus,
         updateCharacter,
+        inputStatus,
+        updateInputStatus,
     }: DisplayAreaProps
 ) => {
 
+    // ステータス入力を反映ボタンクリック時の処理
+    const handleReflectInputStatus = () => {
+        // ステータス入力を反映
+        getInputStatus(characterStatus, inputStatus, updateCharacter);
+        calculateDisplayStatus(characterStatus, updateCharacter);
+    }
+
+    // すべてリセットボタンクリック時の処理
     const handleResetAll = () => {
         resetAllItemSkillStatus(characterStatus, updateCharacter);
         calculateDisplayStatus(characterStatus, updateCharacter);
@@ -59,10 +72,20 @@ const DisplayArea = (
     return (
         <>
         <Grid container spacing={1} justifyContent="center" alignItems="start">
+
+            {/* 1行目 */}
+            {/* 入力内容反映ボタン */}
+            <Grid item xs={12}>
+                <Button 
+                    variant="contained"
+                    onClick={handleReflectInputStatus}
+                    color='success'
+                >ステータス入力値を反映</Button>
+            </Grid>
+
             {/* 1行目 */}
             {/* HP・SP */}
-            <Grid item xs={1}></Grid>
-            <Grid item xs={10}>
+            <Grid item xs={12}>
                 <TableContainer component={Paper}>
                 <Table aria-label="customized table">
                     <TableHead>
@@ -80,7 +103,6 @@ const DisplayArea = (
                 </Table>
                 </TableContainer>
             </Grid>
-            <Grid item xs={1}></Grid>
 
             {/* 2行目 */}
             {/* POW・INT・SPD・VIT・LUK */}
