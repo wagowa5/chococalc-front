@@ -72,8 +72,8 @@ const ScrollArea = (
         
         // 巻物ステータスをリセットして更新
         resetScrollStatus(characterStatus, updateCharacter);
-        //const newCharacterStatus = { ...characterStatus };
-        const newCharacterStatus = JSON.parse(JSON.stringify(characterStatus));
+        const newCharacterStatus = { ...characterStatus };
+        //const newCharacterStatus = JSON.parse(JSON.stringify(characterStatus));
         newCharacterStatus[statusType].scroll = Number(value);
         console.log(characterStatus);
         console.log(newCharacterStatus);
