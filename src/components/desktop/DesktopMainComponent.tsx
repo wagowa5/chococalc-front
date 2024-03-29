@@ -69,6 +69,7 @@ function App() {
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                             チョコラン計算機(非公式)
                         </Typography>
+                        {/* TODO ログイン機能つくる */}
                         <Button color="inherit" variant='outlined'>ログインはまだできません</Button>         
                     </Toolbar>
                 </AppBar>
