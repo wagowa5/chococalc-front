@@ -10,6 +10,7 @@ import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Box from '@mui/material/Box';
 
 import './DesktopMainComponent.css';
+import AuthModal from '../auth/AuthModal';
 import CharacterArea from './../characterArea/CharacterArea';
 import { StatusInputFields, CharacterStatus } from './../../interface/Status';
 import DesktopItemArea from './DesktopItemArea';
@@ -41,7 +42,13 @@ const initialCharacterStatus: CharacterStatus = Object.keys(STATUS).reduce<Chara
     return acc;
 }, {});
 
-function App() {
+function DesktopMainComponent() {
+    const [authModalOpen, setAuthModalOpen] = useState(false);
+
+    const handleLoginButton = () => {
+        setAuthModalOpen(true);
+    }
+
     // 数値格納用のステータス
     const [characterStatus, setCharacterStatus] = useState<CharacterStatus>(
         initialCharacterStatus
@@ -61,6 +68,10 @@ function App() {
     return (
         <>
             <CssBaseline />
+            <AuthModal
+                authModalOpen={authModalOpen}
+                setAuthModalOpen={setAuthModalOpen}
+            />
             {/* ヘッダー */}
             <ElevationScroll>
                 <Box sx={{ flexGrow: 1 }}>
@@ -69,8 +80,13 @@ function App() {
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                             チョコラン計算機(非公式)
                         </Typography>
-                        {/* TODO ログイン機能つくる */}
-                        <Button color="inherit" variant='outlined'>ログインはまだできません</Button>         
+                        <Button
+                            color="inherit"
+                            variant='outlined'
+                            onClick={handleLoginButton}
+                        >
+                            ログイン
+                        </Button>         
                     </Toolbar>
                 </AppBar>
                 </Box>
@@ -170,7 +186,7 @@ function App() {
     );
 }
 
-export default App;
+export default DesktopMainComponent;
 
 /**
  * AppBarのスクロール設定

@@ -41,7 +41,7 @@ const initialCharacterStatus: CharacterStatus = Object.keys(STATUS).reduce<Chara
     return acc;
 }, {});
 
-function App() {
+function MobileMainComponent() {
     // 数値格納用のステータス
     const [characterStatus, setCharacterStatus] = useState<CharacterStatus>(
         initialCharacterStatus
@@ -132,7 +132,7 @@ function App() {
     );
 }
 
-export default App;
+export default MobileMainComponent;
 
 /**
  * AppBarのスクロール設定
