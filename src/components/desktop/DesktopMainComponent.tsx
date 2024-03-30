@@ -9,6 +9,9 @@ import CssBaseline from '@mui/material/CssBaseline';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Box from '@mui/material/Box';
 
+import { CognitoUserPool } from 'amazon-cognito-identity-js';
+
+import cognitoConfig from '../../config/awsConfig';
 import './DesktopMainComponent.css';
 import AuthModal from '../auth/AuthModal';
 import CharacterArea from './../characterArea/CharacterArea';
@@ -42,8 +45,24 @@ const initialCharacterStatus: CharacterStatus = Object.keys(STATUS).reduce<Chara
     return acc;
 }, {});
 
+const userPool = new CognitoUserPool({
+    UserPoolId: cognitoConfig.userPoolId,
+    ClientId: cognitoConfig.clientId,
+});
+
 function DesktopMainComponent() {
     const [authModalOpen, setAuthModalOpen] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const handleLogout = () => {
+        const cognitoUser = userPool.getCurrentUser();
+        console.log(cognitoUser);
+
+        if (cognitoUser) {
+            cognitoUser.signOut();
+            setIsLoggedIn(false); // ログアウト後に状態を更新
+        }
+    };
 
     const handleLoginButton = () => {
         setAuthModalOpen(true);
@@ -70,7 +89,9 @@ function DesktopMainComponent() {
             <CssBaseline />
             <AuthModal
                 authModalOpen={authModalOpen}
+                userPool={userPool}
                 setAuthModalOpen={setAuthModalOpen}
+                setIsLoggedIn={setIsLoggedIn}
             />
             {/* ヘッダー */}
             <ElevationScroll>
@@ -80,13 +101,24 @@ function DesktopMainComponent() {
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                             チョコラン計算機(非公式)
                         </Typography>
-                        <Button
-                            color="inherit"
-                            variant='outlined'
-                            onClick={handleLoginButton}
-                        >
-                            ログイン
-                        </Button>         
+                        {isLoggedIn ? (
+                            // ログイン時にログアウトボタンを表示
+                            <Button
+                                color="warning"
+                                variant='contained'
+                                onClick={handleLogout}>
+                                ログアウト
+                            </Button>
+                        ) : (
+                            // ログイン関連のコンポーネントまたはボタンを表示
+                            <Button
+                                color="inherit"
+                                variant='outlined'
+                                onClick={handleLoginButton}
+                            >
+                                ログイン
+                            </Button>
+                        )}
                     </Toolbar>
                 </AppBar>
                 </Box>
