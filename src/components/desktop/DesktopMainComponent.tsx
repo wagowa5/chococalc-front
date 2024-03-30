@@ -9,13 +9,18 @@ import CssBaseline from '@mui/material/CssBaseline';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Box from '@mui/material/Box';
 
+import { CognitoUserPool } from 'amazon-cognito-identity-js';
+
+import cognitoConfig from '../../config/awsConfig';
 import './DesktopMainComponent.css';
+import AuthModal from '../auth/AuthModal';
 import CharacterArea from './../characterArea/CharacterArea';
 import { StatusInputFields, CharacterStatus } from './../../interface/Status';
 import DesktopItemArea from './DesktopItemArea';
 import DisplayArea from './../displayArea/DisplayArea';
 import SkillArea from './../skillArea/SkillArea';
 import { FIELDS, STATUS } from './../../constants/constants';
+import MannequinArea from '../mannequinArea/MannequinArea';
 
 const initialStatusInputFields: StatusInputFields = Object.keys(FIELDS).reduce<StatusInputFields>((acc, key) => {
     const fieldKey = FIELDS[key as keyof typeof FIELDS]; // This ensures that fieldKey is typed correctly
@@ -41,7 +46,29 @@ const initialCharacterStatus: CharacterStatus = Object.keys(STATUS).reduce<Chara
     return acc;
 }, {});
 
-function App() {
+const userPool = new CognitoUserPool({
+    UserPoolId: cognitoConfig.userPoolId,
+    ClientId: cognitoConfig.clientId,
+});
+
+function DesktopMainComponent() {
+    const [authModalOpen, setAuthModalOpen] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const handleLogout = () => {
+        const cognitoUser = userPool.getCurrentUser();
+        console.log(cognitoUser);
+
+        if (cognitoUser) {
+            cognitoUser.signOut();
+            setIsLoggedIn(false); // ログアウト後に状態を更新
+        }
+    };
+
+    const handleLoginButton = () => {
+        setAuthModalOpen(true);
+    }
+
     // 数値格納用のステータス
     const [characterStatus, setCharacterStatus] = useState<CharacterStatus>(
         initialCharacterStatus
@@ -61,6 +88,12 @@ function App() {
     return (
         <>
             <CssBaseline />
+            <AuthModal
+                authModalOpen={authModalOpen}
+                userPool={userPool}
+                setAuthModalOpen={setAuthModalOpen}
+                setIsLoggedIn={setIsLoggedIn}
+            />
             {/* ヘッダー */}
             <ElevationScroll>
                 <Box sx={{ flexGrow: 1 }}>
@@ -69,7 +102,24 @@ function App() {
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                             チョコラン計算機(非公式)
                         </Typography>
-                        <Button color="inherit" variant='outlined'>ログインはまだできません</Button>         
+                        {isLoggedIn ? (
+                            // ログイン時にログアウトボタンを表示
+                            <Button
+                                color="warning"
+                                variant='contained'
+                                onClick={handleLogout}>
+                                ログアウト
+                            </Button>
+                        ) : (
+                            // ログイン関連のコンポーネントまたはボタンを表示
+                            <Button
+                                color="inherit"
+                                variant='outlined'
+                                onClick={handleLoginButton}
+                            >
+                                ログイン
+                            </Button>
+                        )}
                     </Toolbar>
                 </AppBar>
                 </Box>
@@ -103,9 +153,12 @@ function App() {
                         p: 2,
                     }}
                 >
-                    ログイン機能実装後、マネキンエリアになる予定です。
-                    ログイン機能実装後、マネキンエリアになる予定です
-                    ログイン機能実装後、マネキンエリアになる予定です
+                    <MannequinArea
+                        characterStatus={characterStatus}
+                        updateCharacter={updateCharacter}
+                        inputStatus={inputStatus}
+                        updateInputStatus={updateInputStatus}
+                    />
                     </Box>
                 </Grid>
             </Grid>
@@ -169,7 +222,7 @@ function App() {
     );
 }
 
-export default App;
+export default DesktopMainComponent;
 
 /**
  * AppBarのスクロール設定

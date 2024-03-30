@@ -1,7 +1,38 @@
 export const MESSAGES = {
     INPUT_ERROR: {
         CANNOT_CALCULATE: '計算できません',
-    }
+    },
+    AUTH_MODAL_KEYS: {
+        DEFAULT: 'default',
+        LOGIN_ERROR: 'loginError',
+        SIGNUP: 'signup',
+        SIGNUP_ERROR: 'signupError',
+        VERIFICATION_SUCCESS: 'verificationSuccess',
+        VERIFICATION_ERROR: 'verificationError',
+    },
+    AUTH_MODAL_TITLE: {
+        DEFAULT: '※注意',
+        LOGIN_ERROR: 'ログインエラー',
+        SIGNUP: '認証コードを送信しました',
+        SIGNUP_ERROR: 'サインアップ失敗',
+        VERIFICATION_SUCCESS: '認証成功',
+        VERIFICATION_ERROR: '認証失敗',
+    },
+    AUTH_MODAL_MESSAGE: {
+        DEFAULT: '他サービスと同じパスワードを使用しないでください。',
+        LOGIN_ERROR: 'メールアドレスとパスワードを確認してください。',
+        SIGNUP: 'メールを確認してください。',
+        SIGNUP_ERROR: 'パスワードは8文字以上で大文字、小文字、数字、記号を含む必要があります。',
+        VERIFICATION_SUCCESS: 'サインアップが完了しました。ログインできます。',
+        VERIFICATION_ERROR: '認証コードが正しくありません。',
+    },
+}
+
+export const AUTH_MODAL_ACTIONS = {
+    SET_EMAIL: 'SET_EMAIL',
+    SET_PASSWORD: 'SET_PASSWORD',
+    SET_VERIFICATION_CODE: 'SET_VERIFICATION_CODE',
+    SET_AUTH_STATUS: 'SET_AUTH_STATUS',
 }
 
 export const FIELDS = {
@@ -27,6 +58,10 @@ export const FIELDS = {
     DEF: 'inputDef',
     MAT: 'inputMat',
     MDF: 'inputMdf',
+}
+
+export const MANNEQUIN_FIELDS = {
+    MANNEQUIN_NAME: 'inputMannequinName',
 }
 
 export const STATUS = {

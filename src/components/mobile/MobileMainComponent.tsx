@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { CognitoUserPool } from 'amazon-cognito-identity-js';
+
 // material-ui
 import { Button, Grid, Divider } from "@mui/material";
 import AppBar from '@mui/material/AppBar';
@@ -10,6 +12,8 @@ import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Box from '@mui/material/Box';
 
 import './MobileMainComponent.css';
+import cognitoConfig from '../../config/awsConfig';
+import AuthModal from '../auth/AuthModal';
 import CharacterArea from './../characterArea/CharacterArea';
 import { StatusInputFields, CharacterStatus } from './../../interface/Status';
 import DisplayArea from './../displayArea/DisplayArea';
@@ -41,7 +45,29 @@ const initialCharacterStatus: CharacterStatus = Object.keys(STATUS).reduce<Chara
     return acc;
 }, {});
 
-function App() {
+const userPool = new CognitoUserPool({
+    UserPoolId: cognitoConfig.userPoolId,
+    ClientId: cognitoConfig.clientId,
+});
+
+function MobileMainComponent() {
+    const [authModalOpen, setAuthModalOpen] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const handleLogout = () => {
+        const cognitoUser = userPool.getCurrentUser();
+        console.log(cognitoUser);
+
+        if (cognitoUser) {
+            cognitoUser.signOut();
+            setIsLoggedIn(false); // ログアウト後に状態を更新
+        }
+    };
+
+    const handleLoginButton = () => {
+        setAuthModalOpen(true);
+    }
+
     // 数値格納用のステータス
     const [characterStatus, setCharacterStatus] = useState<CharacterStatus>(
         initialCharacterStatus
@@ -61,6 +87,12 @@ function App() {
     return (
         <>
             <CssBaseline />
+            <AuthModal
+                authModalOpen={authModalOpen}
+                userPool={userPool}
+                setAuthModalOpen={setAuthModalOpen}
+                setIsLoggedIn={setIsLoggedIn}
+            />
             {/* ヘッダー */}
             <ElevationScroll>
                 <Box sx={{ flexGrow: 1 }}>
@@ -69,7 +101,24 @@ function App() {
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                             チョコラン計算機(非公式)
                         </Typography>
-                        <Button color="inherit" variant='outlined'>ログインはまだできません</Button>         
+                        {isLoggedIn ? (
+                            // ログイン時にログアウトボタンを表示
+                            <Button
+                                color="warning"
+                                variant='contained'
+                                onClick={handleLogout}>
+                                ログアウト
+                            </Button>
+                        ) : (
+                            // ログイン関連のコンポーネントまたはボタンを表示
+                            <Button
+                                color="inherit"
+                                variant='outlined'
+                                onClick={handleLoginButton}
+                            >
+                                ログイン
+                            </Button>
+                        )}
                     </Toolbar>
                 </AppBar>
                 </Box>
@@ -132,7 +181,7 @@ function App() {
     );
 }
 
-export default App;
+export default MobileMainComponent;
 
 /**
  * AppBarのスクロール設定
