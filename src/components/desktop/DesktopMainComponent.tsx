@@ -20,6 +20,7 @@ import DesktopItemArea from './DesktopItemArea';
 import DisplayArea from './../displayArea/DisplayArea';
 import SkillArea from './../skillArea/SkillArea';
 import { FIELDS, STATUS } from './../../constants/constants';
+import MannequinArea from '../mannequinArea/MannequinArea';
 
 const initialStatusInputFields: StatusInputFields = Object.keys(FIELDS).reduce<StatusInputFields>((acc, key) => {
     const fieldKey = FIELDS[key as keyof typeof FIELDS]; // This ensures that fieldKey is typed correctly
@@ -152,9 +153,12 @@ function DesktopMainComponent() {
                         p: 2,
                     }}
                 >
-                    ログイン機能実装後、マネキンエリアになる予定です。
-                    ログイン機能実装後、マネキンエリアになる予定です
-                    ログイン機能実装後、マネキンエリアになる予定です
+                    <MannequinArea
+                        characterStatus={characterStatus}
+                        updateCharacter={updateCharacter}
+                        inputStatus={inputStatus}
+                        updateInputStatus={updateInputStatus}
+                    />
                     </Box>
                 </Grid>
             </Grid>

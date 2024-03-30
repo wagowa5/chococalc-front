@@ -178,14 +178,15 @@ const AuthModal = (
                         </Typography>
                         </Grid>
                         
-                        <Grid item xs={12}>
+                        <Grid item xs={6}>
                         <TextField
                             label="認証コード"
+                            margin='none'
                             value={verificationCode}
                             onChange={(e) => setVerificationCode(e.target.value)}
                         />
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={6}>
                         <Button
                             onClick={handleEmailConfirm}
                             variant='contained'

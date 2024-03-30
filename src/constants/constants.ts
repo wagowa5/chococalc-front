@@ -53,6 +53,10 @@ export const FIELDS = {
     MDF: 'inputMdf',
 }
 
+export const MANNEQUIN_FIELDS = {
+    MANNEQUIN_NAME: 'inputMannequinName',
+}
+
 export const STATUS = {
     LEVEL: 'level',
     HP: 'hp',
