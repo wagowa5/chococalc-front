@@ -227,8 +227,9 @@ async function storeMannquin(
             Authorization: `Bearer ${token}`
         }
     };
+    // すべて大文字にする
     const requestBody = {
-        "mannequinName": data.mannequinName,
+        "mannequinName": data.mannequinName.toUpperCase(),
         "statusFields": data.inputStatus
     }
     
@@ -246,8 +247,9 @@ async function deleteMannequin(token: string, mannequinName: string) {
         headers: {
             Authorization: `Bearer ${token}`
         },
+        // すべて大文字にする
         params: {
-            mannequinName: mannequinName
+            mannequinName: mannequinName.toUpperCase()
         }
     };
 
