@@ -19,6 +19,7 @@ const ButtonGroupComponent: React.FC<ButtonGroupComponentProps> = ({ buttons, ha
             {buttons.map(button => (
                 <Button 
                     key={button.key}
+                    fullWidth
                     onClick={handles[button.key].handle}
                 >
                     {button.label}

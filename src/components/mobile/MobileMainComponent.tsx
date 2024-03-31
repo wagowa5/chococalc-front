@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { CognitoUserPool } from 'amazon-cognito-identity-js';
+import { CognitoUserPool, CognitoUser } from 'amazon-cognito-identity-js';
 
 // material-ui
 import { Button, Grid, Divider } from "@mui/material";
@@ -20,6 +20,7 @@ import DisplayArea from './../displayArea/DisplayArea';
 import SkillArea from './../skillArea/SkillArea';
 import { FIELDS, STATUS } from './../../constants/constants';
 import MobileItemArea from './MobileItemArea';
+import MannequinArea from '../mannequinArea/MannequinArea';
 
 const initialStatusInputFields: StatusInputFields = Object.keys(FIELDS).reduce<StatusInputFields>((acc, key) => {
     const fieldKey = FIELDS[key as keyof typeof FIELDS]; // This ensures that fieldKey is typed correctly
@@ -49,18 +50,16 @@ const userPool = new CognitoUserPool({
     UserPoolId: cognitoConfig.userPoolId,
     ClientId: cognitoConfig.clientId,
 });
+const initialCognitoUser = userPool.getCurrentUser();
 
 function MobileMainComponent() {
     const [authModalOpen, setAuthModalOpen] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [cognitoUser, setCognitoUser] = useState<CognitoUser | null>(initialCognitoUser);
 
     const handleLogout = () => {
-        const cognitoUser = userPool.getCurrentUser();
-        console.log(cognitoUser);
-
         if (cognitoUser) {
             cognitoUser.signOut();
-            setIsLoggedIn(false); // ログアウト後に状態を更新
+            setCognitoUser(null);
         }
     };
 
@@ -91,7 +90,7 @@ function MobileMainComponent() {
                 authModalOpen={authModalOpen}
                 userPool={userPool}
                 setAuthModalOpen={setAuthModalOpen}
-                setIsLoggedIn={setIsLoggedIn}
+                setCognitoUser={setCognitoUser}
             />
             {/* ヘッダー */}
             <ElevationScroll>
@@ -101,7 +100,7 @@ function MobileMainComponent() {
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                             チョコラン計算機(非公式)
                         </Typography>
-                        {isLoggedIn ? (
+                        {cognitoUser ? (
                             // ログイン時にログアウトボタンを表示
                             <Button
                                 color="warning"
@@ -133,6 +132,18 @@ function MobileMainComponent() {
                     inputStatus={inputStatus}
                     updateInputStatus={updateInputStatus}
                 />
+                </Grid>
+            </Grid>
+
+            <Divider textAlign="left"></Divider>
+
+            <Grid container spacing={1} margin={1} justifyContent={'center'} alignItems={'start'}>
+                <Grid item xs={12}>
+                    <MannequinArea
+                        inputStatus={inputStatus}
+                        updateInputStatus={updateInputStatus}
+                        userPool={userPool}
+                    />
                 </Grid>
             </Grid>
 

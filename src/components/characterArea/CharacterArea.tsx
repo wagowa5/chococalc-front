@@ -51,6 +51,7 @@ const CharacterArea = (
                 <TextField 
                     name={FIELDS.LEVEL}
                     label='Lv:'
+                    value={inputStatus[FIELDS.LEVEL].value}
                     placeholder='99'
                     error={!!inputStatus[FIELDS.LEVEL].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
                     helperText={inputStatus[FIELDS.LEVEL].errorMessage || ''} // エラーメッセージを表示
@@ -61,6 +62,7 @@ const CharacterArea = (
                 <TextField 
                     name={FIELDS.HP}
                     label='HP:'
+                    value={inputStatus[FIELDS.HP].value}
                     placeholder='10000'
                     error={!!inputStatus[FIELDS.HP].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
                     helperText={inputStatus[FIELDS.HP].errorMessage || ''} // エラーメッセージを表示
@@ -71,6 +73,7 @@ const CharacterArea = (
                 <TextField 
                     name={FIELDS.SP}
                     label='SP:'
+                    value={inputStatus[FIELDS.SP].value}
                     placeholder='10000'
                     error={!!inputStatus[FIELDS.SP].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
                     helperText={inputStatus[FIELDS.SP].errorMessage || ''} // エラーメッセージを表示
@@ -98,6 +101,7 @@ const CharacterArea = (
                 <TextField 
                     name={FIELDS.CHARA_POW}
                     label='POW:'
+                    value={inputStatus[FIELDS.CHARA_POW].value}
                     placeholder='157'
                     error={!!inputStatus[FIELDS.CHARA_POW].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
                     helperText={inputStatus[FIELDS.CHARA_POW].errorMessage || ''} // エラーメッセージを表示
@@ -106,6 +110,7 @@ const CharacterArea = (
                 <TextField 
                     name={FIELDS.CHARA_INT}
                     label='INT:'
+                    value={inputStatus[FIELDS.CHARA_INT].value}
                     placeholder='1'
                     error={!!inputStatus[FIELDS.CHARA_INT].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
                     helperText={inputStatus[FIELDS.CHARA_INT].errorMessage || ''} // エラーメッセージを表示
@@ -114,6 +119,7 @@ const CharacterArea = (
                 <TextField 
                     name={FIELDS.CHARA_SPD}
                     label='SPD:'
+                    value={inputStatus[FIELDS.CHARA_SPD].value}
                     placeholder='1'
                     error={!!inputStatus[FIELDS.CHARA_SPD].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
                     helperText={inputStatus[FIELDS.CHARA_SPD].errorMessage || ''} // エラーメッセージを表示
@@ -122,6 +128,7 @@ const CharacterArea = (
                 <TextField 
                     name={FIELDS.CHARA_VIT}
                     label='VIT:'
+                    value={inputStatus[FIELDS.CHARA_VIT].value}
                     placeholder='1'
                     error={!!inputStatus[FIELDS.CHARA_VIT].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
                     helperText={inputStatus[FIELDS.CHARA_VIT].errorMessage || ''} // エラーメッセージを表示
@@ -130,6 +137,7 @@ const CharacterArea = (
                 <TextField 
                     name={FIELDS.CHARA_LUK}
                     label='LUK:'
+                    value={inputStatus[FIELDS.CHARA_LUK].value}
                     placeholder='1'
                     error={!!inputStatus[FIELDS.CHARA_LUK].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
                     helperText={inputStatus[FIELDS.CHARA_LUK].errorMessage || ''} // エラーメッセージを表示
@@ -141,6 +149,7 @@ const CharacterArea = (
                 <TextField 
                     name={FIELDS.CARD_POW}
                     label='POW:'
+                    value={inputStatus[FIELDS.CARD_POW].value}
                     placeholder='18'
                     error={!!inputStatus[FIELDS.CARD_POW].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
                     helperText={inputStatus[FIELDS.CARD_POW].errorMessage || ''} // エラーメッセージを表示
@@ -149,6 +158,7 @@ const CharacterArea = (
                 <TextField 
                     name={FIELDS.CARD_INT}
                     label='INT:'
+                    value={inputStatus[FIELDS.CARD_INT].value}
                     placeholder='0'
                     defaultValue='0'
                     error={!!inputStatus[FIELDS.CARD_INT].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
@@ -158,6 +168,7 @@ const CharacterArea = (
                 <TextField 
                     name={FIELDS.CARD_SPD}
                     label='SPD:'
+                    value={inputStatus[FIELDS.CARD_SPD].value}
                     placeholder='0'
                     defaultValue='0'
                     error={!!inputStatus[FIELDS.CARD_SPD].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
@@ -167,6 +178,7 @@ const CharacterArea = (
                 <TextField 
                     name={FIELDS.CARD_VIT}
                     label='VIT:'
+                    value={inputStatus[FIELDS.CARD_VIT].value}
                     placeholder='0'
                     defaultValue='0'
                     error={!!inputStatus[FIELDS.CARD_VIT].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
@@ -176,6 +188,7 @@ const CharacterArea = (
                 <TextField 
                     name={FIELDS.CARD_LUK}
                     label='LUK:'
+                    value={inputStatus[FIELDS.CARD_LUK].value}
                     placeholder='0'
                     defaultValue='0'
                     error={!!inputStatus[FIELDS.CARD_LUK].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
@@ -188,6 +201,7 @@ const CharacterArea = (
                 <TextField 
                     name={FIELDS.TOTAL_POW}
                     label='合計POW:'
+                    value={inputStatus[FIELDS.TOTAL_POW].value}
                     placeholder='入力例: 157+342'
                     error={!!inputStatus[FIELDS.TOTAL_POW].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
                     helperText={inputStatus[FIELDS.TOTAL_POW].errorMessage || ''} // エラーメッセージを表示
@@ -196,6 +210,7 @@ const CharacterArea = (
                 <TextField 
                     name={FIELDS.TOTAL_INT}
                     label='合計INT:'
+                    value={inputStatus[FIELDS.TOTAL_INT].value}
                     placeholder='入力例: 1+150'
                     error={!!inputStatus[FIELDS.TOTAL_INT].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
                     helperText={inputStatus[FIELDS.TOTAL_INT].errorMessage || ''} // エラーメッセージを表示
@@ -204,6 +219,7 @@ const CharacterArea = (
                 <TextField 
                     name={FIELDS.TOTAL_SPD}
                     label='合計SPD:'
+                    value={inputStatus[FIELDS.TOTAL_SPD].value}
                     placeholder='入力例: 1'
                     error={!!inputStatus[FIELDS.TOTAL_SPD].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
                     helperText={inputStatus[FIELDS.TOTAL_SPD].errorMessage || ''} // エラーメッセージを表示
@@ -212,6 +228,7 @@ const CharacterArea = (
                 <TextField 
                     name={FIELDS.TOTAL_VIT}
                     label='合計VIT:'
+                    value={inputStatus[FIELDS.TOTAL_VIT].value}
                     placeholder='入力例: 1+80'
                     error={!!inputStatus[FIELDS.TOTAL_VIT].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
                     helperText={inputStatus[FIELDS.TOTAL_VIT].errorMessage || ''} // エラーメッセージを表示
@@ -220,6 +237,7 @@ const CharacterArea = (
                 <TextField 
                     name={FIELDS.TOTAL_LUK}
                     label='合計LUK:'
+                    value={inputStatus[FIELDS.TOTAL_LUK].value}
                     placeholder='入力例: 1'
                     error={!!inputStatus[FIELDS.TOTAL_LUK].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
                     helperText={inputStatus[FIELDS.TOTAL_LUK].errorMessage || ''} // エラーメッセージを表示
@@ -235,6 +253,7 @@ const CharacterArea = (
             <TextField 
                 name={FIELDS.ATK}
                 label='表示ATK:'
+                value={inputStatus[FIELDS.ATK].value}
                 placeholder='1'
                 error={!!inputStatus[FIELDS.ATK].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
                 helperText={inputStatus[FIELDS.ATK].errorMessage || ''} // エラーメッセージを表示
@@ -245,6 +264,7 @@ const CharacterArea = (
             <TextField 
                 name={FIELDS.DEF}
                 label='表示DEF:'
+                value={inputStatus[FIELDS.DEF].value}
                 placeholder='1'
                 error={!!inputStatus[FIELDS.DEF].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
                 helperText={inputStatus[FIELDS.DEF].errorMessage || ''} // エラーメッセージを表示
@@ -258,6 +278,7 @@ const CharacterArea = (
             <TextField 
                 name={FIELDS.MAT}
                 label='表示MAT:'
+                value={inputStatus[FIELDS.MAT].value}
                 placeholder='1'
                 error={!!inputStatus[FIELDS.MAT].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
                 helperText={inputStatus[FIELDS.MAT].errorMessage || ''} // エラーメッセージを表示
@@ -268,6 +289,7 @@ const CharacterArea = (
             <TextField 
                 name={FIELDS.MDF}
                 label='表示MDF:'
+                value={inputStatus[FIELDS.MDF].value}
                 placeholder='1'
                 error={!!inputStatus[FIELDS.MDF].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
                 helperText={inputStatus[FIELDS.MDF].errorMessage || ''} // エラーメッセージを表示

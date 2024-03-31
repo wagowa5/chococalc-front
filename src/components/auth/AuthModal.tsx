@@ -6,7 +6,7 @@ import { CognitoUserPool, CognitoUser, AuthenticationDetails } from 'amazon-cogn
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { TextField, Box, Grid } from '@mui/material';
+import { TextField, Box, Grid, Divider } from '@mui/material';
 
 import { MESSAGES, AUTH_MODAL_ACTIONS } from '../../constants/constants';
 
@@ -26,7 +26,7 @@ interface AuthModalProps {
     authModalOpen: boolean;
     userPool: CognitoUserPool;
     setAuthModalOpen: (isOpen: boolean) => void;
-    setIsLoggedIn: (isLoggedIn: boolean) => void;
+    setCognitoUser: (cognitoUser: CognitoUser | null) => void;
 }
 
 interface AuthModalReducerState {
@@ -95,7 +95,7 @@ const AuthModal = (
         authModalOpen,
         userPool,
         setAuthModalOpen,
-        setIsLoggedIn,
+        setCognitoUser,
     }: AuthModalProps
 ) => {
     const [state, dispatch] = useReducer(reducer, initialState);
@@ -111,19 +111,20 @@ const AuthModal = (
             Username: email,
             Pool: userPool,
         });
-
+        
         cognitoUser.authenticateUser(authenticationDetails, {
             onSuccess: (session) => {
                 dispatch({ type: AUTH_MODAL_ACTIONS.SET_EMAIL, payload: '' });
                 dispatch({ type: AUTH_MODAL_ACTIONS.SET_PASSWORD, payload: '' });
                 dispatch({ type: AUTH_MODAL_ACTIONS.SET_VERIFICATION_CODE, payload: '' });
-                setIsLoggedIn(true); // ログイン状態を更新
+                setCognitoUser(cognitoUser);
                 setAuthModalOpen(false); // モーダルを閉じる
             },
             onFailure: (err) => {
                 dispatch({ type: AUTH_MODAL_ACTIONS.SET_PASSWORD, payload: '' });
                 dispatch({ type: AUTH_MODAL_ACTIONS.SET_VERIFICATION_CODE, payload: '' });
                 dispatch({ type: AUTH_MODAL_ACTIONS.SET_AUTH_STATUS, payload: MESSAGES.AUTH_MODAL_KEYS.LOGIN_ERROR });
+                setCognitoUser(null);
             },
         });
     };
@@ -167,7 +168,7 @@ const AuthModal = (
             >
                 <div>
                 <Box sx={style}>
-                    <Grid container spacing={1} margin={2}>
+                    <Grid container spacing={1} margin={1}>
                         <Grid item xs={12}>
                         <TextField label="メールアドレス" value={email} onChange={(e) => dispatch({ type: AUTH_MODAL_ACTIONS.SET_EMAIL, payload: e.target.value})} />
                         </Grid>
@@ -196,14 +197,16 @@ const AuthModal = (
                         </Grid>
                     </Grid>
 
-                    <Grid container spacing={1} margin={2}>
+                    <Divider textAlign="left"></Divider>
+
+                    <Grid container spacing={1} margin={0}>
                     <Grid item xs={12}>
                         <Typography id="modal-modal-title" variant="h6" component="h2">
                             {MODAL_MESSAGES[authStatus]?.title}
                         </Typography>
                         </Grid>
                         <Grid item xs={12}>
-                        <Typography id="modal-modal-description">
+                        <Typography id="modal-modal-description" whiteSpace={'pre-wrap'}>
                             {MODAL_MESSAGES[authStatus]?.message}
                         </Typography>
                         </Grid>

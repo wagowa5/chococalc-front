@@ -9,7 +9,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Box from '@mui/material/Box';
 
-import { CognitoUserPool } from 'amazon-cognito-identity-js';
+import { CognitoUserPool, CognitoUser } from 'amazon-cognito-identity-js';
 
 import cognitoConfig from '../../config/awsConfig';
 import './DesktopMainComponent.css';
@@ -50,18 +50,16 @@ const userPool = new CognitoUserPool({
     UserPoolId: cognitoConfig.userPoolId,
     ClientId: cognitoConfig.clientId,
 });
+const initialCognitoUser = userPool.getCurrentUser();
 
 function DesktopMainComponent() {
     const [authModalOpen, setAuthModalOpen] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [cognitoUser, setCognitoUser] = useState<CognitoUser | null>(initialCognitoUser);
 
     const handleLogout = () => {
-        const cognitoUser = userPool.getCurrentUser();
-        console.log(cognitoUser);
-
         if (cognitoUser) {
             cognitoUser.signOut();
-            setIsLoggedIn(false); // ログアウト後に状態を更新
+            setCognitoUser(null);
         }
     };
 
@@ -92,7 +90,7 @@ function DesktopMainComponent() {
                 authModalOpen={authModalOpen}
                 userPool={userPool}
                 setAuthModalOpen={setAuthModalOpen}
-                setIsLoggedIn={setIsLoggedIn}
+                setCognitoUser={setCognitoUser}
             />
             {/* ヘッダー */}
             <ElevationScroll>
@@ -102,7 +100,7 @@ function DesktopMainComponent() {
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                             チョコラン計算機(非公式)
                         </Typography>
-                        {isLoggedIn ? (
+                        {cognitoUser ? (
                             // ログイン時にログアウトボタンを表示
                             <Button
                                 color="warning"
@@ -127,7 +125,7 @@ function DesktopMainComponent() {
             <Toolbar /> {/* AppBarによって占められる領域分の余白を確保 */}
             
             {/* コンテンツ */}
-            <Grid container spacing={1} margin={1} justifyContent={'center'} alignItems={'start'}>
+            <Grid container spacing={1} margin={0} justifyContent={'center'} alignItems={'start'}>
                 {/* キャラクターの情報入力欄を配置しているエリア */}
                 <Grid item xs={6}>
                 <Box 
@@ -154,10 +152,9 @@ function DesktopMainComponent() {
                     }}
                 >
                     <MannequinArea
-                        characterStatus={characterStatus}
-                        updateCharacter={updateCharacter}
                         inputStatus={inputStatus}
                         updateInputStatus={updateInputStatus}
+                        userPool={userPool}
                     />
                     </Box>
                 </Grid>
@@ -165,7 +162,7 @@ function DesktopMainComponent() {
 
             <Divider textAlign="left"></Divider>
 
-            <Grid container spacing={1} margin={1} justifyContent={'center'} alignItems={'start'}>
+            <Grid container spacing={1} margin={0} justifyContent={'center'} alignItems={'start'}>
             {/* アイテムボタンを配置しているエリア */}
             <Grid item xs={12}>
                 <Box 
@@ -188,7 +185,7 @@ function DesktopMainComponent() {
 
             <Divider textAlign="left"></Divider>
 
-            <Grid container spacing={1} margin={1}>
+            <Grid container spacing={1} margin={0}>
                 {/* 計算結果を表示するエリア */}
                 <Grid item xs={7}>
                 <DisplayArea
