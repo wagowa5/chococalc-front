@@ -20,6 +20,7 @@ import DisplayArea from './../displayArea/DisplayArea';
 import SkillArea from './../skillArea/SkillArea';
 import { FIELDS, STATUS } from './../../constants/constants';
 import MobileItemArea from './MobileItemArea';
+import MannequinArea from '../mannequinArea/MannequinArea';
 
 const initialStatusInputFields: StatusInputFields = Object.keys(FIELDS).reduce<StatusInputFields>((acc, key) => {
     const fieldKey = FIELDS[key as keyof typeof FIELDS]; // This ensures that fieldKey is typed correctly
@@ -56,16 +57,13 @@ function MobileMainComponent() {
     const [cognitoUser, setCognitoUser] = useState<CognitoUser | null>(initialCognitoUser);
 
     const handleLogout = () => {
-        setCognitoUser(userPool.getCurrentUser());
-
         if (cognitoUser) {
             cognitoUser.signOut();
+            setCognitoUser(null);
         }
     };
 
     const handleLoginButton = () => {
-        console.log('cognito', cognitoUser);
-        console.log('cognito', initialCognitoUser);
         setAuthModalOpen(true);
     }
 
@@ -134,6 +132,15 @@ function MobileMainComponent() {
                     inputStatus={inputStatus}
                     updateInputStatus={updateInputStatus}
                 />
+                </Grid>
+
+
+                <Grid item xs={12}>
+                    <MannequinArea
+                        inputStatus={inputStatus}
+                        updateInputStatus={updateInputStatus}
+                        userPool={userPool}
+                    />
                 </Grid>
             </Grid>
 

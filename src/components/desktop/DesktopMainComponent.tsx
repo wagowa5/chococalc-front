@@ -57,16 +57,13 @@ function DesktopMainComponent() {
     const [cognitoUser, setCognitoUser] = useState<CognitoUser | null>(initialCognitoUser);
 
     const handleLogout = () => {
-        setCognitoUser(userPool.getCurrentUser());
-
         if (cognitoUser) {
             cognitoUser.signOut();
+            setCognitoUser(null);
         }
     };
 
     const handleLoginButton = () => {
-        console.log('cognito', cognitoUser);
-        console.log('cognito', initialCognitoUser);
         setAuthModalOpen(true);
     }
 
@@ -128,7 +125,7 @@ function DesktopMainComponent() {
             <Toolbar /> {/* AppBarによって占められる領域分の余白を確保 */}
             
             {/* コンテンツ */}
-            <Grid container spacing={1} margin={1} justifyContent={'center'} alignItems={'start'}>
+            <Grid container spacing={1} margin={0} justifyContent={'center'} alignItems={'start'}>
                 {/* キャラクターの情報入力欄を配置しているエリア */}
                 <Grid item xs={6}>
                 <Box 
@@ -155,8 +152,6 @@ function DesktopMainComponent() {
                     }}
                 >
                     <MannequinArea
-                        characterStatus={characterStatus}
-                        updateCharacter={updateCharacter}
                         inputStatus={inputStatus}
                         updateInputStatus={updateInputStatus}
                         userPool={userPool}
@@ -167,7 +162,7 @@ function DesktopMainComponent() {
 
             <Divider textAlign="left"></Divider>
 
-            <Grid container spacing={1} margin={1} justifyContent={'center'} alignItems={'start'}>
+            <Grid container spacing={1} margin={0} justifyContent={'center'} alignItems={'start'}>
             {/* アイテムボタンを配置しているエリア */}
             <Grid item xs={12}>
                 <Box 
@@ -190,7 +185,7 @@ function DesktopMainComponent() {
 
             <Divider textAlign="left"></Divider>
 
-            <Grid container spacing={1} margin={1}>
+            <Grid container spacing={1} margin={0}>
                 {/* 計算結果を表示するエリア */}
                 <Grid item xs={7}>
                 <DisplayArea
