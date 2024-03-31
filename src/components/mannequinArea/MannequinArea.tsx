@@ -1,10 +1,12 @@
 import React from 'react';
-import { evaluate } from 'maths.ts';
+import axios from 'axios';
 
-import { MESSAGES, FIELDS, MANNEQUIN_FIELDS } from '../../constants/constants';
+import { CognitoUserPool, CognitoUserSession } from 'amazon-cognito-identity-js';
+
+import { TextField, Grid, Button } from '@mui/material';
+
+import { MESSAGES, MANNEQUIN_FIELDS } from '../../constants/constants';
 import { CharacterStatus, StatusInputFields } from '../../interface/Status';
-
-import { TextField, Grid, Chip, Button } from '@mui/material';
 
 // propsの型定義を追加
 interface MannequinAreaProps {
@@ -12,6 +14,7 @@ interface MannequinAreaProps {
     updateCharacter: (newCharacterStatus: CharacterStatus) => void;
     inputStatus: StatusInputFields;
     updateInputStatus: (newInputStatus: StatusInputFields) => void;
+    userPool: CognitoUserPool;
 }
 
 const MannequinArea = (
@@ -20,6 +23,7 @@ const MannequinArea = (
         updateCharacter,
         inputStatus,
         updateInputStatus,
+        userPool,
     }: MannequinAreaProps
 ) => {
     const [mannequinName, setMannequinName] = React.useState<string>('');
@@ -29,18 +33,96 @@ const MannequinArea = (
     }
 
     const handleStoreMannequin = () => {
+        const cognitoUser = userPool.getCurrentUser();
+
+        if (!cognitoUser) {
+            alert(MESSAGES.AUTH_ERROR.NEED_LOGIN);
+            return;
+        }
+
+        cognitoUser.getSession(function(err: null, session: CognitoUserSession) {
+            // セッションが無効ならトークンをリフレッシュ
+            if (!session.isValid()) {
+                cognitoUser.refreshSession(session.getRefreshToken(), (refreshErr, newSession) => {
+                    if (refreshErr) {
+                        console.error(refreshErr);
+                    } else {
+                        const idToken = newSession.getIdToken().getJwtToken();
+                        // 新しいトークンを使用してAPIリクエストを再実行など
+                        storeMannquin(idToken, { mannequinName, inputStatus });
+                    }
+                });
+            } else {
+                // セッションが有効なら、既存のトークンを使用してAPIリクエストを行う
+                const idToken = session.getIdToken().getJwtToken();
+                // APIリクエストなど
+                storeMannquin(idToken, { mannequinName, inputStatus });
+            }
+        });
     }
 
     const handleDeleteMannequin = () => {
+        const cognitoUser = userPool.getCurrentUser();
+
+        if (!cognitoUser) {
+            alert(MESSAGES.AUTH_ERROR.NEED_LOGIN);
+            return;
+        }
+
+        cognitoUser.getSession(function(err: null, session: CognitoUserSession) {
+            // セッションが無効ならトークンをリフレッシュ
+            if (!session.isValid()) {
+                cognitoUser.refreshSession(session.getRefreshToken(), (refreshErr, newSession) => {
+                    if (refreshErr) {
+                        console.error(refreshErr);
+                    } else {
+                        const idToken = newSession.getIdToken().getJwtToken();
+                        // 新しいトークンを使用してAPIリクエストを再実行など
+                        deleteMannequin(idToken, mannequinName);
+                    }
+                });
+            } else {
+                // セッションが有効なら、既存のトークンを使用してAPIリクエストを行う
+                const idToken = session.getIdToken().getJwtToken();
+                // APIリクエストなど
+                deleteMannequin(idToken, mannequinName);
+            }
+        });
     }
 
     const handleGetMannequins = () => {
+        const cognitoUser = userPool.getCurrentUser();
+
+        if (!cognitoUser) {
+            alert(MESSAGES.AUTH_ERROR.NEED_LOGIN);
+            return;
+        }
+
+        cognitoUser.getSession(function(err: null, session: CognitoUserSession) {
+            // セッションが無効ならトークンをリフレッシュ
+            if (!session.isValid()) {
+                cognitoUser.refreshSession(session.getRefreshToken(), (refreshErr, newSession) => {
+                    if (refreshErr) {
+                        console.error(refreshErr);
+                    } else {
+                        const idToken = newSession.getIdToken().getJwtToken();
+                        // 新しいトークンを使用してAPIリクエストを再実行など
+                        getMannequins(idToken);
+                    }
+                });
+            } else {
+                // セッションが有効なら、既存のトークンを使用してAPIリクエストを行う
+                const idToken = session.getIdToken().getJwtToken();
+                // APIリクエストなど
+                getMannequins(idToken);
+            }
+        });
     }
 
     return (
         <>
-        {/* マネキン名入力、登録ボタン、削除ボタン */}
         <Grid container spacing={1}>
+            {/* マネキン名入力、登録ボタン、削除ボタン */}
             <Grid item xs={4}>
                 <TextField 
                     name={MANNEQUIN_FIELDS.MANNEQUIN_NAME}
@@ -64,14 +146,84 @@ const MannequinArea = (
                 <Button
                     variant='contained'
                     color='error'
-                    onClick={handleStoreMannequin}
+                    onClick={handleDeleteMannequin}
                 >
                     マネキン削除
                 </Button>
             </Grid>
+
+            <Grid item xs={12}>
+                <Button
+                    variant='contained'
+                    color='primary'
+                    onClick={handleGetMannequins}
+                >
+                    マネキン一覧取得
+                </Button>
+            </Grid>
+        </Grid>
+        <Grid container spacing={1}>
+            {/* マネキン一覧で取得したマネキン名でボタンを表示していく */}
         </Grid>
         </>
     );
 };
 
 export default MannequinArea;
+
+function getMannequins(token: string) {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+    };
+    
+    axios.get(
+        process.env.REACT_APP_CHOCOCALC_API_ENDPOINT + '/mannequins',
+        config
+    )
+        .then(response => console.log(response.data))
+        .catch(error => console.error('API call failed:', error));
+}
+
+function storeMannquin(
+    token: string,
+    data: { mannequinName: string, inputStatus: StatusInputFields }
+) {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    };
+    const requestBody = {
+        "mannequinName": data.mannequinName,
+        "statusFields": data.inputStatus
+    }
+    
+    axios.post(
+        process.env.REACT_APP_CHOCOCALC_API_ENDPOINT + '/mannequin',
+        requestBody,
+        config
+    )
+        // .then(response => console.log(response.data))
+        .catch(error => console.error('API call failed:', error));
+}
+
+function deleteMannequin(token: string, mannequinName: string) {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+        params: {
+            mannequinName: mannequinName
+        }
+    };
+
+    axios.delete(
+        process.env.REACT_APP_CHOCOCALC_API_ENDPOINT + '/mannequin',
+        config
+    )
+        // .then(response => console.log(response.data))
+        .catch(error => console.error('API call failed:', error));
+}
+

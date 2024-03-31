@@ -9,7 +9,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Box from '@mui/material/Box';
 
-import { CognitoUserPool } from 'amazon-cognito-identity-js';
+import { CognitoUserPool, CognitoUser } from 'amazon-cognito-identity-js';
 
 import cognitoConfig from '../../config/awsConfig';
 import './DesktopMainComponent.css';
@@ -50,22 +50,23 @@ const userPool = new CognitoUserPool({
     UserPoolId: cognitoConfig.userPoolId,
     ClientId: cognitoConfig.clientId,
 });
+const initialCognitoUser = userPool.getCurrentUser();
 
 function DesktopMainComponent() {
     const [authModalOpen, setAuthModalOpen] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [cognitoUser, setCognitoUser] = useState<CognitoUser | null>(initialCognitoUser);
 
     const handleLogout = () => {
-        const cognitoUser = userPool.getCurrentUser();
-        console.log(cognitoUser);
+        setCognitoUser(userPool.getCurrentUser());
 
         if (cognitoUser) {
             cognitoUser.signOut();
-            setIsLoggedIn(false); // ログアウト後に状態を更新
         }
     };
 
     const handleLoginButton = () => {
+        console.log('cognito', cognitoUser);
+        console.log('cognito', initialCognitoUser);
         setAuthModalOpen(true);
     }
 
@@ -92,7 +93,7 @@ function DesktopMainComponent() {
                 authModalOpen={authModalOpen}
                 userPool={userPool}
                 setAuthModalOpen={setAuthModalOpen}
-                setIsLoggedIn={setIsLoggedIn}
+                setCognitoUser={setCognitoUser}
             />
             {/* ヘッダー */}
             <ElevationScroll>
@@ -102,7 +103,7 @@ function DesktopMainComponent() {
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                             チョコラン計算機(非公式)
                         </Typography>
-                        {isLoggedIn ? (
+                        {cognitoUser ? (
                             // ログイン時にログアウトボタンを表示
                             <Button
                                 color="warning"
@@ -158,6 +159,7 @@ function DesktopMainComponent() {
                         updateCharacter={updateCharacter}
                         inputStatus={inputStatus}
                         updateInputStatus={updateInputStatus}
+                        userPool={userPool}
                     />
                     </Box>
                 </Grid>

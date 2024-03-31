@@ -83,6 +83,18 @@ const ScrollArea = (
     // 巻物リセットボタンクリック時の処理
     const handleScrollReset = () => {
         // 巻物のステータスをリセットして更新
+        setHpScroll('');
+        setSpScroll('');
+        setPowScroll('');
+        setIntScroll('');
+        setSpdScroll('');
+        setVitScroll('');
+        setLukScroll('');
+        setAtkScroll('');
+        setDefScroll('');
+        setMatScroll('');
+        setMdfScroll('');
+
         resetScrollStatus(characterStatus, updateCharacter);
         calculateDisplayStatus(characterStatus, updateCharacter);
     };

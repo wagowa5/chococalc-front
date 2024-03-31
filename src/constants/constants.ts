@@ -2,6 +2,9 @@ export const MESSAGES = {
     INPUT_ERROR: {
         CANNOT_CALCULATE: '計算できません',
     },
+    AUTH_ERROR: {
+        NEED_LOGIN: 'ログインが必要です。',
+    },
     AUTH_MODAL_KEYS: {
         DEFAULT: 'default',
         LOGIN_ERROR: 'loginError',

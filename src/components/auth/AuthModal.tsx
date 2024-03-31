@@ -26,7 +26,7 @@ interface AuthModalProps {
     authModalOpen: boolean;
     userPool: CognitoUserPool;
     setAuthModalOpen: (isOpen: boolean) => void;
-    setIsLoggedIn: (isLoggedIn: boolean) => void;
+    setCognitoUser: (cognitoUser: CognitoUser | null) => void;
 }
 
 interface AuthModalReducerState {
@@ -95,7 +95,7 @@ const AuthModal = (
         authModalOpen,
         userPool,
         setAuthModalOpen,
-        setIsLoggedIn,
+        setCognitoUser,
     }: AuthModalProps
 ) => {
     const [state, dispatch] = useReducer(reducer, initialState);
@@ -111,19 +111,20 @@ const AuthModal = (
             Username: email,
             Pool: userPool,
         });
-
+        
         cognitoUser.authenticateUser(authenticationDetails, {
             onSuccess: (session) => {
                 dispatch({ type: AUTH_MODAL_ACTIONS.SET_EMAIL, payload: '' });
                 dispatch({ type: AUTH_MODAL_ACTIONS.SET_PASSWORD, payload: '' });
                 dispatch({ type: AUTH_MODAL_ACTIONS.SET_VERIFICATION_CODE, payload: '' });
-                setIsLoggedIn(true); // ログイン状態を更新
+                setCognitoUser(cognitoUser);
                 setAuthModalOpen(false); // モーダルを閉じる
             },
             onFailure: (err) => {
                 dispatch({ type: AUTH_MODAL_ACTIONS.SET_PASSWORD, payload: '' });
                 dispatch({ type: AUTH_MODAL_ACTIONS.SET_VERIFICATION_CODE, payload: '' });
                 dispatch({ type: AUTH_MODAL_ACTIONS.SET_AUTH_STATUS, payload: MESSAGES.AUTH_MODAL_KEYS.LOGIN_ERROR });
+                setCognitoUser(null);
             },
         });
     };
