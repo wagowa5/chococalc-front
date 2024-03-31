@@ -6,7 +6,7 @@ import { CognitoUserPool, CognitoUser, AuthenticationDetails } from 'amazon-cogn
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { TextField, Box, Grid } from '@mui/material';
+import { TextField, Box, Grid, Divider } from '@mui/material';
 
 import { MESSAGES, AUTH_MODAL_ACTIONS } from '../../constants/constants';
 
@@ -168,7 +168,7 @@ const AuthModal = (
             >
                 <div>
                 <Box sx={style}>
-                    <Grid container spacing={1} margin={2}>
+                    <Grid container spacing={1} margin={1}>
                         <Grid item xs={12}>
                         <TextField label="メールアドレス" value={email} onChange={(e) => dispatch({ type: AUTH_MODAL_ACTIONS.SET_EMAIL, payload: e.target.value})} />
                         </Grid>
@@ -197,14 +197,16 @@ const AuthModal = (
                         </Grid>
                     </Grid>
 
-                    <Grid container spacing={1} margin={2}>
+                    <Divider textAlign="left"></Divider>
+
+                    <Grid container spacing={1} margin={0}>
                     <Grid item xs={12}>
                         <Typography id="modal-modal-title" variant="h6" component="h2">
                             {MODAL_MESSAGES[authStatus]?.title}
                         </Typography>
                         </Grid>
                         <Grid item xs={12}>
-                        <Typography id="modal-modal-description">
+                        <Typography id="modal-modal-description" whiteSpace={'pre-wrap'}>
                             {MODAL_MESSAGES[authStatus]?.message}
                         </Typography>
                         </Grid>

@@ -22,7 +22,7 @@ export const MESSAGES = {
         VERIFICATION_ERROR: '認証失敗',
     },
     AUTH_MODAL_MESSAGE: {
-        DEFAULT: '他サービスと同じパスワードを使用しないでください。',
+        DEFAULT: 'サインアップ上限は1日50ユーザーまでです。\n上限に達した場合、認証メールが送信されません。翌日以降に再度お試しください。',
         LOGIN_ERROR: 'メールアドレスとパスワードを確認してください。',
         SIGNUP: 'メールを確認してください。',
         SIGNUP_ERROR: 'パスワードは8文字以上で大文字、小文字、数字、記号を含む必要があります。',
