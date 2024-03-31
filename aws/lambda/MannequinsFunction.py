@@ -11,6 +11,12 @@ def lambda_handler(event, context):
         response = table.scan()
         items = response['Items']
         
+        filtered_items = [
+            {'mannequinName': item['mannequinName'], 'statusFields': item['statusFields']}
+            for item in items
+            if 'mannequinName' in item and 'statusFields' in item
+        ]
+        
         return {
             'statusCode': 200,
             'headers': {
@@ -18,7 +24,7 @@ def lambda_handler(event, context):
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
             },
-            'body': json.dumps(items)
+            'body': json.dumps(filtered_items)
         }
     except Exception as e:
         print(e)
