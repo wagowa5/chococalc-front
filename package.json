@@ -16,6 +16,7 @@
     "@types/react-dom": "^18.2.19",
     "amazon-cognito-identity-js": "^6.3.12",
     "aws-amplify": "^6.0.25",
+    "axios": "^1.6.8",
     "math.js": "^1.1.46",
     "maths.ts": "^0.0.8",
     "react": "^18.2.0",
