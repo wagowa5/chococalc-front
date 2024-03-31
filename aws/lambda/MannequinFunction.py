@@ -39,7 +39,7 @@ def lambda_handler(event, context):
             response = table.put_item(
                 Item={
                     'userId': user_id,
-                    'mannequinName': body['mannequinName'],
+                    'mannequinName': body['mannequinName'].upper(),
                     'statusFields': body['statusFields']
                 }
             )
@@ -71,7 +71,7 @@ def lambda_handler(event, context):
             response = table.delete_item(
                 Key={
                     'userId': user_id,
-                    'mannequinName': query_params['mannequinName']
+                    'mannequinName': query_params['mannequinName'].upper()
                 }
             )
             return {
