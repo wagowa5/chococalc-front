@@ -12,7 +12,7 @@ def lambda_handler(event, context):
         items = response['Items']
         
         filtered_items = [
-            {'mannequinName': item['mannequinName'], 'statusFields': item['statusFields']}
+            {'mannequinName': item['mannequinName'].upper(), 'statusFields': item['statusFields']}
             for item in items
             if 'mannequinName' in item and 'statusFields' in item
         ]
