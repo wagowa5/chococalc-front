@@ -133,8 +133,11 @@ function MobileMainComponent() {
                     updateInputStatus={updateInputStatus}
                 />
                 </Grid>
+            </Grid>
 
+            <Divider textAlign="left"></Divider>
 
+            <Grid container spacing={1} margin={1} justifyContent={'center'} alignItems={'start'}>
                 <Grid item xs={12}>
                     <MannequinArea
                         inputStatus={inputStatus}
