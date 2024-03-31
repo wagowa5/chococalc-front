@@ -1,10 +1,10 @@
 import json
 import boto3
+# DynamoDBクライアントの初期化
+dynamodb = boto3.resource('dynamodb')
+table = dynamodb.Table('LocalChococalc')
 
 def lambda_handler(event, context):
-    # DynamoDBクライアントの初期化
-    dynamodb = boto3.resource('dynamodb')
-    table = dynamodb.Table('LocalChococalc')
     
     # API Gatewayからのリクエストコンテキストを取得
     request_context = event.get('requestContext', {})
