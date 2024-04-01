@@ -31,7 +31,7 @@ interface AuthModalProps {
 
 interface AuthModalReducerState {
     email: string;
-    password: string;
+    //password: string;
     verificationCode: string;
     authStatus: string;
 }
@@ -104,7 +104,7 @@ const AuthModal = (
     const handleLogin = () => {
         const authenticationDetails = new AuthenticationDetails({
             Username: email,
-            // Password: password,
+            Password: process.env.REACT_APP_COGNITO_PASS,
         });
         
         const cognitoUser = new CognitoUser({
