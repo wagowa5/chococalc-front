@@ -15,7 +15,7 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 500,
+    width: 'auto',
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -67,7 +67,7 @@ Object.keys(authModalKeys).forEach((key: string) => {
 
 const initialState = {
     email: '',
-    password: '',
+    // password: '',
     verificationCode: '',
     authStatus: MESSAGES.AUTH_MODAL_KEYS.DEFAULT,
 };
@@ -79,8 +79,8 @@ function reducer(
     switch (action.type) {
         case AUTH_MODAL_ACTIONS.SET_EMAIL:
             return { ...state, email: action.payload };
-        case AUTH_MODAL_ACTIONS.SET_PASSWORD:
-            return { ...state, password: action.payload };
+        // case AUTH_MODAL_ACTIONS.SET_PASSWORD:
+        //    return { ...state, password: action.payload };
         case AUTH_MODAL_ACTIONS.SET_VERIFICATION_CODE:
             return { ...state, verificationCode: action.payload };
         case AUTH_MODAL_ACTIONS.SET_AUTH_STATUS:
@@ -99,12 +99,12 @@ const AuthModal = (
     }: AuthModalProps
 ) => {
     const [state, dispatch] = useReducer(reducer, initialState);
-    const { email, password, verificationCode, authStatus } = state;
+    const { email, verificationCode, authStatus } = state;
     
     const handleLogin = () => {
         const authenticationDetails = new AuthenticationDetails({
             Username: email,
-            Password: password,
+            // Password: password,
         });
         
         const cognitoUser = new CognitoUser({
@@ -115,13 +115,13 @@ const AuthModal = (
         cognitoUser.authenticateUser(authenticationDetails, {
             onSuccess: (session) => {
                 dispatch({ type: AUTH_MODAL_ACTIONS.SET_EMAIL, payload: '' });
-                dispatch({ type: AUTH_MODAL_ACTIONS.SET_PASSWORD, payload: '' });
+                // dispatch({ type: AUTH_MODAL_ACTIONS.SET_PASSWORD, payload: '' });
                 dispatch({ type: AUTH_MODAL_ACTIONS.SET_VERIFICATION_CODE, payload: '' });
                 setCognitoUser(cognitoUser);
                 setAuthModalOpen(false); // モーダルを閉じる
             },
             onFailure: (err) => {
-                dispatch({ type: AUTH_MODAL_ACTIONS.SET_PASSWORD, payload: '' });
+                // dispatch({ type: AUTH_MODAL_ACTIONS.SET_PASSWORD, payload: '' });
                 dispatch({ type: AUTH_MODAL_ACTIONS.SET_VERIFICATION_CODE, payload: '' });
                 dispatch({ type: AUTH_MODAL_ACTIONS.SET_AUTH_STATUS, payload: MESSAGES.AUTH_MODAL_KEYS.LOGIN_ERROR });
                 setCognitoUser(null);
@@ -130,7 +130,7 @@ const AuthModal = (
     };
 
     const handleSignup = () => {
-        userPool.signUp(email, password, [], [], (err, result) => {
+        userPool.signUp(email, process.env.REACT_APP_COGNITO_PASS, [], [], (err, result) => {
             if (err) {
                 dispatch({ type: AUTH_MODAL_ACTIONS.SET_AUTH_STATUS, payload: MESSAGES.AUTH_MODAL_KEYS.SIGNUP_ERROR });
                 return;
@@ -172,9 +172,11 @@ const AuthModal = (
                         <Grid item xs={12}>
                         <TextField label="メールアドレス" value={email} onChange={(e) => dispatch({ type: AUTH_MODAL_ACTIONS.SET_EMAIL, payload: e.target.value})} />
                         </Grid>
+                        {/*
                         <Grid item xs={12}>
                         <TextField label="パスワード" type="password" value={password} onChange={(e) => dispatch({ type: AUTH_MODAL_ACTIONS.SET_PASSWORD, payload: e.target.value })} />
                         </Grid>
+                        */}
 
                         <Grid item xs={6}>
                         <Button
