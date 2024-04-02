@@ -130,6 +130,12 @@ function MobileMainComponent() {
                     }
                 }
             />
+            <ChangePasswordModal
+                changePasswordModalOpen={changePasswordModalOpen}
+                userPool={userPool}
+                setChangePasswordModalOpen={setChangePasswordModalOpen}
+                setCognitoUser={setCognitoUser}
+            />
             {/* ヘッダー */}
             <ElevationScroll>
                 <Box sx={{ flexGrow: 1 }}>
