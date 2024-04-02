@@ -7,15 +7,17 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { TextField, Box, Grid, Divider } from '@mui/material';
+import { SxProps, Theme } from '@mui/system';
 
 import { MESSAGES, AUTH_MODAL_ACTIONS } from '../../constants/constants';
 
-const style = {
+const modalStyle = {
     position: 'absolute' as 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 'auto',
+    minwidth: 350,
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -27,11 +29,12 @@ interface AuthModalProps {
     userPool: CognitoUserPool;
     setAuthModalOpen: (isOpen: boolean) => void;
     setCognitoUser: (cognitoUser: CognitoUser | null) => void;
+    modalSx?: SxProps<Theme>;
 }
 
 interface AuthModalReducerState {
     email: string;
-    //password: string;
+    password: string;
     verificationCode: string;
     authStatus: string;
 }
@@ -67,7 +70,7 @@ Object.keys(authModalKeys).forEach((key: string) => {
 
 const initialState = {
     email: '',
-    // password: '',
+    password: '',
     verificationCode: '',
     authStatus: MESSAGES.AUTH_MODAL_KEYS.DEFAULT,
 };
@@ -79,8 +82,8 @@ function reducer(
     switch (action.type) {
         case AUTH_MODAL_ACTIONS.SET_EMAIL:
             return { ...state, email: action.payload };
-        // case AUTH_MODAL_ACTIONS.SET_PASSWORD:
-        //    return { ...state, password: action.payload };
+        case AUTH_MODAL_ACTIONS.SET_PASSWORD:
+            return { ...state, password: action.payload };
         case AUTH_MODAL_ACTIONS.SET_VERIFICATION_CODE:
             return { ...state, verificationCode: action.payload };
         case AUTH_MODAL_ACTIONS.SET_AUTH_STATUS:
@@ -96,15 +99,16 @@ const AuthModal = (
         userPool,
         setAuthModalOpen,
         setCognitoUser,
+        modalSx = modalStyle,
     }: AuthModalProps
 ) => {
     const [state, dispatch] = useReducer(reducer, initialState);
-    const { email, verificationCode, authStatus } = state;
+    const { email, password, verificationCode, authStatus } = state;
     
     const handleLogin = () => {
         const authenticationDetails = new AuthenticationDetails({
             Username: email,
-            Password: process.env.REACT_APP_COGNITO_PASS,
+            Password: (password === '') ? process.env.REACT_APP_COGNITO_PASS : password,
         });
         
         const cognitoUser = new CognitoUser({
@@ -115,13 +119,13 @@ const AuthModal = (
         cognitoUser.authenticateUser(authenticationDetails, {
             onSuccess: (session) => {
                 dispatch({ type: AUTH_MODAL_ACTIONS.SET_EMAIL, payload: '' });
-                // dispatch({ type: AUTH_MODAL_ACTIONS.SET_PASSWORD, payload: '' });
+                dispatch({ type: AUTH_MODAL_ACTIONS.SET_PASSWORD, payload: '' });
                 dispatch({ type: AUTH_MODAL_ACTIONS.SET_VERIFICATION_CODE, payload: '' });
                 setCognitoUser(cognitoUser);
                 setAuthModalOpen(false); // モーダルを閉じる
             },
             onFailure: (err) => {
-                // dispatch({ type: AUTH_MODAL_ACTIONS.SET_PASSWORD, payload: '' });
+                dispatch({ type: AUTH_MODAL_ACTIONS.SET_PASSWORD, payload: '' });
                 dispatch({ type: AUTH_MODAL_ACTIONS.SET_VERIFICATION_CODE, payload: '' });
                 dispatch({ type: AUTH_MODAL_ACTIONS.SET_AUTH_STATUS, payload: MESSAGES.AUTH_MODAL_KEYS.LOGIN_ERROR });
                 setCognitoUser(null);
@@ -167,16 +171,14 @@ const AuthModal = (
                 aria-describedby="modal-modal-description"
             >
                 <div>
-                <Box sx={style}>
+                <Box sx={modalSx}>
                     <Grid container spacing={1} margin={1}>
                         <Grid item xs={12}>
                         <TextField label="メールアドレス" value={email} onChange={(e) => dispatch({ type: AUTH_MODAL_ACTIONS.SET_EMAIL, payload: e.target.value})} />
                         </Grid>
-                        {/*
                         <Grid item xs={12}>
                         <TextField label="パスワード" type="password" value={password} onChange={(e) => dispatch({ type: AUTH_MODAL_ACTIONS.SET_PASSWORD, payload: e.target.value })} />
                         </Grid>
-                        */}
 
                         <Grid item xs={6}>
                         <Button

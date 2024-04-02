@@ -25,12 +25,20 @@ const theme = createTheme({
         //     dark: '#b26a00',
         //     contrastText: '#000000',
         // },
+        // default-primary
+        // const primary = {
+        //   main: '#1976d2',
+        //   light: '#42a5f5',
+        //   dark: '#1565c0',
+        //   contrastText: '#fff',
+        // };
         // Secondaryカラーを設定
+        // main白で他を薄い水色にする
         secondary: {
-            light: '#2196f3',
+            light: '#64b5f6',
             main: '#ffffff',
-            dark: '#00a152',
-            contrastText: '#2196f3',
+            dark: '#64b5f6',
+            contrastText: '#1976d2',
         },
     },
     mixins: {

@@ -14,7 +14,7 @@ export const MESSAGES = {
         VERIFICATION_ERROR: 'verificationError',
     },
     AUTH_MODAL_TITLE: {
-        DEFAULT: '※注意',
+        DEFAULT: 'パスワードについて',
         LOGIN_ERROR: 'ログインエラー',
         SIGNUP: '認証コードを送信しました',
         SIGNUP_ERROR: 'サインアップ失敗',
@@ -22,7 +22,7 @@ export const MESSAGES = {
         VERIFICATION_ERROR: '認証失敗',
     },
     AUTH_MODAL_MESSAGE: {
-        DEFAULT: 'サインアップ上限は1日50ユーザーまでです。\n上限に達した場合、認証メールが送信されません。翌日以降に再度お試しください。',
+        DEFAULT: 'パスワードが空欄の場合、ログイン・サインアップにはデフォルトパスワードが適用されます。',
         LOGIN_ERROR: 'メールアドレスとパスワードを確認してください。',
         SIGNUP: 'メールを確認してください。',
         SIGNUP_ERROR: 'パスワードは8文字以上で大文字、小文字、数字、記号を含む必要があります。',
