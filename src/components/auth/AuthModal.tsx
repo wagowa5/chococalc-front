@@ -7,10 +7,11 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { TextField, Box, Grid, Divider } from '@mui/material';
+import { SxProps, Theme } from '@mui/system';
 
 import { MESSAGES, AUTH_MODAL_ACTIONS } from '../../constants/constants';
 
-const style = {
+const modalStyle = {
     position: 'absolute' as 'absolute',
     top: '50%',
     left: '50%',
@@ -28,6 +29,7 @@ interface AuthModalProps {
     userPool: CognitoUserPool;
     setAuthModalOpen: (isOpen: boolean) => void;
     setCognitoUser: (cognitoUser: CognitoUser | null) => void;
+    modalSx?: SxProps<Theme>;
 }
 
 interface AuthModalReducerState {
@@ -97,6 +99,7 @@ const AuthModal = (
         userPool,
         setAuthModalOpen,
         setCognitoUser,
+        modalSx = modalStyle,
     }: AuthModalProps
 ) => {
     const [state, dispatch] = useReducer(reducer, initialState);
@@ -168,7 +171,7 @@ const AuthModal = (
                 aria-describedby="modal-modal-description"
             >
                 <div>
-                <Box sx={style}>
+                <Box sx={modalSx}>
                     <Grid container spacing={1} margin={1}>
                         <Grid item xs={12}>
                         <TextField label="メールアドレス" value={email} onChange={(e) => dispatch({ type: AUTH_MODAL_ACTIONS.SET_EMAIL, payload: e.target.value})} />

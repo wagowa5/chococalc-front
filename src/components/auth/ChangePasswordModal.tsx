@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { SxProps, Theme } from '@mui/system';
 
 import { getAutoGeneratePassword } from '../../util/generatePassword';
 
@@ -35,6 +36,7 @@ interface ChangePasswordModalProps {
   userPool: CognitoUserPool;
   setChangePasswordModalOpen: (isOpen: boolean) => void;
   setCognitoUser: (cognitoUser: CognitoUser | null) => void;
+  modalSx?: SxProps<Theme>;
 }
 
 const ChangePasswordModal = (
@@ -42,6 +44,7 @@ const ChangePasswordModal = (
     changePasswordModalOpen,
     userPool,
     setChangePasswordModalOpen,
+    modalSx = modalStyle,
   }: ChangePasswordModalProps
 ) => {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -94,7 +97,7 @@ const ChangePasswordModal = (
       aria-labelledby="change-password-modal-title"
       aria-describedby="change-password-modal-description"
     >
-      <Box sx={modalStyle}>
+      <Box sx={modalSx}>
         <Typography id="change-password-modal-title" variant="h6" component="h2" marginBottom={2}>
           パスワード変更
         </Typography>
