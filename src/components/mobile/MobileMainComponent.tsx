@@ -14,6 +14,7 @@ import Box from '@mui/material/Box';
 import './MobileMainComponent.css';
 import cognitoConfig from '../../config/awsConfig';
 import AuthModal from '../auth/AuthModal';
+import ChangePasswordModal from '../auth/ChangePasswordModal';
 import CharacterArea from './../characterArea/CharacterArea';
 import { StatusInputFields, CharacterStatus } from './../../interface/Status';
 import DisplayArea from './../displayArea/DisplayArea';
@@ -54,6 +55,7 @@ const initialCognitoUser = userPool.getCurrentUser();
 
 function MobileMainComponent() {
     const [authModalOpen, setAuthModalOpen] = useState(false);
+    const [changePasswordModalOpen, setChangePasswordModalOpen] = useState(false);
     const [cognitoUser, setCognitoUser] = useState<CognitoUser | null>(initialCognitoUser);
 
     const handleLogout = () => {
@@ -62,6 +64,10 @@ function MobileMainComponent() {
             setCognitoUser(null);
         }
     };
+
+    const handleChangePassword = () => {
+        setChangePasswordModalOpen(true);
+    }
 
     const handleLoginButton = () => {
         setAuthModalOpen(true);
@@ -92,6 +98,12 @@ function MobileMainComponent() {
                 setAuthModalOpen={setAuthModalOpen}
                 setCognitoUser={setCognitoUser}
             />
+            <ChangePasswordModal
+                changePasswordModalOpen={changePasswordModalOpen}
+                userPool={userPool}
+                setChangePasswordModalOpen={setChangePasswordModalOpen}
+                setCognitoUser={setCognitoUser}
+            />
             {/* ヘッダー */}
             <ElevationScroll>
                 <Box sx={{ flexGrow: 1 }}>
@@ -101,13 +113,24 @@ function MobileMainComponent() {
                             チョコラン計算機(非公式)
                         </Typography>
                         {cognitoUser ? (
-                            // ログイン時にログアウトボタンを表示
+                            <>
+                            {/* ログイン時にログアウトボタンとパスワード変更ボタンを表示 */}
+                            <Button
+                                color="secondary"
+                                variant='contained'
+                                onClick={handleLogout}
+                                sx={{ mx: 1 }}
+                            >
+                                ログアウト
+                            </Button>
                             <Button
                                 color="warning"
                                 variant='contained'
-                                onClick={handleLogout}>
-                                ログアウト
+                                onClick={handleChangePassword}
+                            >
+                                パスワード変更
                             </Button>
+                            </>
                         ) : (
                             // ログイン関連のコンポーネントまたはボタンを表示
                             <Button
