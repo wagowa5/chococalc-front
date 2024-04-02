@@ -14,6 +14,7 @@ import { CognitoUserPool, CognitoUser } from 'amazon-cognito-identity-js';
 import cognitoConfig from '../../config/awsConfig';
 import './DesktopMainComponent.css';
 import AuthModal from '../auth/AuthModal';
+import ChangePasswordModal from '../auth/ChangePasswordModal';
 import CharacterArea from './../characterArea/CharacterArea';
 import { StatusInputFields, CharacterStatus } from './../../interface/Status';
 import DesktopItemArea from './DesktopItemArea';
@@ -54,6 +55,7 @@ const initialCognitoUser = userPool.getCurrentUser();
 
 function DesktopMainComponent() {
     const [authModalOpen, setAuthModalOpen] = useState(false);
+    const [changePasswordModalOpen, setChangePasswordModalOpen] = useState(false);
     const [cognitoUser, setCognitoUser] = useState<CognitoUser | null>(initialCognitoUser);
 
     const handleLogout = () => {
@@ -62,6 +64,10 @@ function DesktopMainComponent() {
             setCognitoUser(null);
         }
     };
+
+    const handleChangePassword = () => {
+        setChangePasswordModalOpen(true);
+    }
 
     const handleLoginButton = () => {
         setAuthModalOpen(true);
@@ -92,22 +98,39 @@ function DesktopMainComponent() {
                 setAuthModalOpen={setAuthModalOpen}
                 setCognitoUser={setCognitoUser}
             />
+            <ChangePasswordModal
+                changePasswordModalOpen={changePasswordModalOpen}
+                userPool={userPool}
+                setChangePasswordModalOpen={setChangePasswordModalOpen}
+                setCognitoUser={setCognitoUser}
+            />
             {/* ヘッダー */}
             <ElevationScroll>
                 <Box sx={{ flexGrow: 1 }}>
                 <AppBar position="fixed">
                     <Toolbar>
-                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                        <Typography variant="h6" component="div" sx={{ flexGrow: 1  }}>
                             チョコラン計算機(非公式)
                         </Typography>
                         {cognitoUser ? (
-                            // ログイン時にログアウトボタンを表示
+                            <>
+                            {/* ログイン時にログアウトボタンとパスワード変更ボタンを表示 */}
+                            <Button
+                                color="secondary"
+                                variant='contained'
+                                onClick={handleLogout}
+                                sx={{ mx: 1 }}
+                            >
+                                ログアウト
+                            </Button>
                             <Button
                                 color="warning"
                                 variant='contained'
-                                onClick={handleLogout}>
-                                ログアウト
+                                onClick={handleChangePassword}
+                            >
+                                パスワード変更
                             </Button>
+                            </>
                         ) : (
                             // ログイン関連のコンポーネントまたはボタンを表示
                             <Button
