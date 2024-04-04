@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useState, useReducer } from 'react';
 
 // AWS Cognito SDK とモーダル用のUIコンポーネントをインポート
 import { CognitoUserPool, CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
@@ -7,9 +7,14 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { TextField, Box, Grid, Divider } from '@mui/material';
+import { FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton } from '@mui/material';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { SxProps, Theme } from '@mui/system';
 
 import { MESSAGES, AUTH_MODAL_ACTIONS } from '../../constants/constants';
+import { getAutoGeneratePassword } from '../../util/generatePassword';
 
 const modalStyle = {
     position: 'absolute' as 'absolute',
@@ -104,6 +109,18 @@ const AuthModal = (
 ) => {
     const [state, dispatch] = useReducer(reducer, initialState);
     const { email, password, verificationCode, authStatus } = state;
+    const [showPassword, setShowPassword] = React.useState(false);
+    const [message, setMessage] = useState('');
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleGeneratePassword = () => {
+        const generatedPassword = getAutoGeneratePassword();
+        dispatch({ type: AUTH_MODAL_ACTIONS.SET_PASSWORD, payload: generatedPassword }); // 生成したパスワードをセット
+        navigator.clipboard.writeText(generatedPassword) // クリップボードにコピー
+            .then(() => setMessage('パスワードがクリップボードにコピーされました。'))
+            .catch(err => console.error('クリップボードにコピーできませんでした。', err));
+    };
     
     const handleLogin = () => {
         const authenticationDetails = new AuthenticationDetails({
@@ -172,15 +189,57 @@ const AuthModal = (
             >
                 <div>
                 <Box sx={modalSx}>
-                    <Grid container spacing={1} margin={1}>
+                    <Grid container spacing={1} margin={0}>
                         <Grid item xs={12}>
-                        <TextField label="メールアドレス" value={email} onChange={(e) => dispatch({ type: AUTH_MODAL_ACTIONS.SET_EMAIL, payload: e.target.value})} />
+                        <TextField label="メールアドレス" value={email} fullWidth onChange={(e) => dispatch({ type: AUTH_MODAL_ACTIONS.SET_EMAIL, payload: e.target.value})} />
                         </Grid>
                         <Grid item xs={12}>
-                        <TextField label="パスワード" type="password" value={password} onChange={(e) => dispatch({ type: AUTH_MODAL_ACTIONS.SET_PASSWORD, payload: e.target.value })} />
+                            <FormControl variant="outlined" fullWidth >
+                                <InputLabel htmlFor="outlined-adornment-password">パスワード</InputLabel>
+                                <OutlinedInput
+                                    fullWidth
+                                    label="パスワード"
+                                    type={showPassword ? 'text' : 'password'}
+                                    size='small'
+                                    value={password}
+                                    onChange={(e) => dispatch({ type: AUTH_MODAL_ACTIONS.SET_PASSWORD, payload: e.target.value })}
+                                    endAdornment={
+                                        <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            //onMouseDown={handleMouseDownPassword}
+                                            edge="end"
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                        </InputAdornment>
+                                    }
+                                />
+                            </FormControl>
                         </Grid>
+                        <Grid item xs={12}>
+                            <Button
+                                variant='outlined'
+                                fullWidth
+                                onClick={handleGeneratePassword}
+                                startIcon={<ContentCopyIcon />}
+                            >
+                                パスワードを生成してコピー
+                            </Button>
+                        </Grid>
+                        <Grid item xs={12}>
+                        </Grid>
+                        {message && (
+                            <Grid item xs={12}>
+                            <Typography marginBottom={1} textAlign="center">
+                                {message}
+                            </Typography>
+                            <Divider />
+                            </Grid>
+                        )}
 
-                        <Grid item xs={6}>
+                        <Grid item xs={6} marginBottom={1}>
                         <Button
                             onClick={handleLogin}
                             variant='contained'
