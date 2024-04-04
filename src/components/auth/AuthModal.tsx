@@ -151,7 +151,12 @@ const AuthModal = (
     };
 
     const handleSignup = () => {
-        userPool.signUp(email, process.env.REACT_APP_COGNITO_PASS, [], [], (err, result) => {
+        userPool.signUp(
+            email,
+            (password === '') ? process.env.REACT_APP_COGNITO_PASS : password,
+            [],
+            [],
+            (err, result) => {
             if (err) {
                 dispatch({ type: AUTH_MODAL_ACTIONS.SET_AUTH_STATUS, payload: MESSAGES.AUTH_MODAL_KEYS.SIGNUP_ERROR });
                 return;
