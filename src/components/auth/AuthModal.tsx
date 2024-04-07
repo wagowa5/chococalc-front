@@ -195,6 +195,16 @@ const AuthModal = (
                 <div>
                 <Box sx={modalSx}>
                     <Grid container spacing={1} margin={0}>
+                        <Grid item xs={6}></Grid>
+                        <Grid item xs={6}>
+                            <Button
+                                variant='outlined'
+                                fullWidth
+                                onClick={() => setAuthModalOpen(false) }
+                            >
+                                閉じる
+                            </Button>
+                        </Grid>
                         <Grid item xs={12}>
                         <TextField label="メールアドレス" value={email} fullWidth onChange={(e) => dispatch({ type: AUTH_MODAL_ACTIONS.SET_EMAIL, payload: e.target.value})} />
                         </Grid>

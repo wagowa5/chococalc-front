@@ -98,10 +98,22 @@ const ChangePasswordModal = (
       aria-describedby="change-password-modal-description"
     >
       <Box sx={modalSx}>
-        <Typography id="change-password-modal-title" variant="h6" component="h2" marginBottom={2}>
-          パスワード変更
-        </Typography>
         <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <Typography id="change-password-modal-title" variant="h6" component="h2" marginBottom={2}>
+              パスワード変更
+            </Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Button
+              variant='outlined'
+              fullWidth
+              onClick={() => setChangePasswordModalOpen(false) }
+            >
+              閉じる
+            </Button>
+          </Grid>
+
           <Grid item xs={12}>
             <FormControl variant="outlined" fullWidth>
             <InputLabel htmlFor="outlined-adornment-password">現在のパスワード</InputLabel>
