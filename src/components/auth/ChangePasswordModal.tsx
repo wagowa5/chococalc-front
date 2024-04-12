@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
-import { CognitoUser, CognitoUserPool, CognitoUserSession } from 'amazon-cognito-identity-js';
+import {
+  CognitoUser,
+  CognitoUserPool,
+  CognitoUserSession,
+} from 'amazon-cognito-identity-js';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
@@ -39,44 +43,51 @@ interface ChangePasswordModalProps {
   modalSx?: SxProps<Theme>;
 }
 
-const ChangePasswordModal = (
-  {
-    changePasswordModalOpen,
-    userPool,
-    setChangePasswordModalOpen,
-    modalSx = modalStyle,
-  }: ChangePasswordModalProps
-) => {
+const ChangePasswordModal = ({
+  changePasswordModalOpen,
+  userPool,
+  setChangePasswordModalOpen,
+  modalSx = modalStyle,
+}: ChangePasswordModalProps) => {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [message, setMessage] = useState('');
   const [showCurrentPassword, setShowCurrentPassword] = React.useState(false);
   const [showNewPassword, setShowNewPassword] = React.useState(false);
 
-  const handleClickShowCurrentPassword = () => setShowCurrentPassword((show) => !show);
+  const handleClickShowCurrentPassword = () =>
+    setShowCurrentPassword((show) => !show);
   const handleClickShowNewPassword = () => setShowNewPassword((show) => !show);
 
   const handleGeneratePassword = () => {
     const generatedPassword = getAutoGeneratePassword();
     setNewPassword(generatedPassword); // 新しいパスワードをセット
-    navigator.clipboard.writeText(generatedPassword) // クリップボードにコピー
-      .then(() => setMessage('新しいパスワードがクリップボードにコピーされました。'))
-      .catch(err => console.error('クリップボードにコピーできませんでした。', err));
+    navigator.clipboard
+      .writeText(generatedPassword) // クリップボードにコピー
+      .then(() =>
+        setMessage('新しいパスワードがクリップボードにコピーされました。'),
+      )
+      .catch((err) =>
+        console.error('クリップボードにコピーできませんでした。', err),
+      );
   };
-
 
   const handleChangePassword = () => {
     const cognitoUser = userPool.getCurrentUser();
-    
+
     if (cognitoUser != null) {
       cognitoUser.getSession((err: null, session: CognitoUserSession) => {
         cognitoUser.changePassword(
-          (currentPassword === '') ? process.env.REACT_APP_COGNITO_PASS : currentPassword,
+          currentPassword === ''
+            ? process.env.REACT_APP_COGNITO_PASS
+            : currentPassword,
           newPassword,
           (err, result) => {
             if (err) {
               console.error(err);
-              setMessage('パスワードの変更に失敗しました。エラー: ' + err.message);
+              setMessage(
+                'パスワードの変更に失敗しました。エラー: ' + err.message,
+              );
               return;
             }
             // console.log('Password change result:', result);
@@ -84,7 +95,7 @@ const ChangePasswordModal = (
             // 成功後、フィールドをクリア
             setCurrentPassword('');
             setNewPassword('');
-          }
+          },
         );
       });
     }
@@ -100,15 +111,20 @@ const ChangePasswordModal = (
       <Box sx={modalSx}>
         <Grid container spacing={2}>
           <Grid item xs={6}>
-            <Typography id="change-password-modal-title" variant="h6" component="h2" marginBottom={2}>
+            <Typography
+              id="change-password-modal-title"
+              variant="h6"
+              component="h2"
+              marginBottom={2}
+            >
               パスワード変更
             </Typography>
           </Grid>
           <Grid item xs={6}>
             <Button
-              variant='outlined'
+              variant="outlined"
               fullWidth
-              onClick={() => setChangePasswordModalOpen(false) }
+              onClick={() => setChangePasswordModalOpen(false)}
             >
               閉じる
             </Button>
@@ -116,12 +132,14 @@ const ChangePasswordModal = (
 
           <Grid item xs={12}>
             <FormControl variant="outlined" fullWidth>
-            <InputLabel htmlFor="outlined-adornment-password">現在のパスワード</InputLabel>
+              <InputLabel htmlFor="outlined-adornment-password">
+                現在のパスワード
+              </InputLabel>
               <OutlinedInput
                 fullWidth
                 label="現在のパスワード"
                 type={showCurrentPassword ? 'text' : 'password'}
-                size='small'
+                size="small"
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
                 endAdornment={
@@ -141,12 +159,14 @@ const ChangePasswordModal = (
           </Grid>
           <Grid item xs={12}>
             <FormControl variant="outlined" fullWidth>
-            <InputLabel htmlFor="outlined-adornment-password">新しいパスワード</InputLabel>
+              <InputLabel htmlFor="outlined-adornment-password">
+                新しいパスワード
+              </InputLabel>
               <OutlinedInput
                 fullWidth
                 label="新しいパスワード"
                 type={showNewPassword ? 'text' : 'password'}
-                size='small'
+                size="small"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 endAdornment={
@@ -167,7 +187,7 @@ const ChangePasswordModal = (
           <Grid item xs={12}>
             <Button
               fullWidth
-              variant='outlined'
+              variant="outlined"
               onClick={handleGeneratePassword}
               startIcon={<ContentCopyIcon />}
             >
@@ -189,7 +209,7 @@ const ChangePasswordModal = (
               </Typography>
             </Grid>
           )}
-          
+
           <Grid item xs={12}>
             <Divider />
             <Button
