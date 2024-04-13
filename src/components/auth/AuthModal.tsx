@@ -139,7 +139,8 @@ const AuthModal = ({
   const handleLogin = () => {
     const authenticationDetails = new AuthenticationDetails({
       Username: email,
-      Password: password === '' ? process.env.REACT_APP_COGNITO_PASS : password,
+      Password:
+        password === '' ? import.meta.env.VITE_APP_COGNITO_PASS : password,
     });
 
     const cognitoUser = new CognitoUser({
@@ -176,7 +177,7 @@ const AuthModal = ({
   const handleSignup = () => {
     userPool.signUp(
       email,
-      password === '' ? process.env.REACT_APP_COGNITO_PASS : password,
+      password === '' ? import.meta.env.VITE_APP_COGNITO_PASS : password,
       [],
       [],
       (err, result) => {

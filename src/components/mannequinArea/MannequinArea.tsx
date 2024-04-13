@@ -229,7 +229,7 @@ async function getMannequins(token: string): Promise<Mannequin[]> {
 
   try {
     const response = await axios.get(
-      `${process.env.REACT_APP_CHOCOCALC_API_ENDPOINT}/mannequins`,
+      `${import.meta.env.VITE_APP_CHOCOCALC_API_ENDPOINT}/mannequins`,
       config,
     );
     return response.data as Mannequin[];
@@ -256,7 +256,7 @@ async function storeMannquin(
 
   await axios
     .post(
-      process.env.REACT_APP_CHOCOCALC_API_ENDPOINT + '/mannequin',
+      import.meta.env.VITE_APP_CHOCOCALC_API_ENDPOINT + '/mannequin',
       requestBody,
       config,
     )
@@ -276,7 +276,10 @@ async function deleteMannequin(token: string, mannequinName: string) {
   };
 
   await axios
-    .delete(process.env.REACT_APP_CHOCOCALC_API_ENDPOINT + '/mannequin', config)
+    .delete(
+      import.meta.env.VITE_APP_CHOCOCALC_API_ENDPOINT + '/mannequin',
+      config,
+    )
     // .then(response => console.log(response.data))
     .catch((error) => console.error('API call failed:', error));
 }

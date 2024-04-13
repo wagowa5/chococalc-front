@@ -79,7 +79,7 @@ const ChangePasswordModal = ({
       cognitoUser.getSession((err: null, session: CognitoUserSession) => {
         cognitoUser.changePassword(
           currentPassword === ''
-            ? process.env.REACT_APP_COGNITO_PASS
+            ? import.meta.env.VITE_APP_COGNITO_PASS
             : currentPassword,
           newPassword,
           (err, result) => {
