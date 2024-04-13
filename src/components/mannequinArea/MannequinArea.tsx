@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import axios from 'axios';
 
 import {
@@ -8,13 +8,12 @@ import {
 
 import { TextField, Grid, Button } from '@mui/material';
 
-import { MESSAGES, MANNEQUIN_FIELDS } from '../../constants/constants';
-import { StatusInputFields } from '../../interface/Status';
+import { MESSAGES, MANNEQUIN_FIELDS } from 'constants/constants';
+import { StatusInputFields } from 'interface/Status';
+import { InputStatusContext } from 'contexts/StatusContext';
 
 // propsの型定義を追加
 interface MannequinAreaProps {
-  inputStatus: StatusInputFields;
-  updateInputStatus: (newInputStatus: StatusInputFields) => void;
   userPool: CognitoUserPool;
 }
 
@@ -23,11 +22,18 @@ interface Mannequin {
   statusFields: StatusInputFields;
 }
 
-const MannequinArea = ({
-  inputStatus,
-  updateInputStatus,
-  userPool,
-}: MannequinAreaProps) => {
+const MannequinArea = ({ userPool }: MannequinAreaProps) => {
+  const inputContext = useContext(InputStatusContext);
+  // コンテキストが undefined でないことを確認
+  if (!inputContext) {
+    console.error(
+      'CharacterStatusContext or InputStatusContext is not provided',
+    );
+    return <div>エラー：適切なプロバイダが設定されていません。</div>;
+  }
+  // 必要な関数や状態を抽出するための分割代入
+  const { inputStatus, updateInputStatus } = inputContext;
+
   const [mannequinName, setMannequinName] = React.useState<string>('');
   const [mannequinList, setMannequinList] = React.useState<Mannequin[]>([]);
 

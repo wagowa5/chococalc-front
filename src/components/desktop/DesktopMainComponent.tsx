@@ -16,40 +16,10 @@ import './DesktopMainComponent.css';
 import AuthModal from '../auth/AuthModal';
 import ChangePasswordModal from '../auth/ChangePasswordModal';
 import CharacterArea from './../characterArea/CharacterArea';
-import { StatusInputFields, CharacterStatus } from './../../interface/Status';
 import DesktopItemArea from './DesktopItemArea';
 import DisplayArea from './../displayArea/DisplayArea';
 import SkillArea from './../skillArea/SkillArea';
-import { FIELDS, STATUS } from './../../constants/constants';
 import MannequinArea from '../mannequinArea/MannequinArea';
-
-const initialStatusInputFields: StatusInputFields = Object.keys(
-  FIELDS,
-).reduce<StatusInputFields>((acc, key) => {
-  const fieldKey = FIELDS[key as keyof typeof FIELDS]; // This ensures that fieldKey is typed correctly
-  acc[fieldKey] = { value: '0', errorMessage: '' };
-  return acc;
-}, {});
-
-const initialCharacterStatus: CharacterStatus = Object.keys(
-  STATUS,
-).reduce<CharacterStatus>((acc, key) => {
-  const statusKey = STATUS[key as keyof typeof STATUS]; // This ensures that fieldKey is typed correctly
-  acc[statusKey] = {
-    base: 0,
-    card: 0,
-    totalWithoutItem: 0,
-    allVita: 0,
-    vita: 0,
-    scroll: 0,
-    canSeal: 0,
-    bradScraper: 0,
-    specialSkill: 0,
-    liquid: 0,
-    displayStatus: 0,
-  };
-  return acc;
-}, {});
 
 const userPool = new CognitoUserPool({
   UserPoolId: cognitoConfig.userPoolId,
@@ -77,24 +47,6 @@ function DesktopMainComponent() {
 
   const handleLoginButton = () => {
     setAuthModalOpen(true);
-  };
-
-  // 数値格納用のステータス
-  const [characterStatus, setCharacterStatus] = useState<CharacterStatus>(
-    initialCharacterStatus,
-  );
-  // CharacterAreaの入力フィールドを管理する
-  const [inputStatus, setInputStatus] = useState<StatusInputFields>(
-    initialStatusInputFields,
-  );
-
-  // characterを更新する関数
-  const updateCharacter = (newCharacterStatus: CharacterStatus) => {
-    setCharacterStatus(newCharacterStatus);
-  };
-  // inputStatusを更新する関数
-  const updateInputStatus = (newStatus: StatusInputFields) => {
-    setInputStatus(newStatus);
   };
 
   return (
@@ -172,10 +124,7 @@ function DesktopMainComponent() {
               p: 2,
             }}
           >
-            <CharacterArea
-              inputStatus={inputStatus}
-              updateInputStatus={updateInputStatus}
-            />
+            <CharacterArea />
           </Box>
         </Grid>
         <Grid item xs={6}>
@@ -187,11 +136,7 @@ function DesktopMainComponent() {
               p: 2,
             }}
           >
-            <MannequinArea
-              inputStatus={inputStatus}
-              updateInputStatus={updateInputStatus}
-              userPool={userPool}
-            />
+            <MannequinArea userPool={userPool} />
           </Box>
         </Grid>
       </Grid>
@@ -213,12 +158,7 @@ function DesktopMainComponent() {
               p: 2,
             }}
           >
-            <DesktopItemArea
-              characterStatus={characterStatus}
-              updateCharacter={updateCharacter}
-              inputStatus={inputStatus}
-              updateInputStatus={updateInputStatus}
-            />
+            <DesktopItemArea />
           </Box>
         </Grid>
       </Grid>
@@ -226,12 +166,7 @@ function DesktopMainComponent() {
       <Grid container spacing={1} margin={0}>
         {/* 計算結果を表示するエリア */}
         <Grid item xs={7}>
-          <DisplayArea
-            characterStatus={characterStatus}
-            updateCharacter={updateCharacter}
-            inputStatus={inputStatus}
-            updateInputStatus={updateInputStatus}
-          />
+          <DisplayArea />
         </Grid>
 
         {/* スキルボタンを配置しているエリア */}
@@ -244,12 +179,7 @@ function DesktopMainComponent() {
               p: 2,
             }}
           >
-            <SkillArea
-              characterStatus={characterStatus}
-              updateCharacter={updateCharacter}
-              inputStatus={inputStatus}
-              updateInputStatus={updateInputStatus}
-            />
+            <SkillArea />
           </Box>
         </Grid>
       </Grid>

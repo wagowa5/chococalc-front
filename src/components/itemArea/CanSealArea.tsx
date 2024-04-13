@@ -1,34 +1,36 @@
-import React from 'react';
+import { useContext } from 'react';
 
 import { Grid } from '@mui/material';
 import Button from '@mui/material/Button';
 
-import { StatusInputFields, CharacterStatus } from '../../interface/Status';
-import { ITEMS, STATUS } from '../../constants/constants';
+import { CharacterStatus } from 'interface/Status';
+import {
+  CharacterStatusContext,
+  InputStatusContext,
+} from 'contexts/StatusContext';
+import { ITEMS, STATUS } from 'constants/constants';
 import ButtonGroupComponent from './ButtonGroupComponent';
 import { canButtonsData, sealButtonsData } from './itemConfig';
 import {
   getInputStatus,
   calculateDisplayStatus,
   resetCanSealStatus,
-} from '../../util/StatusUtil';
+} from 'util/StatusUtil';
 
-/**
- * ItemAreaProps
- */
-interface CanSealProps {
-  characterStatus: CharacterStatus;
-  updateCharacter: (newCharacterStatus: CharacterStatus) => void;
-  inputStatus: StatusInputFields;
-  updateInputStatus: (newInputStatus: StatusInputFields) => void;
-}
+const ItemArea = () => {
+  const characterContext = useContext(CharacterStatusContext);
+  const inputContext = useContext(InputStatusContext);
+  // コンテキストが undefined でないことを確認
+  if (!characterContext || !inputContext) {
+    console.error(
+      'CharacterStatusContext or InputStatusContext is not provided',
+    );
+    return <div>エラー：適切なプロバイダが設定されていません。</div>;
+  }
+  // 必要な関数や状態を抽出するための分割代入
+  const { characterStatus, updateCharacter } = characterContext;
+  const { inputStatus } = inputContext;
 
-const ItemArea = ({
-  characterStatus,
-  updateCharacter,
-  inputStatus,
-  updateInputStatus,
-}: CanSealProps) => {
   // 缶ボタンクリック時の処理
   const handleCanButtons: { [key: string]: { handle: () => void } } = {
     [ITEMS.CAN.A.key]: {
@@ -38,7 +40,8 @@ const ItemArea = ({
 
         // ビタ・缶・シールのステータスをリセットしてから更新
         resetCanSealStatus(characterStatus, updateCharacter);
-        const newCharacterStatus = { ...characterStatus };
+        let newCharacterStatus = { ...characterStatus };
+
         newCharacterStatus[STATUS.POW].canSeal = 10;
         newCharacterStatus[STATUS.INT].canSeal = -10;
 
@@ -53,7 +56,8 @@ const ItemArea = ({
 
         // ビタ・缶・シールのステータスをリセットしてから更新
         resetCanSealStatus(characterStatus, updateCharacter);
-        const newCharacterStatus = { ...characterStatus };
+        let newCharacterStatus = { ...characterStatus };
+
         newCharacterStatus[STATUS.INT].canSeal = 10;
         newCharacterStatus[STATUS.VIT].canSeal = -10;
 
@@ -71,7 +75,8 @@ const ItemArea = ({
 
         // ビタ・缶・シールのステータスをリセットしてから更新
         resetCanSealStatus(characterStatus, updateCharacter);
-        const newCharacterStatus = { ...characterStatus };
+        let newCharacterStatus = { ...characterStatus };
+
         newCharacterStatus[STATUS.POW].canSeal = 15;
         newCharacterStatus[STATUS.INT].canSeal = -15;
 
@@ -86,7 +91,8 @@ const ItemArea = ({
 
         // ビタ・缶・シールのステータスをリセットしてから更新
         resetCanSealStatus(characterStatus, updateCharacter);
-        const newCharacterStatus = { ...characterStatus };
+        let newCharacterStatus = { ...characterStatus };
+
         newCharacterStatus[STATUS.INT].canSeal = 15;
         newCharacterStatus[STATUS.POW].canSeal = -15;
 
@@ -101,7 +107,8 @@ const ItemArea = ({
 
         // ビタ・缶・シールのステータスをリセットしてから更新
         resetCanSealStatus(characterStatus, updateCharacter);
-        const newCharacterStatus = { ...characterStatus };
+        let newCharacterStatus = { ...characterStatus };
+
         newCharacterStatus[STATUS.SPD].canSeal = 15;
         newCharacterStatus[STATUS.LUK].canSeal = -15;
 
@@ -116,7 +123,8 @@ const ItemArea = ({
 
         // ビタ・缶・シールのステータスをリセットしてから更新
         resetCanSealStatus(characterStatus, updateCharacter);
-        const newCharacterStatus = { ...characterStatus };
+        let newCharacterStatus = { ...characterStatus };
+
         newCharacterStatus[STATUS.VIT].canSeal = 15;
         newCharacterStatus[STATUS.SPD].canSeal = -15;
 
@@ -131,7 +139,8 @@ const ItemArea = ({
 
         // ビタ・缶・シールのステータスをリセットしてから更新
         resetCanSealStatus(characterStatus, updateCharacter);
-        const newCharacterStatus = { ...characterStatus };
+        let newCharacterStatus = { ...characterStatus };
+
         newCharacterStatus[STATUS.LUK].canSeal = 15;
         newCharacterStatus[STATUS.VIT].canSeal = -15;
 

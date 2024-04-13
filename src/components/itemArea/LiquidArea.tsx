@@ -1,34 +1,36 @@
-import React from 'react';
+import { useContext } from 'react';
 
 import { Grid } from '@mui/material';
 import Button from '@mui/material/Button';
 
-import { StatusInputFields, CharacterStatus } from '../../interface/Status';
-import { ITEMS, STATUS } from '../../constants/constants';
+import { CharacterStatus } from 'interface/Status';
+import {
+  CharacterStatusContext,
+  InputStatusContext,
+} from 'contexts/StatusContext';
+import { ITEMS, STATUS } from 'constants/constants';
 import ButtonGroupComponent from './ButtonGroupComponent';
 import { liquidButtonsData } from './itemConfig';
 import {
   getInputStatus,
   calculateDisplayStatus,
   resetLiquidStatus,
-} from '../../util/StatusUtil';
+} from 'util/StatusUtil';
 
-/**
- * LiquidAreaProps
- */
-interface LiquidAreaProps {
-  characterStatus: CharacterStatus;
-  updateCharacter: (newCharacterStatus: CharacterStatus) => void;
-  inputStatus: StatusInputFields;
-  updateInputStatus: (newInputStatus: StatusInputFields) => void;
-}
+const LiquidArea = () => {
+  const characterContext = useContext(CharacterStatusContext);
+  const inputContext = useContext(InputStatusContext);
+  // コンテキストが undefined でないことを確認
+  if (!characterContext || !inputContext) {
+    console.error(
+      'CharacterStatusContext or InputStatusContext is not provided',
+    );
+    return <div>エラー：適切なプロバイダが設定されていません。</div>;
+  }
+  // 必要な関数や状態を抽出するための分割代入
+  const { characterStatus, updateCharacter } = characterContext;
+  const { inputStatus } = inputContext;
 
-const LiquidArea = ({
-  characterStatus,
-  updateCharacter,
-  inputStatus,
-  updateInputStatus,
-}: LiquidAreaProps) => {
   // リキッドボタンクリック時の処理
   const handleLiquidButtons: { [key: string]: { handle: () => void } } = {
     [ITEMS.LIQUID.ATK.key]: {
@@ -36,7 +38,8 @@ const LiquidArea = ({
         getInputStatus(characterStatus, inputStatus, updateCharacter);
         calculateDisplayStatus(characterStatus, updateCharacter);
 
-        const newCharacterStatus = { ...characterStatus };
+        let newCharacterStatus = { ...characterStatus };
+
         const magnified =
           newCharacterStatus[STATUS.ATK].totalWithoutItem +
           newCharacterStatus[STATUS.ATK].scroll -
@@ -61,7 +64,8 @@ const LiquidArea = ({
         getInputStatus(characterStatus, inputStatus, updateCharacter);
         calculateDisplayStatus(characterStatus, updateCharacter);
 
-        const newCharacterStatus = { ...characterStatus };
+        let newCharacterStatus = { ...characterStatus };
+
         const magnified =
           newCharacterStatus[STATUS.DEF].totalWithoutItem +
           newCharacterStatus[STATUS.DEF].scroll -
@@ -86,7 +90,8 @@ const LiquidArea = ({
         getInputStatus(characterStatus, inputStatus, updateCharacter);
         calculateDisplayStatus(characterStatus, updateCharacter);
 
-        const newCharacterStatus = { ...characterStatus };
+        let newCharacterStatus = { ...characterStatus };
+
         const magnified =
           newCharacterStatus[STATUS.MAT].totalWithoutItem +
           newCharacterStatus[STATUS.MAT].scroll -
@@ -111,7 +116,8 @@ const LiquidArea = ({
         getInputStatus(characterStatus, inputStatus, updateCharacter);
         calculateDisplayStatus(characterStatus, updateCharacter);
 
-        const newCharacterStatus = { ...characterStatus };
+        let newCharacterStatus = { ...characterStatus };
+
         const magnifiedInt =
           newCharacterStatus[STATUS.MDF].totalWithoutItem +
           newCharacterStatus[STATUS.MDF].scroll -

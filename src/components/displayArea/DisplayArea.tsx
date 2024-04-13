@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -9,13 +11,16 @@ import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 import { Grid } from '@mui/material';
 
-import { STATUS } from '../../constants/constants';
-import { CharacterStatus, StatusInputFields } from '../../interface/Status';
+import { STATUS } from 'constants/constants';
+import {
+  CharacterStatusContext,
+  InputStatusContext,
+} from 'contexts/StatusContext';
 import {
   getInputStatus,
   calculateDisplayStatus,
   resetAllItemSkillStatus,
-} from '../../util/StatusUtil';
+} from 'util/StatusUtil';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -38,20 +43,20 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-// propsの型定義を追加
-interface DisplayAreaProps {
-  characterStatus: CharacterStatus;
-  updateCharacter: (newCharacterStatus: CharacterStatus) => void;
-  inputStatus: StatusInputFields;
-  updateInputStatus: (newInputStatus: StatusInputFields) => void;
-}
+const DisplayArea = () => {
+  const characterContext = useContext(CharacterStatusContext);
+  const inputContext = useContext(InputStatusContext);
+  // コンテキストが undefined でないことを確認
+  if (!characterContext || !inputContext) {
+    console.error(
+      'CharacterStatusContext or InputStatusContext is not provided',
+    );
+    return <div>エラー：適切なプロバイダが設定されていません。</div>;
+  }
+  // 必要な関数や状態を抽出するための分割代入
+  const { characterStatus, updateCharacter } = characterContext;
+  const { inputStatus } = inputContext;
 
-const DisplayArea = ({
-  characterStatus,
-  updateCharacter,
-  inputStatus,
-  updateInputStatus,
-}: DisplayAreaProps) => {
   // ステータス入力を反映ボタンクリック時の処理
   const handleReflectInputStatus = () => {
     // ステータス入力を反映
