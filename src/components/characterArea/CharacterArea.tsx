@@ -1,5 +1,5 @@
 import React from 'react';
-import { evaluate } from 'maths.ts';
+import { limitedEvaluate } from 'util/mathUtil';
 
 import { MESSAGES, FIELDS } from '../../constants/constants';
 import { StatusInputFields } from '../../interface/Status';
@@ -27,7 +27,7 @@ const CharacterArea = ({
     // 文字列が計算可能か事前にチェックする
     // 入力値のStatusクラスへの格納や計算は別コンポーネントで行う
     try {
-      const inputValue = Number(evaluate(value));
+      const inputValue = Number(limitedEvaluate(value));
 
       // 数値がNaNまたは無限大の場合、エラーメッセージを更新
       const errorMessage = !isFinite(inputValue)
@@ -162,7 +162,6 @@ const CharacterArea = ({
             label="INT:"
             value={inputStatus[FIELDS.CARD_INT].value}
             placeholder="0"
-            defaultValue="0"
             error={!!inputStatus[FIELDS.CARD_INT].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
             helperText={inputStatus[FIELDS.CARD_INT].errorMessage || ''} // エラーメッセージを表示
             onChange={handleInputStatusChange}
@@ -172,7 +171,6 @@ const CharacterArea = ({
             label="SPD:"
             value={inputStatus[FIELDS.CARD_SPD].value}
             placeholder="0"
-            defaultValue="0"
             error={!!inputStatus[FIELDS.CARD_SPD].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
             helperText={inputStatus[FIELDS.CARD_SPD].errorMessage || ''} // エラーメッセージを表示
             onChange={handleInputStatusChange}
@@ -182,7 +180,6 @@ const CharacterArea = ({
             label="VIT:"
             value={inputStatus[FIELDS.CARD_VIT].value}
             placeholder="0"
-            defaultValue="0"
             error={!!inputStatus[FIELDS.CARD_VIT].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
             helperText={inputStatus[FIELDS.CARD_VIT].errorMessage || ''} // エラーメッセージを表示
             onChange={handleInputStatusChange}
@@ -192,7 +189,6 @@ const CharacterArea = ({
             label="LUK:"
             value={inputStatus[FIELDS.CARD_LUK].value}
             placeholder="0"
-            defaultValue="0"
             error={!!inputStatus[FIELDS.CARD_LUK].errorMessage} // エラーがある場合はTextFieldをエラー状態にする
             helperText={inputStatus[FIELDS.CARD_LUK].errorMessage || ''} // エラーメッセージを表示
             onChange={handleInputStatusChange}
