@@ -1,33 +1,36 @@
-import React from 'react';
-import { limitedEvaluate } from 'util/mathUtil';
+import React, { useContext } from 'react';
+import { evaluate } from 'mathjs';
 
-import { MESSAGES, FIELDS } from '../../constants/constants';
-import { StatusInputFields } from '../../interface/Status';
+import { MESSAGES, FIELDS } from 'constants/constants';
+import { StatusInputFields } from 'interface/Status';
+import { InputStatusContext } from 'contexts/StatusContext';
 import './CharacterArea.css';
 
 import { TextField, Grid, Chip } from '@mui/material';
 
-// propsの型定義を追加
-interface CharacterAreaProps {
-  inputStatus: StatusInputFields;
-  updateInputStatus: (newInputStatus: StatusInputFields) => void;
-}
+const CharacterArea = () => {
+  const inputContext = useContext(InputStatusContext);
+  // コンテキストが undefined でないことを確認
+  if (!inputContext) {
+    console.error(
+      'CharacterStatusContext or InputStatusContext is not provided',
+    );
+    return <div>エラー：適切なプロバイダが設定されていません。</div>;
+  }
+  // 必要な関数や状態を抽出するための分割代入
+  const { inputStatus, updateInputStatus } = inputContext;
 
-const CharacterArea = ({
-  inputStatus,
-  updateInputStatus,
-}: CharacterAreaProps) => {
   // 各TextField更新時の処理
   const handleInputStatusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    // 現在のinputStatusをコピーして新しい状態を生成
-    let newInputStatus = { ...inputStatus };
+    let newInputStatus: StatusInputFields = { ...inputStatus };
 
     // 文字列が計算可能か事前にチェックする
     // 入力値のStatusクラスへの格納や計算は別コンポーネントで行う
     try {
-      const inputValue = Number(limitedEvaluate(value));
+      // evaluate で直接計算結果を取得
+      const inputValue = evaluate(value);
 
       // 数値がNaNまたは無限大の場合、エラーメッセージを更新
       const errorMessage = !isFinite(inputValue)
@@ -40,6 +43,8 @@ const CharacterArea = ({
         errorMessage: MESSAGES.INPUT_ERROR.CANNOT_CALCULATE,
       };
     }
+
+    console.log(newInputStatus);
 
     updateInputStatus(newInputStatus);
   };

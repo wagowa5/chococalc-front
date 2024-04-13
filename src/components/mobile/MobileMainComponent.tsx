@@ -12,44 +12,14 @@ import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Box from '@mui/material/Box';
 
 import './MobileMainComponent.css';
-import cognitoConfig from '../../config/awsConfig';
-import AuthModal from '../auth/AuthModal';
-import ChangePasswordModal from '../auth/ChangePasswordModal';
-import CharacterArea from './../characterArea/CharacterArea';
-import { StatusInputFields, CharacterStatus } from './../../interface/Status';
-import DisplayArea from './../displayArea/DisplayArea';
-import SkillArea from './../skillArea/SkillArea';
-import { FIELDS, STATUS } from './../../constants/constants';
+import cognitoConfig from 'config/awsConfig';
+import AuthModal from 'components/auth/AuthModal';
+import ChangePasswordModal from 'components/auth/ChangePasswordModal';
+import CharacterArea from 'components/characterArea/CharacterArea';
+import DisplayArea from 'components/displayArea/DisplayArea';
+import SkillArea from 'components/skillArea/SkillArea';
 import MobileItemArea from './MobileItemArea';
-import MannequinArea from '../mannequinArea/MannequinArea';
-
-const initialStatusInputFields: StatusInputFields = Object.keys(
-  FIELDS,
-).reduce<StatusInputFields>((acc, key) => {
-  const fieldKey = FIELDS[key as keyof typeof FIELDS]; // This ensures that fieldKey is typed correctly
-  acc[fieldKey] = { value: '0', errorMessage: '' };
-  return acc;
-}, {});
-
-const initialCharacterStatus: CharacterStatus = Object.keys(
-  STATUS,
-).reduce<CharacterStatus>((acc, key) => {
-  const statusKey = STATUS[key as keyof typeof STATUS]; // This ensures that fieldKey is typed correctly
-  acc[statusKey] = {
-    base: 0,
-    card: 0,
-    totalWithoutItem: 0,
-    allVita: 0,
-    vita: 0,
-    scroll: 0,
-    canSeal: 0,
-    bradScraper: 0,
-    specialSkill: 0,
-    liquid: 0,
-    displayStatus: 0,
-  };
-  return acc;
-}, {});
+import MannequinArea from 'components/mannequinArea/MannequinArea';
 
 const userPool = new CognitoUserPool({
   UserPoolId: cognitoConfig.userPoolId,
@@ -77,24 +47,6 @@ function MobileMainComponent() {
 
   const handleLoginButton = () => {
     setAuthModalOpen(true);
-  };
-
-  // 数値格納用のステータス
-  const [characterStatus, setCharacterStatus] = useState<CharacterStatus>(
-    initialCharacterStatus,
-  );
-  // CharacterAreaの入力フィールドを管理する
-  const [inputStatus, setInputStatus] = useState<StatusInputFields>(
-    initialStatusInputFields,
-  );
-
-  // characterを更新する関数
-  const updateCharacter = (newCharacterStatus: CharacterStatus) => {
-    setCharacterStatus(newCharacterStatus);
-  };
-  // inputStatusを更新する関数
-  const updateInputStatus = (newStatus: StatusInputFields) => {
-    setInputStatus(newStatus);
   };
 
   return (
@@ -186,10 +138,7 @@ function MobileMainComponent() {
       >
         {/* キャラクターの情報入力欄を配置しているエリア */}
         <Grid item xs={12}>
-          <CharacterArea
-            inputStatus={inputStatus}
-            updateInputStatus={updateInputStatus}
-          />
+          <CharacterArea />
         </Grid>
       </Grid>
       <Divider textAlign="left"></Divider>
@@ -201,11 +150,7 @@ function MobileMainComponent() {
         alignItems={'start'}
       >
         <Grid item xs={12}>
-          <MannequinArea
-            inputStatus={inputStatus}
-            updateInputStatus={updateInputStatus}
-            userPool={userPool}
-          />
+          <MannequinArea userPool={userPool} />
         </Grid>
       </Grid>
       <Divider textAlign="left"></Divider>
@@ -218,36 +163,21 @@ function MobileMainComponent() {
       >
         {/* アイテムボタンを配置しているエリア */}
         <Grid item xs={12}>
-          <MobileItemArea
-            characterStatus={characterStatus}
-            updateCharacter={updateCharacter}
-            inputStatus={inputStatus}
-            updateInputStatus={updateInputStatus}
-          />
+          <MobileItemArea />
         </Grid>
       </Grid>
       <Divider textAlign="left"></Divider>
       <Grid container spacing={0} margin={0}>
         {/* スキルボタンを配置しているエリア */}
         <Grid item xs={12}>
-          <SkillArea
-            characterStatus={characterStatus}
-            updateCharacter={updateCharacter}
-            inputStatus={inputStatus}
-            updateInputStatus={updateInputStatus}
-          />
+          <SkillArea />
         </Grid>
       </Grid>
       <Divider textAlign="left"></Divider>
       <Grid container spacing={0} margin={1}>
         {/* 計算結果を表示するエリア */}
         <Grid item xs={12}>
-          <DisplayArea
-            characterStatus={characterStatus}
-            updateCharacter={updateCharacter}
-            inputStatus={inputStatus}
-            updateInputStatus={updateInputStatus}
-          />
+          <DisplayArea />
         </Grid>
       </Grid>
     </>

@@ -1,7 +1,13 @@
+import React, { useContext } from 'react';
+
 import { Grid } from '@mui/material';
 import Button from '@mui/material/Button';
 
-import { StatusInputFields, CharacterStatus } from '../../interface/Status';
+import { StatusInputFields, CharacterStatus } from 'interface/Status';
+import {
+  CharacterStatusContext,
+  InputStatusContext,
+} from 'contexts/StatusContext';
 import { STATUS } from '../../constants/constants';
 import {
   getInputStatus,
@@ -10,25 +16,24 @@ import {
   resetSpecialSkillStatus,
 } from '../../util/StatusUtil';
 
-/**
- * SkillAreaProps
- */
-interface SkillAreaProps {
-  characterStatus: CharacterStatus;
-  updateCharacter: (newCharacterStatus: CharacterStatus) => void;
-  inputStatus: StatusInputFields;
-  updateInputStatus: (newInputStatus: StatusInputFields) => void;
-}
+const SkillArea = () => {
+  const characterContext = useContext(CharacterStatusContext);
+  const inputContext = useContext(InputStatusContext);
+  // コンテキストが undefined でないことを確認
+  if (!characterContext || !inputContext) {
+    console.error(
+      'CharacterStatusContext or InputStatusContext is not provided',
+    );
+    return <div>エラー：適切なプロバイダが設定されていません。</div>;
+  }
+  // 必要な関数や状態を抽出するための分割代入
+  const { characterStatus, updateCharacter } = characterContext;
+  const { inputStatus, updateInputStatus } = inputContext;
 
-const SkillArea = ({
-  characterStatus,
-  updateCharacter,
-  inputStatus,
-  updateInputStatus,
-}: SkillAreaProps) => {
   // ブラッドスクレイパーのスキルを計算する
   const handleBradScraper = () => {
-    const newCharacterStatus = { ...characterStatus };
+    let newCharacterStatus = { ...characterStatus };
+
     newCharacterStatus[STATUS.POW].bradScraper = 9;
     updateCharacter(newCharacterStatus);
     // 表示用ステータスを計算
@@ -43,7 +48,8 @@ const SkillArea = ({
     getInputStatus(characterStatus, inputStatus, updateCharacter);
     calculateDisplayStatus(characterStatus, updateCharacter);
 
-    const newCharacterStatus = { ...characterStatus };
+    let newCharacterStatus = { ...characterStatus };
+
     newCharacterStatus[STATUS.POW].specialSkill = Math.floor(
       (newCharacterStatus[STATUS.POW].totalWithoutItem +
         newCharacterStatus[STATUS.POW].card +
@@ -77,7 +83,8 @@ const SkillArea = ({
     getInputStatus(characterStatus, inputStatus, updateCharacter);
     calculateDisplayStatus(characterStatus, updateCharacter);
 
-    const newCharacterStatus = { ...characterStatus };
+    let newCharacterStatus = { ...characterStatus };
+
     newCharacterStatus[STATUS.INT].specialSkill = Math.floor(
       (newCharacterStatus[STATUS.INT].totalWithoutItem +
         newCharacterStatus[STATUS.INT].card +
@@ -96,6 +103,7 @@ const SkillArea = ({
           2) *
         0.3,
     );
+
     updateCharacter(newCharacterStatus);
     // 表示用ステータスを計算
     calculateDisplayStatus(characterStatus, updateCharacter);
@@ -109,7 +117,8 @@ const SkillArea = ({
     getInputStatus(characterStatus, inputStatus, updateCharacter);
     calculateDisplayStatus(characterStatus, updateCharacter);
 
-    const newCharacterStatus = { ...characterStatus };
+    let newCharacterStatus = { ...characterStatus };
+
     // HP・SP
     newCharacterStatus[STATUS.HP].specialSkill = Math.floor(
       (newCharacterStatus[STATUS.HP].totalWithoutItem +
@@ -227,7 +236,8 @@ const SkillArea = ({
     getInputStatus(characterStatus, inputStatus, updateCharacter);
     calculateDisplayStatus(characterStatus, updateCharacter);
 
-    const newCharacterStatus = { ...characterStatus };
+    let newCharacterStatus = { ...characterStatus };
+
     newCharacterStatus[STATUS.VIT].specialSkill = Math.floor(
       (newCharacterStatus[STATUS.VIT].totalWithoutItem +
         newCharacterStatus[STATUS.VIT].card +
@@ -250,7 +260,8 @@ const SkillArea = ({
     getInputStatus(characterStatus, inputStatus, updateCharacter);
     calculateDisplayStatus(characterStatus, updateCharacter);
 
-    const newCharacterStatus = { ...characterStatus };
+    let newCharacterStatus = { ...characterStatus };
+
     // HP・SP
     newCharacterStatus[STATUS.HP].specialSkill = Math.floor(
       (newCharacterStatus[STATUS.HP].totalWithoutItem +
@@ -273,6 +284,7 @@ const SkillArea = ({
         newCharacterStatus[STATUS.SPD].canSeal) *
         0.3,
     );
+
     updateCharacter(newCharacterStatus);
     // 表示用ステータスを計算
     calculateDisplayStatus(characterStatus, updateCharacter);
@@ -286,7 +298,8 @@ const SkillArea = ({
     getInputStatus(characterStatus, inputStatus, updateCharacter);
     calculateDisplayStatus(characterStatus, updateCharacter);
 
-    const newCharacterStatus = { ...characterStatus };
+    let newCharacterStatus = { ...characterStatus };
+
     // HP・SP
     newCharacterStatus[STATUS.HP].specialSkill = Math.floor(
       (newCharacterStatus[STATUS.HP].totalWithoutItem +
@@ -309,6 +322,7 @@ const SkillArea = ({
         newCharacterStatus[STATUS.SPD].canSeal) *
         0.3,
     );
+
     updateCharacter(newCharacterStatus);
     // 表示用ステータスを計算
     calculateDisplayStatus(characterStatus, updateCharacter);
@@ -322,7 +336,8 @@ const SkillArea = ({
     getInputStatus(characterStatus, inputStatus, updateCharacter);
     calculateDisplayStatus(characterStatus, updateCharacter);
 
-    const newCharacterStatus = { ...characterStatus };
+    let newCharacterStatus = { ...characterStatus };
+
     newCharacterStatus[STATUS.LUK].specialSkill = Math.floor(
       (newCharacterStatus[STATUS.LUK].totalWithoutItem +
         newCharacterStatus[STATUS.LUK].card +
@@ -332,6 +347,7 @@ const SkillArea = ({
         newCharacterStatus[STATUS.LUK].canSeal) *
         0.3,
     );
+
     updateCharacter(newCharacterStatus);
     // 表示用ステータスを計算
     calculateDisplayStatus(characterStatus, updateCharacter);

@@ -1,37 +1,31 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { Grid } from '@mui/material';
 import Button from '@mui/material/Button';
 
-import { StatusInputFields, CharacterStatus } from '../../interface/Status';
-import { STATUS } from '../../constants/constants';
+import { CharacterStatus } from 'interface/Status';
+import { CharacterStatusContext } from 'contexts/StatusContext';
+import { STATUS } from 'constants/constants';
 import ScrollSelect from './ScrollSelect';
 import {
   hpSpScrollOptions,
   basicScrollOptions,
   detailScrollOptions,
 } from './itemConfig';
-import {
-  calculateDisplayStatus,
-  resetScrollStatus,
-} from '../../util/StatusUtil';
+import { calculateDisplayStatus, resetScrollStatus } from 'util/StatusUtil';
 
-/**
- * ScrollAreaProps
- */
-interface ScrollAreaProps {
-  characterStatus: CharacterStatus;
-  updateCharacter: (newCharacterStatus: CharacterStatus) => void;
-  inputStatus: StatusInputFields;
-  updateInputStatus: (newInputStatus: StatusInputFields) => void;
-}
+const ScrollArea = () => {
+  const characterContext = useContext(CharacterStatusContext);
+  // コンテキストが undefined でないことを確認
+  if (!characterContext) {
+    console.error(
+      'CharacterStatusContext or InputStatusContext is not provided',
+    );
+    return <div>エラー：適切なプロバイダが設定されていません。</div>;
+  }
+  // 必要な関数や状態を抽出するための分割代入
+  const { characterStatus, updateCharacter } = characterContext;
 
-const ScrollArea = ({
-  characterStatus,
-  updateCharacter,
-  inputStatus,
-  updateInputStatus,
-}: ScrollAreaProps) => {
   // 巻物のセレクトボックス
   const [hpScroll, setHpScroll] = React.useState('');
   const [spScroll, setSpScroll] = React.useState('');
@@ -77,8 +71,8 @@ const ScrollArea = ({
 
     // 巻物ステータスをリセットして更新
     resetScrollStatus(characterStatus, updateCharacter);
-    const newCharacterStatus = { ...characterStatus };
-    //const newCharacterStatus = JSON.parse(JSON.stringify(characterStatus));
+    let newCharacterStatus = { ...characterStatus };
+
     newCharacterStatus[statusType].scroll = Number(value);
     updateCharacter(newCharacterStatus);
     // 表示用ステータスを計算

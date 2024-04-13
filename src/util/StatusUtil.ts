@@ -1,6 +1,6 @@
-import { limitedEvaluate } from 'util/mathUtil';
-import { STATUS, FIELDS } from '../constants/constants';
-import { CharacterStatus, StatusInputFields } from '../interface/Status';
+import { evaluate } from 'mathjs';
+import { STATUS, FIELDS } from 'constants/constants';
+import { CharacterStatus, StatusInputFields } from 'interface/Status';
 
 /**
  * 文字列が計算可能かチェックする関数
@@ -8,11 +8,13 @@ import { CharacterStatus, StatusInputFields } from '../interface/Status';
  * 不可能であれば一律0を返す
  */
 const strCalculate = (value: string): number => {
-  // 数値がNaNまたは無限大の場合、計算不可とする
   try {
-    const isCalculatable = isFinite(limitedEvaluate(value).getNumberValue())
-    return isCalculatable ? limitedEvaluate(value).getNumberValue() : 0;
+    // evaluate で直接計算結果を取得
+    const result = evaluate(value);
+    // isFinite 関数で結果が有限数かどうかをチェック
+    return isFinite(result) ? result : 0;
   } catch (error) {
+    // 計算不可能な場合は 0 を返す
     return 0;
   }
 }
@@ -23,7 +25,8 @@ export const getInputStatus = (
   inputStatus: StatusInputFields,
   updateCharacter: (newCharacterStatus: CharacterStatus) => void,
 ) => {
-  const newCharacterStatus = { ...characterStatus };
+  let newCharacterStatus = { ...characterStatus }
+
   newCharacterStatus[STATUS.POW].base = strCalculate(inputStatus[FIELDS.CHARA_POW].value);
   newCharacterStatus[STATUS.INT].base = strCalculate(inputStatus[FIELDS.CHARA_INT].value);
   newCharacterStatus[STATUS.VIT].base = strCalculate(inputStatus[FIELDS.CHARA_VIT].value);
@@ -46,6 +49,7 @@ export const getInputStatus = (
   newCharacterStatus[STATUS.DEF].totalWithoutItem = strCalculate(inputStatus[FIELDS.DEF].value);
   newCharacterStatus[STATUS.MAT].totalWithoutItem = strCalculate(inputStatus[FIELDS.MAT].value);
   newCharacterStatus[STATUS.MDF].totalWithoutItem = strCalculate(inputStatus[FIELDS.MDF].value);
+
   updateCharacter(newCharacterStatus);
 };
 
@@ -54,7 +58,8 @@ export const calculateDisplayStatus = (
   characterStatus: CharacterStatus,
   updateCharacter: (newCharacterStatus: CharacterStatus) => void
 ) => {
-  const newCharacterStatus = { ...characterStatus };
+    let newCharacterStatus = { ...characterStatus }
+
   // HPの表示用ステータスを計算
   newCharacterStatus[STATUS.HP].displayStatus = 
     newCharacterStatus[STATUS.HP].totalWithoutItem
@@ -178,6 +183,7 @@ export const calculateDisplayStatus = (
       + newCharacterStatus[STATUS.INT].canSeal
       + newCharacterStatus[STATUS.INT].specialSkill
     );
+
   updateCharacter(newCharacterStatus);
 };
 
@@ -186,12 +192,14 @@ export const resetCanSealStatus = (
   characterStatus: CharacterStatus,
   updateCharacter: (newCharacterStatus: CharacterStatus) => void
 ) => {
-  const newCharacterStatus = { ...characterStatus };
+    let newCharacterStatus = { ...characterStatus }
+
   newCharacterStatus[STATUS.POW].canSeal = 0;
   newCharacterStatus[STATUS.INT].canSeal = 0;
   newCharacterStatus[STATUS.SPD].canSeal = 0;
   newCharacterStatus[STATUS.VIT].canSeal = 0;
   newCharacterStatus[STATUS.LUK].canSeal = 0;
+
   updateCharacter(newCharacterStatus);
 }
 
@@ -200,7 +208,8 @@ export const resetVitaStatus = (
   characterStatus: CharacterStatus,
   updateCharacter: (newCharacterStatus: CharacterStatus) => void
 ) => {
-  const newCharacterStatus = { ...characterStatus };
+    let newCharacterStatus = { ...characterStatus }
+
   newCharacterStatus[STATUS.POW].allVita = 0;
   newCharacterStatus[STATUS.POW].vita = 0;
   newCharacterStatus[STATUS.INT].allVita = 0;
@@ -211,6 +220,7 @@ export const resetVitaStatus = (
   newCharacterStatus[STATUS.VIT].vita = 0;
   newCharacterStatus[STATUS.LUK].allVita = 0;
   newCharacterStatus[STATUS.LUK].vita = 0;
+  
   updateCharacter(newCharacterStatus);
 }
 
@@ -219,7 +229,8 @@ export const resetScrollStatus = (
   characterStatus: CharacterStatus,
   updateCharacter: (newCharacterStatus: CharacterStatus) => void
 ) => {
-  const newCharacterStatus = { ...characterStatus };
+    let newCharacterStatus = { ...characterStatus }
+
   newCharacterStatus[STATUS.HP].scroll = 0;
   newCharacterStatus[STATUS.SP].scroll = 0;
   newCharacterStatus[STATUS.POW].scroll = 0;
@@ -231,6 +242,7 @@ export const resetScrollStatus = (
   newCharacterStatus[STATUS.DEF].scroll = 0;
   newCharacterStatus[STATUS.MAT].scroll = 0;
   newCharacterStatus[STATUS.MDF].scroll = 0;
+
   updateCharacter(newCharacterStatus);
 }
 
@@ -239,11 +251,13 @@ export const resetLiquidStatus = (
   characterStatus: CharacterStatus,
   updateCharacter: (newCharacterStatus: CharacterStatus) => void
 ) => {
-  const newCharacterStatus = { ...characterStatus };
+    let newCharacterStatus = { ...characterStatus }
+  
   newCharacterStatus[STATUS.ATK].liquid = 0;
   newCharacterStatus[STATUS.DEF].liquid = 0;
   newCharacterStatus[STATUS.MAT].liquid = 0;
   newCharacterStatus[STATUS.MDF].liquid = 0;
+
   updateCharacter(newCharacterStatus);
 }
 
@@ -252,7 +266,8 @@ export const resetSpecialSkillStatus = (
   characterStatus: CharacterStatus,
   updateCharacter: (newCharacterStatus: CharacterStatus) => void
 ) => {
-  const newCharacterStatus = { ...characterStatus };
+    let newCharacterStatus = { ...characterStatus }
+
   newCharacterStatus[STATUS.HP].specialSkill = 0;
   newCharacterStatus[STATUS.SP].specialSkill = 0;
   newCharacterStatus[STATUS.POW].specialSkill = 0;
@@ -264,6 +279,7 @@ export const resetSpecialSkillStatus = (
   newCharacterStatus[STATUS.DEF].specialSkill = 0;
   newCharacterStatus[STATUS.MAT].specialSkill = 0;
   newCharacterStatus[STATUS.MDF].specialSkill = 0;
+
   updateCharacter(newCharacterStatus);
 }
 
@@ -272,8 +288,10 @@ export const resetBradScraperStatus = (
   characterStatus: CharacterStatus,
   updateCharacter: (newCharacterStatus: CharacterStatus) => void
 ) => {
-  const newCharacterStatus = { ...characterStatus };
+    let newCharacterStatus = { ...characterStatus }
+  
   newCharacterStatus[STATUS.POW].bradScraper = 0;
+
   updateCharacter(newCharacterStatus);
 }
 

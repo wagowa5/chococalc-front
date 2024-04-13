@@ -1,40 +1,42 @@
-import React from 'react';
+import { useContext } from 'react';
 
 import { Grid } from '@mui/material';
 import Button from '@mui/material/Button';
 
-import { StatusInputFields, CharacterStatus } from '../../interface/Status';
-import { ITEMS, STATUS } from '../../constants/constants';
+import {
+  CharacterStatusContext,
+  InputStatusContext,
+} from 'contexts/StatusContext';
+import { ITEMS, STATUS } from 'constants/constants';
 import ButtonGroupComponent from './ButtonGroupComponent';
 import { vitaButtonsData } from './itemConfig';
 import {
   getInputStatus,
   calculateDisplayStatus,
   resetVitaStatus,
-} from '../../util/StatusUtil';
+} from 'util/StatusUtil';
 
-/**
- * VitaAreaProps
- */
-interface VitaAreaProps {
-  characterStatus: CharacterStatus;
-  updateCharacter: (newCharacterStatus: CharacterStatus) => void;
-  inputStatus: StatusInputFields;
-  updateInputStatus: (newInputStatus: StatusInputFields) => void;
-}
+const VitaArea = () => {
+  const characterContext = useContext(CharacterStatusContext);
+  const inputContext = useContext(InputStatusContext);
+  // コンテキストが undefined でないことを確認
+  if (!characterContext || !inputContext) {
+    console.error(
+      'CharacterStatusContext or InputStatusContext is not provided',
+    );
+    return <div>エラー：適切なプロバイダが設定されていません。</div>;
+  }
+  // 必要な関数や状態を抽出するための分割代入
+  const { characterStatus, updateCharacter } = characterContext;
+  const { inputStatus } = inputContext;
 
-const VitaArea = ({
-  characterStatus,
-  updateCharacter,
-  inputStatus,
-  updateInputStatus,
-}: VitaAreaProps) => {
   // ビタボタンクリック時の処理を生成する関数
   const generateVitaHandler = (statusKey: string) => {
     // 入力値を取得
     getInputStatus(characterStatus, inputStatus, updateCharacter);
 
-    const newCharacterStatus = { ...characterStatus };
+    let newCharacterStatus = { ...characterStatus };
+
     // ビタのステータスを更新
     if (newCharacterStatus[statusKey].base * 0.2 < 1) {
       newCharacterStatus[statusKey].vita = 1;
@@ -54,7 +56,8 @@ const VitaArea = ({
         // 入力値を取得
         getInputStatus(characterStatus, inputStatus, updateCharacter);
 
-        const newCharacterStatus = { ...characterStatus };
+        let newCharacterStatus = { ...characterStatus };
+
         // ビタのステータスを更新
         if (newCharacterStatus[STATUS.POW].base * 0.1 < 1) {
           newCharacterStatus[STATUS.POW].allVita = 1;
