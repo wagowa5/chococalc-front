@@ -39,7 +39,6 @@ const ItemArea = ({
   characterStatus,
   updateCharacter,
   inputStatus,
-  updateInputStatus,
 }: ItemAreaProps) => {
   // 巻物のセレクトボックス
   const [hpScroll, setHpScroll] = React.useState('');

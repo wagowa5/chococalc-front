@@ -3,7 +3,6 @@ import React, { useContext } from 'react';
 import { Grid } from '@mui/material';
 import Button from '@mui/material/Button';
 
-import { CharacterStatus } from 'interface/Status';
 import { CharacterStatusContext } from 'contexts/StatusContext';
 import { STATUS } from 'constants/constants';
 import ScrollSelect from './ScrollSelect';

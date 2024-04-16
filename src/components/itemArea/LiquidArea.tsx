@@ -3,7 +3,6 @@ import { useContext } from 'react';
 import { Grid } from '@mui/material';
 import Button from '@mui/material/Button';
 
-import { CharacterStatus } from 'interface/Status';
 import {
   CharacterStatusContext,
   InputStatusContext,
