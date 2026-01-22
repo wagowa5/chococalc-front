@@ -51,8 +51,8 @@
     ]
   },
   "jest": {
-    "transformIgnorePatterns": [
-      "node_modules/(?!(axios)/)"
+    "setupFiles": [
+      "<rootDir>/src/setupJest.ts"
     ]
   },
   "devDependencies": {
