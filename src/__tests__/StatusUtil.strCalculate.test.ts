@@ -1,4 +1,4 @@
-import { strCalculate } from '../src/util/StatusUtil';
+import { strCalculate } from '../util/StatusUtil';
 
 describe('strCalculate', () => {
   it('returns 7 for calculatable expression "1+2*3"', () => {
