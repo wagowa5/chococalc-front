@@ -7,7 +7,7 @@ import { CharacterStatus, StatusInputFields } from '../interface/Status';
  * 可能であれば計算結果を返す
  * 不可能であれば一律0を返す
  */
-const strCalculate = (value: string): number => {
+export const strCalculate = (value: string): number => {
     // 数値がNaNまたは無限大の場合、計算不可とする
     try {
         const isCalculatable = isFinite(evaluate(value).getNumberValue())
