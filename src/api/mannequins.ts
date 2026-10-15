@@ -6,7 +6,7 @@ export interface Mannequin {
 }
 
 async function request(path: string, token: string, options: RequestInit = {}) {
-    const endpoint = process.env.REACT_APP_CHOCOCALC_API_ENDPOINT;
+    const endpoint = import.meta.env.REACT_APP_CHOCOCALC_API_ENDPOINT;
     if (!endpoint) throw new Error('API の接続先が設定されていません。');
     const response = await fetch(`${endpoint.replace(/\/$/, '')}${path}`, {
         ...options,

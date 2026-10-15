@@ -1,5 +1,5 @@
 import React from 'react';
-import { evaluate } from 'maths.ts';
+import { calculateExpression } from '../../util/calculateExpression';
 
 import { MESSAGES, FIELDS } from '../../constants/constants';
 import { StatusInputFields } from '../../interface/Status';
@@ -30,7 +30,7 @@ const CharacterArea = (
         // 文字列が計算可能か事前にチェックする
         // 入力値のStatusクラスへの格納や計算は別コンポーネントで行う
         try {
-            const inputValue = Number(evaluate(value));
+            const inputValue = calculateExpression(value);
             
             // 数値がNaNまたは無限大の場合、エラーメッセージを更新
             const errorMessage = !isFinite(inputValue) ? MESSAGES.INPUT_ERROR.CANNOT_CALCULATE : '';
