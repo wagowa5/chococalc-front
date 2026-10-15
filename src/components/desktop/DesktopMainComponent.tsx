@@ -15,6 +15,7 @@ import cognitoConfig from '../../config/awsConfig';
 import './DesktopMainComponent.css';
 import AuthModal from '../auth/AuthModal';
 import ChangePasswordModal from '../auth/ChangePasswordModal';
+import ServiceEndNotice from '../ServiceEndNotice';
 import DeleteAccountDialog from '../auth/DeleteAccountDialog';
 import CharacterArea from './../characterArea/CharacterArea';
 import { StatusInputFields, CharacterStatus } from './../../interface/Status';
@@ -163,6 +164,8 @@ function DesktopMainComponent() {
                 </Box>
             </ElevationScroll>
             
+            <ServiceEndNotice />
+
             {/* コンテンツ */}
             <Grid container spacing={1} margin={0} justifyContent={'center'} alignItems={'start'}>
                 {/* キャラクターの情報入力欄を配置しているエリア */}
