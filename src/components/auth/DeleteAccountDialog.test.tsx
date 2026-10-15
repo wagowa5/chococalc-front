@@ -1,17 +1,18 @@
+import { vi, type Mock, type MockedFunction } from 'vitest';
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { CognitoUserPool } from 'amazon-cognito-identity-js';
 import DeleteAccountDialog from './DeleteAccountDialog';
 import { deleteAccount } from '../../util/deleteAccount';
 
-jest.mock('../../util/deleteAccount');
-const remove = deleteAccount as jest.MockedFunction<typeof deleteAccount>;
-const pool = { getCurrentUser: jest.fn(() => ({})) } as unknown as CognitoUserPool;
-const onDeleted = jest.fn();
-const onClose = jest.fn();
+vi.mock('../../util/deleteAccount');
+const remove = deleteAccount as MockedFunction<typeof deleteAccount>;
+const pool = { getCurrentUser: vi.fn(() => ({})) } as unknown as CognitoUserPool;
+const onDeleted = vi.fn();
+const onClose = vi.fn();
 beforeEach(() => {
-    jest.clearAllMocks();
-    (pool.getCurrentUser as jest.Mock).mockReturnValue({});
+    vi.clearAllMocks();
+    (pool.getCurrentUser as Mock).mockReturnValue({});
 });
 function show() { render(<DeleteAccountDialog open userPool={pool} onDeleted={onDeleted} onClose={onClose} />); }
 

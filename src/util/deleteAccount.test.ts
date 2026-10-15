@@ -1,19 +1,20 @@
+import { vi } from 'vitest';
 import { CognitoUser } from 'amazon-cognito-identity-js';
 import { deleteAccount } from './deleteAccount';
 
-const fetchMock = jest.fn();
+const fetchMock = vi.fn();
 const session = { isValid: () => true, getIdToken: () => ({ getJwtToken: () => 'token' }) };
 function makeUser(sessionError: Error | null = null, deleteError: Error | null = null) {
     return {
-        getSession: jest.fn(callback => callback(sessionError, sessionError ? null : session)),
-        deleteUser: jest.fn(callback => callback(deleteError)),
-        signOut: jest.fn(),
+        getSession: vi.fn(callback => callback(sessionError, sessionError ? null : session)),
+        deleteUser: vi.fn(callback => callback(deleteError)),
+        signOut: vi.fn(),
     };
 }
 beforeEach(() => {
     global.fetch = fetchMock;
     fetchMock.mockReset();
-    process.env.REACT_APP_CHOCOCALC_API_ENDPOINT = 'https://api.example.test';
+    vi.stubEnv('REACT_APP_CHOCOCALC_API_ENDPOINT', 'https://api.example.test');
 });
 
 test('cleans every mannequin before deleting the user and signing out', async () => {

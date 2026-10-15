@@ -1,3 +1,4 @@
+import { Visibility, VisibilityOff, ContentCopy as ContentCopyIcon } from '@mui/icons-material';
 import React, { useState } from 'react';
 import { CognitoUser, CognitoUserPool, CognitoUserSession } from 'amazon-cognito-identity-js';
 import Modal from '@mui/material/Modal';
@@ -6,14 +7,11 @@ import FormControl from '@mui/material/FormControl';
 import { InputLabel } from '@mui/material';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { SxProps, Theme } from '@mui/system';
 
 import { getAutoGeneratePassword } from '../../util/generatePassword';
@@ -71,7 +69,7 @@ const ChangePasswordModal = (
     if (cognitoUser != null) {
       cognitoUser.getSession((err: null, session: CognitoUserSession) => {
         cognitoUser.changePassword(
-          (currentPassword === '') ? process.env.REACT_APP_COGNITO_PASS : currentPassword,
+          (currentPassword === '') ? import.meta.env.REACT_APP_COGNITO_PASS : currentPassword,
           newPassword,
           (err, result) => {
             if (err) {

@@ -1,10 +1,11 @@
+import { vi } from 'vitest';
 import { deleteMannequin, getMannequins, storeMannequin } from './mannequins';
 
-const fetchMock = jest.fn();
+const fetchMock = vi.fn();
 beforeEach(() => {
     global.fetch = fetchMock;
     fetchMock.mockReset();
-    process.env.REACT_APP_CHOCOCALC_API_ENDPOINT = 'https://api.example.test/';
+    vi.stubEnv('REACT_APP_CHOCOCALC_API_ENDPOINT', 'https://api.example.test/');
 });
 
 test('GET returns mannequins and sends the bearer token', async () => {
