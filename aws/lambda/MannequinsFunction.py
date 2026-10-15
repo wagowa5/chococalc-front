@@ -15,7 +15,7 @@ def lambda_handler(event, context):
     claims = authorizer.get('claims', {})
     
     # CognitoのuserId（sub）を取得
-    user_id = claims.get('sub', 'Unknown user')
+    user_id = claims.get('sub')
     # userIdが取得できなかった場合、エラーレスポンスを返す
     if not user_id:
         return {
@@ -38,6 +38,15 @@ def lambda_handler(event, context):
             }
         )
         items = response['Items']
+        # DynamoDB query responses are limited to 1 MB. Include every page,
+        # including when the frontend is cleaning up an account's mannequins.
+        while response.get('LastEvaluatedKey'):
+            response = table.query(
+                KeyConditionExpression='userId = :user_id',
+                ExpressionAttributeValues={':user_id': user_id},
+                ExclusiveStartKey=response['LastEvaluatedKey']
+            )
+            items.extend(response['Items'])
         
         filtered_items = [
             {'mannequinName': item['mannequinName'].upper(), 'statusFields': item['statusFields']}

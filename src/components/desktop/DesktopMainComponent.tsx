@@ -15,6 +15,7 @@ import cognitoConfig from '../../config/awsConfig';
 import './DesktopMainComponent.css';
 import AuthModal from '../auth/AuthModal';
 import ChangePasswordModal from '../auth/ChangePasswordModal';
+import DeleteAccountDialog from '../auth/DeleteAccountDialog';
 import CharacterArea from './../characterArea/CharacterArea';
 import { StatusInputFields, CharacterStatus } from './../../interface/Status';
 import DesktopItemArea from './DesktopItemArea';
@@ -54,6 +55,7 @@ const userPool = new CognitoUserPool({
 const initialCognitoUser = userPool.getCurrentUser();
 
 function DesktopMainComponent() {
+    const [deleteAccountOpen, setDeleteAccountOpen] = useState(false);
     const [authModalOpen, setAuthModalOpen] = useState(false);
     const [changePasswordModalOpen, setChangePasswordModalOpen] = useState(false);
     const [cognitoUser, setCognitoUser] = useState<CognitoUser | null>(initialCognitoUser);
@@ -92,6 +94,17 @@ function DesktopMainComponent() {
     return (
         <>
             <CssBaseline />
+            <DeleteAccountDialog
+                open={deleteAccountOpen}
+                userPool={userPool}
+                onClose={() => setDeleteAccountOpen(false)}
+                onDeleted={() => {
+                    setCognitoUser(null);
+                    setDeleteAccountOpen(false);
+                    setAuthModalOpen(false);
+                    setChangePasswordModalOpen(false);
+                }}
+            />
             <AuthModal
                 authModalOpen={authModalOpen}
                 userPool={userPool}
@@ -106,9 +119,9 @@ function DesktopMainComponent() {
             />
             {/* ヘッダー */}
             <ElevationScroll>
-                <Box sx={{ flexGrow: 1 }}>
-                <AppBar position="fixed">
-                    <Toolbar>
+                <Box sx={{ flexGrow: 1, position: 'sticky', top: 0, zIndex: theme => theme.zIndex.appBar }}>
+                <AppBar position="static">
+                    <Toolbar sx={{ flexWrap: 'wrap', gap: 1, py: 1 }}>
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1  }}>
                             チョコラン計算機(非公式)
                         </Typography>
@@ -130,6 +143,10 @@ function DesktopMainComponent() {
                             >
                                 パスワード変更
                             </Button>
+                            <Button color="error" variant="contained"
+                                sx={{ mx: 1 }} onClick={() => setDeleteAccountOpen(true)}>
+                                アカウント削除
+                            </Button>
                             </>
                         ) : (
                             // ログイン関連のコンポーネントまたはボタンを表示
@@ -145,7 +162,6 @@ function DesktopMainComponent() {
                 </AppBar>
                 </Box>
             </ElevationScroll>
-            <Toolbar /> {/* AppBarによって占められる領域分の余白を確保 */}
             
             {/* コンテンツ */}
             <Grid container spacing={1} margin={0} justifyContent={'center'} alignItems={'start'}>
@@ -175,6 +191,7 @@ function DesktopMainComponent() {
                     }}
                 >
                     <MannequinArea
+                        key={cognitoUser?.getUsername() ?? 'signed-out'}
                         inputStatus={inputStatus}
                         updateInputStatus={updateInputStatus}
                         userPool={userPool}
