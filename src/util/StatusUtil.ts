@@ -1,4 +1,4 @@
-import { evaluate } from 'maths.ts';
+import { calculateExpression } from './calculateExpression';
 import { STATUS, FIELDS } from '../constants/constants';
 import { CharacterStatus, StatusInputFields } from '../interface/Status';
 
@@ -10,8 +10,7 @@ import { CharacterStatus, StatusInputFields } from '../interface/Status';
 const strCalculate = (value: string): number => {
     // 数値がNaNまたは無限大の場合、計算不可とする
     try {
-        const isCalculatable = isFinite(evaluate(value).getNumberValue())
-        return isCalculatable ? evaluate(value).getNumberValue() : 0;
+        return calculateExpression(value);
     } catch (error) {
         return 0;
     }

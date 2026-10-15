@@ -1,3 +1,4 @@
+import { Visibility, VisibilityOff, ContentCopy as ContentCopyIcon } from '@mui/icons-material';
 import React, { useState, useReducer } from 'react';
 
 // AWS Cognito SDK とモーダル用のUIコンポーネントをインポート
@@ -8,9 +9,6 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { TextField, Box, Grid, Divider } from '@mui/material';
 import { FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton } from '@mui/material';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { SxProps, Theme } from '@mui/system';
 
 import { MESSAGES, AUTH_MODAL_ACTIONS } from '../../constants/constants';
@@ -125,7 +123,7 @@ const AuthModal = (
     const handleLogin = () => {
         const authenticationDetails = new AuthenticationDetails({
             Username: email,
-            Password: (password === '') ? process.env.REACT_APP_COGNITO_PASS : password,
+            Password: (password === '') ? import.meta.env.REACT_APP_COGNITO_PASS : password,
         });
         
         const cognitoUser = new CognitoUser({
@@ -153,7 +151,7 @@ const AuthModal = (
     const handleSignup = () => {
         userPool.signUp(
             email,
-            (password === '') ? process.env.REACT_APP_COGNITO_PASS : password,
+            (password === '') ? import.meta.env.REACT_APP_COGNITO_PASS : password,
             [],
             [],
             (err, result) => {

@@ -12,13 +12,15 @@ https://d3qw42y98ueoma.cloudfront.net/
 
 ## 開発・検証
 
-CI と同じ Node.js 18.12.1 と Yarn 1.x を使用します。
+CI と同じ Node.js 24.22.0 と Yarn 1.22.22 を使用します。
+Node.js のバージョンは `.node-version` に固定しています。依存関係は Yarn と
+`yarn.lock` で管理します。古い `package-lock.json` は削除しました。
 
 ```sh
 yarn install --frozen-lockfile
 yarn start
-yarn tsc --noEmit
-CI=true yarn test --watchAll=false --runInBand
+yarn typecheck
+yarn test
 yarn build
 python -m unittest discover -s aws/tests -v
 ```
@@ -26,6 +28,14 @@ python -m unittest discover -s aws/tests -v
 AWS 接続には `REACT_APP_USER_POOL_ID`、`REACT_APP_CLIENT_ID`、
 `REACT_APP_REGION`、`REACT_APP_IDENTITY_POOL_ID`、
 `REACT_APP_CHOCOCALC_API_ENDPOINT` を開発用環境に合わせて設定してください。
+シェルの環境変数または `.env.local` が使用できます。Vite の `envPrefix` で
+既存の `REACT_APP_` 名を維持しています。これらの値はブラウザーへ配信されるため、
+AWS アクセスキーなどの秘密情報は設定しないでください。
+
+ビルドは Vite、テストは Vitest を使用します。`yarn test:watch` でテストを継続実行できます。
+`yarn build` は型チェックを行い、従来どおり `build/` に出力します。
+`yarn preview` で本番ビルドをローカル確認できます。開発・preview サーバーは
+ポート 3000 を使用します。
 
 ## アカウント削除
 
@@ -41,3 +51,8 @@ Lambda に反映してください。DynamoDB の全ページを取得する修�
 古い Lambda のままだと 1 MB を超える保存データを削除しきれない場合があります。
 実際の AWS 環境では、テスト用アカウントでログイン・複数マネキン保存・削除・再ログイン不可を
 確認してください。
+
+## 依存関係の監査
+
+`yarn audit` で再確認できます。セキュリティ更新の内容と検証結果は
+[依存関係のセキュリティ更新](docs/dependency-security.md) を参照してください。
